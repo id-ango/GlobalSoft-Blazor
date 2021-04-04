@@ -1,0 +1,58 @@
+﻿@page "/ModuleBank/SetupSrcCode"
+@using eSoft.CashBank.Model
+@inject SrcCodeServices cashBank
+@implements IDisposable
+
+
+<div class="container">
+    <h1>Source Code Setup</h1>
+</div>
+@cashBank.Uid;
+
+<div class="container">
+    <NavLink href="fetchdata" class="btn btn-primary">Add</NavLink>
+</div>
+
+<br />
+<br />
+
+<div class="container">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Code</th>
+                <th scope="col">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Banks is not null && Banks.Count() > 0)
+            {
+
+                @foreach (var bank in Banks)
+                {
+                    <tr>
+                        <td>@bank.SrcCode</td>
+                        <td>@bank.NamaSrc</td>
+                    </tr>
+                }
+
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+
+    private IEnumerable<CbSrcCode> Banks;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Banks = cashBank.GetBanks();
+    }
+
+    public void Dispose()
+    {
+
+    }
+}

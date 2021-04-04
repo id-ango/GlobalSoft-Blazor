@@ -1,0 +1,35 @@
+﻿using eSoft.CashBank.Model;
+using eSoft.CashBank.View;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace eSoft.CashBank.Services
+{
+    public interface ICashBankServices
+    {
+        List<CbBank> GetBank();
+        CbBank GetBankId(int id);
+        CbBank GetBankKd(string id);
+        bool CekKdBank(string kodeBank);
+        bool AddBank(BankView banks);
+        Task<bool> EditBank(BankView banks);
+        Task<bool> DelBank(int banks);
+        List<CbSrcCode> GetSrcCode();
+        CbSrcCode GetSrcCodeId(int id);
+        Task<bool> AddSrcCode(SrcCodeView codeview);
+        Task<bool> EditSrcCode(SrcCodeView codeview);
+        Task<bool> DelSrcCode(int codeview);
+        CbTransH GetTrans(int id);
+        Task<List<CbTransH>> GetTransH();
+        Task<List<CbTransH>> Get3TransH();
+        Task<List<CbTransD>> GetTransD();
+        Task<CbTransH> AddTransH(TransHView transH);
+        CbTransH EditTransH(TransHView transH);
+        Task<bool> DelTransH(int id);
+        Task<CbTransfer> GetTransferId(int id);
+        List<CbTransfer> GetTransfer();
+        Task<CbTransfer> AddTransfer(TransferView transfer);
+        Task<CbTransfer> EditTransfer(TransferView transH);
+        Task<bool> DelTransfer(int id);
+    }
+}
