@@ -15,7 +15,7 @@ namespace eSoft.Ledger.Services
         GlAccount GetGlAccountId(int id);
         bool CekKdAkun(string kodeAkun);
         bool AddGlAccount(GlAccountView glakun);
-        bool EditGlAccount(GlAccountView glakun);
+        Task<bool> EditGlAccount(GlAccountView glakun);
         Task<bool> DelGlAccount(int glakun);
         List<GlCode> GetGlCode();
         GlCode GetGlCodeId(int id);

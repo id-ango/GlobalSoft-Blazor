@@ -1,5 +1,6 @@
 ﻿@page "/ModuleLedger/SetupAkunGl"
 @using eSoft.Ledger.Model
+@using eSoft.Ledger.View
 @using eSoft.Ledger.Services
 
 @inject ILedgerServices ledgerServices 
@@ -59,8 +60,8 @@
 
     private List<GlAccount> Banks;
     private GlAccount _bankToDelete;
-
-    public enum StatusGl { Neraca = 1, RetainedEarning = 2, RugiLaba = 3 };
+   
+   
 
     public bool DeleteDialogOpen { get; set; }
     public bool NullDialogOpen { get; set; }

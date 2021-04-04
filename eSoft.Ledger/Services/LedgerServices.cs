@@ -71,7 +71,7 @@ namespace eSoft.Ledger.Services
 
         }
 
-        public bool EditGlAccount(GlAccountView glakun)
+        public async Task<bool> EditGlAccount(GlAccountView glakun)
         {
             try
             {
@@ -79,11 +79,11 @@ namespace eSoft.Ledger.Services
                 if (ExistingBank != null)
                 {
                     ExistingBank.GlNama = glakun.GlNama;
-                    ExistingBank.TipeGl = glakun.TipeGL;
+                    ExistingBank.GlTipe = (int)glakun.GlStatus;
                     ExistingBank.NamaLengkap = glakun.NamaLengkap;
-
+                   
                     _context.GlAccounts.Update(ExistingBank);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return true;
                 }
             }

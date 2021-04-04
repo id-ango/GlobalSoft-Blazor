@@ -85,5 +85,5 @@ namespace eSoft.Ledger.View
         }
     }
 
-    public enum StatusGl { Neraca=1, RetainedEarning=2, RugiLaba=3 };
+    public enum StatusGl { Neraca=1, Rugi_Laba = 2,  Retained_Earning = 3 };
 }
