@@ -27,7 +27,7 @@ namespace eSoft.CashBank.Services
             };
 
             Uid = Guid.NewGuid().ToString();
-
+          
         }
         public IEnumerable<CbSrcCode> GetBanks()
         {

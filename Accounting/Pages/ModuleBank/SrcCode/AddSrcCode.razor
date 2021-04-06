@@ -1,0 +1,89 @@
+﻿@page "/ModuleBank/AddSrcCode"
+@using eSoft.CashBank.Model
+@using eSoft.CashBank.View
+@inject ICashBankServices service
+@inject NavigationManager navigationmanager
+
+
+<div class="top-row px-4 " style="z-index:5">
+    <h3>Add Source Code</h3>
+</div>
+
+<div class="content px-4">
+    <EditForm Model="@bank" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group">
+            <label>
+                Source Code :
+                <InputText id="codeBank" class="form-control" @bind-Value="bank.SrcCode" style="text-transform:uppercase" @onfocusout="cekKode" />
+            </label>
+        </div>
+        <div class="form-group">
+            <label>
+                Nama Source :
+                <InputText class="form-control" @bind-Value="bank.NamaSrc" />
+            </label>
+        </div>
+        
+
+
+        <div class="float-md-right">
+            <button class="btn-success" type="submit">Simpan</button>
+        </div>
+
+    </EditForm>
+</div>
+
+@if (DialogOpen)
+{
+    <ModalDialogComponent Title="Alert" Text="Kode Source Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
+}
+
+
+@code {
+    SrcCodeView bank = new SrcCodeView();
+    public string Testing { get; set; }
+    private bool DialogOpen { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        
+    }
+
+    private void cekKode()
+    {
+        Testing = bank.SrcCode;
+        DialogOpen = service.CekSrcCode(Testing);
+        if (DialogOpen)
+        {
+            bank.SrcCode = "";
+        }
+        StateHasChanged();
+    }
+
+    private void OnDialogClose(bool accepted)
+    {
+
+        DialogOpen = false;
+        StateHasChanged();
+
+    }
+
+
+
+    private void HandleValidSubmit()
+    {
+        var newEdit = service.AddSrcCode(bank);
+        if (newEdit)
+        {
+
+
+        }
+
+        navigationmanager.NavigateTo("/ModuleBank/SetupSrcCode", false);
+
+    }
+
+}

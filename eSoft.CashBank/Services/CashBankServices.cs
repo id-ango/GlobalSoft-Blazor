@@ -145,12 +145,23 @@ namespace eSoft.CashBank.Services
             return _context.CbSrcCodes.ToList();
         }
 
+        public bool CekSrcCode(string kodeBank)
+        {
+            string test = kodeBank.ToUpper();
+            var cekFirst = _context.CbSrcCodes.Where(x => x.SrcCode == test).ToList();
+            if (cekFirst.Count == 0)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public CbSrcCode GetSrcCodeId(int id)
         {
             return _context.CbSrcCodes.Where(x => x.CbSrcCodeId == id).FirstOrDefault();
         }
 
-        public async Task<bool> AddSrcCode(SrcCodeView codeview)
+        public bool AddSrcCode(SrcCodeView codeview)
         {
             string test = codeview.SrcCode.ToUpper();
             var cekFirst = _context.CbSrcCodes.Where(x => x.SrcCode == test).ToList();
@@ -164,7 +175,7 @@ namespace eSoft.CashBank.Services
 
                 };
                 _context.CbSrcCodes.Add(BankCode);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return true;
             }
             else
@@ -512,35 +523,35 @@ namespace eSoft.CashBank.Services
         #endregion Transfer Antar Bank
 
         #region Transaksi Bank Class
-        public async Task<CbTransH> GetTransDoc(string docno)
+        public CbTransH GetTransDoc(string docno)
         {
-            return await _context.CbTransHs.Include(p => p.CbTransDs).Where(x => x.DocNo == docno).FirstOrDefaultAsync();
+            return _context.CbTransHs.Include(p => p.CbTransDs).Where(x => x.DocNo == docno).FirstOrDefault();
         }
         public CbTransH GetTrans(int id)
         {
             return _context.CbTransHs.Include(p => p.CbTransDs).Where(x => x.CbTransHId == id).FirstOrDefault();
         }
 
-        public Task<List<CbTransH>> GetTransH()
+        public List<CbTransH> GetTransH()
         {
             // return  _context.CbTransHs.Include(p =>p.CbTransDs).OrderByDescending(x =>x.Tanggal).ToListAsync();
-            return _context.CbTransHs.OrderByDescending(x => x.Tanggal).ToListAsync();
+            return _context.CbTransHs.OrderByDescending(x => x.Tanggal).ToList();
 
         }
 
-        public Task<List<CbTransH>> Get3TransH()
+        public List<CbTransH> Get3TransH()
         {
             // return  _context.CbTransHs.Include(p =>p.CbTransDs).OrderByDescending(x =>x.Tanggal).ToListAsync();
-            return _context.CbTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Tanggal > DateTime.Today.AddMonths(-3)).ToListAsync();
+            return _context.CbTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Tanggal > DateTime.Today.AddMonths(-3)).ToList();
 
         }
 
-        public async Task<List<CbTransD>> GetTransD()
+        public List<CbTransD> GetTransD()
         {
-            return await _context.CbTransDs.ToListAsync();
+            return  _context.CbTransDs.ToList();
         }
 
-        public async Task<CbTransH> AddTransH(TransHView trans)
+        public CbTransH AddTransH(TransHView trans)
         {
             //string test = codeview.SrcCode.ToUpper();
             //var cekFirst = _context.CbSrcCodes.Where(x => x.SrcCode == test).ToList();
@@ -577,11 +588,11 @@ namespace eSoft.CashBank.Services
             bank.KSaldo += trans.KSaldo;
             _context.Banks.Update(bank);
             _context.CbTransHs.Add(transH);
-            await _context.SaveChangesAsync();
+             _context.SaveChanges();
 
             var TempTrans = GetTransDoc(transH.DocNo);
 
-            return await TempTrans;
+            return  TempTrans;
             // return true;
 
 

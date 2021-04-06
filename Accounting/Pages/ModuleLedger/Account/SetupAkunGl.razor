@@ -1,18 +1,19 @@
-﻿@page "/ModuleBank/SetupCashBank"
-@using eSoft.CashBank.Model
-@using eSoft.CashBank.Services
+﻿@page "/ModuleLedger/SetupAkunGl"
+@using eSoft.Ledger.Model
+@using eSoft.Ledger.View
+@using eSoft.Ledger.Services
 
-@inject ICashBankServices cashBank
+@inject ILedgerServices ledgerServices 
 @implements IDisposable
 @inject NavigationManager navigationmanager
 
 <div class="container">
-    <h1>Setup CashBank</h1>
+    <h1>Setup Akun GL</h1>
 </div>
 
 
 <div class="container">
-    <NavLink href="/ModuleBank/AddCashBank" class="btn btn-primary">Add</NavLink>
+    <NavLink href="/ModuleLedger/AddAccount" class="btn btn-primary">Add</NavLink>
 </div>
 
 <br />
@@ -20,29 +21,27 @@
 
 
 <div class="container">
-    <DataGridComponent Items="Banks" Context="cbBank" GetFilterableText="@(item =>$"{item.KodeBank} {item.NmBank} {item.Kurs}")">
+    <DataGridComponent Items="Banks" Context="cbBank" GetFilterableText="@(item =>$"{item.GlAcct} {item.GlNama} {(StatusGl)item.GlTipe}" )">
         <TableHeader>
-            <th scope="col">Code</th>
-            <th scope="col">Bank Name</th>
-            <th scope="col">Saldo</th>
-            <th scope="col">Balance</th>
-            <th scope="col">Currency</th>
+            <th scope="col">Account</th>
+            <th scope="col">Account Name</th>
+            <th scope="col">Tipe</th>
+            
             <th></th>
         </TableHeader>
         <RowTemplate>
-            <td>@cbBank.KodeBank</td>
-            <td>@cbBank.NmBank</td>
-            <td>@cbBank.Saldo.ToString("N")</td>
-            <td>@cbBank.KSaldo.ToString("N")</td>
-            <td>@cbBank.Kurs</td>
+            <td>@cbBank.GlAcct</td>
+            <td>@cbBank.GlNama</td>
+            <td>@((StatusGl)cbBank.GlTipe)</td>
+            
             <td>
-                <button @onclick="() => OpenRubah(cbBank.CbBankId)" class="btn btn-success">Edit</button>
+                <button @onclick="() => OpenRubah(cbBank.GlAccountId)" class="btn btn-success">Edit</button>
                 <button @onclick="() => OpenDeleteDialog(cbBank)" class="btn btn-danger">Delete</button>
             </td>
         </RowTemplate>
     </DataGridComponent>
 
-    
+
 </div>
 
 @if (DeleteDialogOpen)
@@ -59,8 +58,10 @@
 
 @code {
 
-    private List<CbBank> Banks;
-    private CbBank _bankToDelete;
+    private List<GlAccount> Banks;
+    private GlAccount _bankToDelete;
+
+
 
     public bool DeleteDialogOpen { get; set; }
     public bool NullDialogOpen { get; set; }
@@ -68,20 +69,25 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        Banks = cashBank.GetBank();
+        LoadGet();
 
+    }
+
+    private void LoadGet()
+    {
+        Banks = ledgerServices.GetGlAccount();
     }
 
     private async Task OnDeleteDialogClose(bool accepted)
     {
         if (accepted)
         {
-            await cashBank.DelBank(_bankToDelete.CbBankId);
+            await ledgerServices.DelGlAccount(_bankToDelete.GlAccountId);
             _bankToDelete = null;
         }
 
         DeleteDialogOpen = false;
-        Banks = cashBank.GetBank();
+        LoadGet();
         StateHasChanged();
 
     }
@@ -96,13 +102,13 @@
 
         DeleteDialogOpen = false;
         NullDialogOpen = false;
-        Banks = cashBank.GetBank();
+        LoadGet();
         StateHasChanged();
 
     }
-    private void OpenDeleteDialog(CbBank bank)
+    private void OpenDeleteDialog(GlAccount bank)
     {
-        if (bank.Saldo != 0)
+        if (bank.GlSaldo != 0)
         {
             NullDialogOpen = true;
         }
@@ -118,7 +124,7 @@
 
     private void OpenRubah(int xKdBank)
     {
-        navigationmanager.NavigateTo($"/ModuleBank/EditCashBank/{xKdBank}");
+        navigationmanager.NavigateTo($"/ModuleLedger/EditAccount/{xKdBank}");
     }
 
 

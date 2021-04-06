@@ -22,4 +22,10 @@
     <ProjectReference Include="..\eSoft.Ledger\eSoft.Ledger.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\ModuleBank\CashBank\" />
+    <Folder Include="Pages\ModuleBank\SrcCode\" />
+    <Folder Include="Pages\ModuleLedger\Account\" />
+  </ItemGroup>
+
 </Project>

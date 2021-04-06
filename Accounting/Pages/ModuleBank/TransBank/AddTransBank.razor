@@ -1,0 +1,157 @@
+﻿@page "/ModuleBank/AddTransBank"
+@using eSoft.CashBank.Model
+@using eSoft.CashBank.View
+
+@inject ICashBankServices service
+@inject NavigationManager navigationmanager
+
+
+<div class="top-row px-4 " style="z-index:5">
+    <h3>Add CashBank</h3>
+</div>
+
+<div class="content px-4">
+    <EditForm Model="@Transh" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group">
+            <label>
+                Kode Bank :
+                <InputSelect class="form-control" @bind-Value="Transh.KodeBank" style="width:80%; display:inline">
+                    <option value="">&nbsp;&nbsp;---Select Bank---&nbsp;&nbsp;</option>
+                    @foreach (var item in banks)
+                    {
+                        <option value="@item.KodeBank">@item.NmBank</option>
+                    }
+
+                </InputSelect>
+            </label>
+        </div>
+        <div class="form-group">
+            <label>
+                Tanggal :
+                <InputDate class="form-control" @bind-Value="Transh.Tanggal" />
+            </label>
+        </div>
+        <div class="form-group">
+            <label>
+                Keterangan :
+                <InputTextArea class="form-control" @bind-Value="Transh.Keterangan" style="width:150%" />
+            </label>
+        </div>
+
+        
+        <div class="float-md-right">
+            <button class="btn-success" type="submit">Simpan</button>
+        </div>
+
+    </EditForm>
+</div>
+
+@if (DialogOpen)
+{
+    <ModalDialogComponent Title="Alert" Text="Kode Bank Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
+}
+
+@if (SearchOpen)
+{
+
+    @*<ModalSearchComponent OnClose="OnSearchClose" Items="GlAccounts" Context="cbBank" GetFilterableText="@(item =>$"{item.GlAcct} {item.GlNama} ")">
+        <TableHeader>
+            <th scope="col">Code</th>
+            <th scope="col">Bank Name</th>
+
+            <th></th>
+        </TableHeader>
+        <RowTemplate>
+            <td>@cbBank.GlAcct</td>
+            <td>@cbBank.GlNama</td>
+
+            <td>
+                <button @onclick="() => BtnChoose(cbBank.GlAcct)" class="btn btn-success">Choose</button>
+
+            </td>
+        </RowTemplate>
+    </ModalSearchComponent>*@
+
+
+}
+@code {
+    TransHView Transh = new TransHView() {TransDs = new List<TransDView>() };
+    private List<CbBank> banks;
+    private List<CbSrcCode> srccode;
+    private TransDView Transd = new TransDView();
+    private TransDView TransK = new TransDView();
+
+    public string kurs { get; set; } = "";
+
+    public string Testing { get; set; }
+    private bool DialogOpen { get; set; }
+    public bool SearchOpen { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Transh.Tanggal = DateTime.Now;
+        LoadBank();
+        LoadSrcCode();
+    }
+
+  
+    private void OnDialogClose(bool accepted)
+    {
+
+        DialogOpen = false;
+        StateHasChanged();
+
+    }
+
+
+
+    private void HandleValidSubmit()
+    {
+        var newEdit = service.AddTransH(Transh);
+        if (newEdit !=null)
+        {
+            var id = newEdit.CbTransHId.ToString().Trim();
+
+            navigationmanager.NavigateTo("/ModuleBank/SetupCashBank", false);
+        }
+
+
+
+    }
+
+    void LoadBank()
+    {
+
+        banks = service.GetBank();
+
+    }
+
+    void LoadSrcCode()
+    {
+
+        srccode = service.GetSrcCode();
+
+    }
+
+    //private void BtnChoose(string textSearch)
+    //{
+    //    if (textSearch != null || textSearch != "")
+    //    {
+    //        bank.Acctset = textSearch;
+    //    }
+
+    //    SearchOpen = false;
+    //    StateHasChanged();
+    //}
+
+    private void OnSearchClose(bool accepted)
+    {
+
+        SearchOpen = false;
+        StateHasChanged();
+
+    }
+}
