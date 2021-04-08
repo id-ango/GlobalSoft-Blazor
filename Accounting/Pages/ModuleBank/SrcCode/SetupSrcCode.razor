@@ -19,16 +19,18 @@
 <br />
 
 <div class="container">
-    <DataGridComponent Items="Banks" Context="cbBank" GetFilterableText="@(item =>$"{item.SrcCode} {item.NamaSrc}")">
+    <DataGridComponent Items="Banks" Context="cbBank" GetFilterableText="@(item =>$"{item.SrcCode} {item.NamaSrc} {item.GlAcct}")">
         <TableHeader>
             <th scope="col">Code</th>
             <th scope="col">Description</th>
+            <th scope="col">GL Account</th>
 
             <th></th>
         </TableHeader>
         <RowTemplate>
             <td>@cbBank.SrcCode</td>
             <td>@cbBank.NamaSrc</td>
+            <td>@cbBank.GlAcct</td>
 
             <td>
                 <button @onclick="() => OpenRubah(cbBank.CbSrcCodeId)" class="btn btn-success">Edit</button>

@@ -7,24 +7,33 @@
 
 
 <div class="top-row px-4 " style="z-index:5">
-    <h3>Add CashBank</h3>
+    <h3>Add Transaksi CashBank</h3>
 </div>
 
-<div class="content px-4">
+
+<div class="container">
     <EditForm Model="@Transh" OnValidSubmit="@HandleValidSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
         <div class="form-group">
             <label>
+                Kode :
+                <InputText class="form-control" @bind-Value="Transh.KodeDoc" style="text-transform:uppercase" />
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label>
                 Kode Bank :
-                <InputSelect class="form-control" @bind-Value="Transh.KodeBank" style="width:80%; display:inline">
+                <InputSelect class="form-control" @bind-Value="Transh.KodeBank" style="width:80%; display:inline" @oninput="OnKurs">
                     <option value="">&nbsp;&nbsp;---Select Bank---&nbsp;&nbsp;</option>
                     @foreach (var item in banks)
                     {
-                        <option value="@item.KodeBank">@item.NmBank</option>
+                        <option value="@item.KodeBank">[@item.KodeBank]&nbsp; @item.NmBank</option>
                     }
 
                 </InputSelect>
+                &nbsp;@kurs
             </label>
         </div>
         <div class="form-group">
@@ -40,44 +49,69 @@
             </label>
         </div>
 
-        
+
         <div class="float-md-right">
             <button class="btn-success" type="submit">Simpan</button>
         </div>
+        <br />
+        <br />
 
     </EditForm>
 </div>
+<div class="container">
+    <div class="row">
+        <div class=" col-sm  form-message">
+            <span>Saldo   : @Transh.Saldo.ToString("#,##0.##")</span>
+        </div>
+        <div class="col-sm form-message">
+            <span> Balance : @Transh.KSaldo.ToString("#,##0.##")</span>
+        </div>
+    </div>
+
+
+</div>
+<div class="container">
+    <DetailGridComponent Items="Transh.TransDs" Context="transaksi">
+        <TableHeader>
+            <th scope="col">Source</th>
+            <th scope="col">Keterangan</th>
+            <th scope="col">Jumlah</th>
+
+            <th></th>
+        </TableHeader>
+        <RowTemplate>
+            <td>@transaksi.SrcCode</td>
+            <td>@transaksi.Keterangan</td>
+            <td>@transaksi.Jumlah.ToString("#,##0.##")</td>
+
+            <td>
+                <button @onclick="(() => Rubah(transaksi))" class="btn btn-success">Edit</button>
+                <button @onclick="(() => Hapus(transaksi))" class="btn btn-danger">Delete</button>
+            </td>
+        </RowTemplate>
+    </DetailGridComponent>
+    <Button Class="btn btn-info" @onclick="@OnAddLine">Add Line</Button>
+</div>
+
+@if (IsVisible)
+{
+    <ModalCashBankComponent SrcCode="srccode" OnClose="OnVisibleClose" OnDetail="OnDetailTrans"></ModalCashBankComponent>
+
+}
+
+@if (IsKurs)
+{
+    <ModalCashBankComponent Currency="kurs" SrcCode="srccode" OnClose="OnVisibleClose" OnDetail="OnDetailTrans"></ModalCashBankComponent>
+}
 
 @if (DialogOpen)
 {
     <ModalDialogComponent Title="Alert" Text="Kode Bank Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
 }
 
-@if (SearchOpen)
-{
 
-    @*<ModalSearchComponent OnClose="OnSearchClose" Items="GlAccounts" Context="cbBank" GetFilterableText="@(item =>$"{item.GlAcct} {item.GlNama} ")">
-        <TableHeader>
-            <th scope="col">Code</th>
-            <th scope="col">Bank Name</th>
-
-            <th></th>
-        </TableHeader>
-        <RowTemplate>
-            <td>@cbBank.GlAcct</td>
-            <td>@cbBank.GlNama</td>
-
-            <td>
-                <button @onclick="() => BtnChoose(cbBank.GlAcct)" class="btn btn-success">Choose</button>
-
-            </td>
-        </RowTemplate>
-    </ModalSearchComponent>*@
-
-
-}
 @code {
-    TransHView Transh = new TransHView() {TransDs = new List<TransDView>() };
+    TransHView Transh = new TransHView() { TransDs = new List<TransDView>() };
     private List<CbBank> banks;
     private List<CbSrcCode> srccode;
     private TransDView Transd = new TransDView();
@@ -87,7 +121,8 @@
 
     public string Testing { get; set; }
     private bool DialogOpen { get; set; }
-    public bool SearchOpen { get; set; }
+    public bool IsVisible { get; set; }
+    public bool IsKurs { get; set; }
 
     protected override void OnInitialized()
     {
@@ -97,7 +132,15 @@
         LoadSrcCode();
     }
 
-  
+    private void OnVisibleClose()
+    {
+
+        IsVisible = false;
+        IsKurs = false;
+        StateHasChanged();
+
+    }
+
     private void OnDialogClose(bool accepted)
     {
 
@@ -106,21 +149,32 @@
 
     }
 
+    private void OnKurs(ChangeEventArgs args)
+    {
+        kurs = (from e in banks where e.KodeBank == args.Value.ToString() select e.Kurs).FirstOrDefault();
+    }
+
 
 
     private void HandleValidSubmit()
     {
         var newEdit = service.AddTransH(Transh);
-        if (newEdit !=null)
+        if (newEdit != null)
         {
             var id = newEdit.CbTransHId.ToString().Trim();
 
-            navigationmanager.NavigateTo("/ModuleBank/SetupCashBank", false);
+            navigationmanager.NavigateTo("/ModuleBank/TransBank", false);
         }
 
-
-
     }
+
+    private void OnDetailTrans(TransDView transD)
+    {
+        Transh.TransDs.Add(transD);
+        IsVisible = false;
+        StateHasChanged();
+    }
+
 
     void LoadBank()
     {
@@ -136,22 +190,45 @@
 
     }
 
-    //private void BtnChoose(string textSearch)
-    //{
-    //    if (textSearch != null || textSearch != "")
-    //    {
-    //        bank.Acctset = textSearch;
-    //    }
 
-    //    SearchOpen = false;
-    //    StateHasChanged();
-    //}
-
-    private void OnSearchClose(bool accepted)
+    private void Rubah(TransDView transd)
     {
+        Transd = new TransDView();
+        Transd = transd;
 
-        SearchOpen = false;
-        StateHasChanged();
+        TransK = new TransDView();
+        TransK = transd;
+
+        //OnEditLine();
 
     }
+
+    private void Hapus(TransDView transd)
+    {
+
+        Transh.TransDs.Remove(transd);
+        //ShowOnClick();
+    }
+
+    private void OnAddLine()
+    {
+        if(!string.IsNullOrEmpty(kurs) )
+        {
+            this.IsVisible = false;
+            this.IsKurs = true;
+        }
+        else
+        {
+            this.IsVisible = true;
+            this.IsKurs = false;
+        }
+
+
+        StateHasChanged();
+
+        //IsEdit = false;
+        //ShowOnClick();
+    }
+
+
 }

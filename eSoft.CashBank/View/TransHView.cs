@@ -12,9 +12,11 @@ namespace eSoft.CashBank.View
     {
 
         public int CbTransHId { get; set; }
+        [Required]
         [StringLength(3, ErrorMessage = "Code terlalu panjang (3 character limit).")]
         public string KodeDoc { get; set; }
         public string DocNo { get; set; }
+        [Required]
         public string KodeBank { get; set; }
         public string Refno { get; set; }
         public string Keterangan { get; set; }

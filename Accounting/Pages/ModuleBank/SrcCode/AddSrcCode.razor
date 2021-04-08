@@ -1,7 +1,11 @@
 ﻿@page "/ModuleBank/AddSrcCode"
 @using eSoft.CashBank.Model
 @using eSoft.CashBank.View
+@using eSoft.Ledger.Model
+@using eSoft.Ledger.Services
+
 @inject ICashBankServices service
+@inject ILedgerServices serviceGl
 @inject NavigationManager navigationmanager
 
 
@@ -25,8 +29,21 @@
                 <InputText class="form-control" @bind-Value="bank.NamaSrc" />
             </label>
         </div>
-        
 
+        <div class="form-group">
+            <label>
+                GL Account :
+                <InputSelect class="form-control" @bind-Value="bank.GlAcct" style="width:80%; display:inline">
+                    <option value="">&nbsp;&nbsp;---Select GL Account---&nbsp;&nbsp;</option>
+                    @foreach (var item in GlAccounts)
+                    {
+                        <option value="@item.GlAcct">@item.NamaLengkap</option>
+                    }
+
+                </InputSelect>
+                <button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>
+            </label>
+        </div>
 
         <div class="float-md-right">
             <button class="btn-success" type="submit">Simpan</button>
@@ -40,16 +57,41 @@
     <ModalDialogComponent Title="Alert" Text="Kode Source Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
 }
 
+@if (SearchOpen)
+{
+
+    <ModalSearchComponent OnClose="OnSearchClose" Items="GlAccounts" Context="cbBank" GetFilterableText="@(item =>$"{item.GlAcct} {item.GlNama} ")">
+        <TableHeader>
+            <th scope="col">Code</th>
+            <th scope="col">Bank Name</th>
+
+            <th></th>
+        </TableHeader>
+        <RowTemplate>
+            <td>@cbBank.GlAcct</td>
+            <td>@cbBank.GlNama</td>
+
+            <td>
+                <button @onclick="() => BtnChoose(cbBank.GlAcct)" class="btn btn-success">Choose</button>
+
+            </td>
+        </RowTemplate>
+    </ModalSearchComponent>
+
+
+}
 
 @code {
     SrcCodeView bank = new SrcCodeView();
     public string Testing { get; set; }
     private bool DialogOpen { get; set; }
+    private List<GlAccount> GlAccounts;
+    public bool SearchOpen { get; set; }
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        
+        LoadGlAccounts();
     }
 
     private void cekKode()
@@ -86,4 +128,27 @@
 
     }
 
+    void LoadGlAccounts()
+    {
+        GlAccounts = serviceGl.GetGlAccount();
+    }
+
+    private void BtnChoose(string textSearch)
+    {
+        if (!string.IsNullOrEmpty(textSearch))
+        {
+            bank.GlAcct = textSearch;
+        }
+
+        SearchOpen = false;
+        StateHasChanged();
+    }
+
+    private void OnSearchClose(bool accepted)
+    {
+
+        SearchOpen = false;
+        StateHasChanged();
+
+    }
 }
