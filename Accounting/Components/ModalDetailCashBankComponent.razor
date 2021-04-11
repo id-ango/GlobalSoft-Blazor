@@ -140,24 +140,12 @@
     [Parameter]
     public EventCallback<TransDView> OnDetail { get; set; }
 
-    [Parameter]
-    public TransDView DetailRubah { get; set; }
-
-    [Parameter]
-    public bool isEdit { get; set; }
-
     public TransDView Detail = new TransDView();
+
 
     public bool SearchOpen { get; set; }
 
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        if(isEdit)
-        {
-            Detail = DetailRubah;
-        }
-    }
+    
 
     private Task ModalOk()
     {
@@ -167,6 +155,8 @@
     private Task SaveDetail()
     {
         return OnDetail.InvokeAsync(Detail);
+
+
 
     }
 
@@ -224,4 +214,5 @@
         StateHasChanged();
 
     }
+
 }

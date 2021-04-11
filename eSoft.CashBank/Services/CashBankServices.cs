@@ -558,7 +558,7 @@ namespace eSoft.CashBank.Services
 
             CbTransH transH = new()
             {
-                DocNo = GetNumber(trans.KodeDoc.ToUpper()),
+                DocNo = GetNumber(trans.KodeDoc.ToUpper() ),
                 KodeBank = trans.KodeBank.ToUpper(),
                 Tanggal = trans.Tanggal,
                 Keterangan = trans.Keterangan,
