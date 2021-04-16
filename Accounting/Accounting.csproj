@@ -17,9 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.4">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -27,13 +27,16 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eSoft.CashBank\eSoft.CashBank.csproj" />
+    <ProjectReference Include="..\eSoft.Fungsi\eSoft.Fungsi.csproj" />
     <ProjectReference Include="..\eSoft.Ledger\eSoft.Ledger.csproj" />
+    <ProjectReference Include="..\eSoft.Piutang\eSoft.Piutang.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Pages\ModuleBank\CashBank\" />
     <Folder Include="Pages\ModuleBank\SrcCode\" />
     <Folder Include="Pages\ModuleLedger\Account\" />
+    <Folder Include="Pages\ModuleInventory\" />
   </ItemGroup>
 
 </Project>

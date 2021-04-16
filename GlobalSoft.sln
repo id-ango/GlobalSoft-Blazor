@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSoft.CashBank", "eSoft.Cas
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSoft.Ledger", "eSoft.Ledger\eSoft.Ledger.csproj", "{A3C952D1-215D-4B32-8CBD-35175ADB35F9}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSoft.Fungsi", "eSoft.Fungsi\eSoft.Fungsi.csproj", "{B440989F-2402-4772-B23D-5959466D5879}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSoft.Piutang", "eSoft.Piutang\eSoft.Piutang.csproj", "{B7658A98-8662-4ADA-AA9C-FDFEDCED7344}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{A3C952D1-215D-4B32-8CBD-35175ADB35F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3C952D1-215D-4B32-8CBD-35175ADB35F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3C952D1-215D-4B32-8CBD-35175ADB35F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B440989F-2402-4772-B23D-5959466D5879}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B440989F-2402-4772-B23D-5959466D5879}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B440989F-2402-4772-B23D-5959466D5879}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B440989F-2402-4772-B23D-5959466D5879}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7658A98-8662-4ADA-AA9C-FDFEDCED7344}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7658A98-8662-4ADA-AA9C-FDFEDCED7344}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7658A98-8662-4ADA-AA9C-FDFEDCED7344}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7658A98-8662-4ADA-AA9C-FDFEDCED7344}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

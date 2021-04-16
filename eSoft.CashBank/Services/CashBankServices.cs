@@ -799,6 +799,61 @@ namespace eSoft.CashBank.Services
 
         }
 
+        #region cetak
+
+        public List<RekeningView> CetakMutasi(DateTime Tanggal1, DateTime Tanggal2, string kodeBank)
+        {
+           
+            List<RekeningView> Transaksi = new List<RekeningView>();
+            //     TransHView Transh = new TransHView() { TransDs = new List<TransDView>() };
+
+            var TransAwal = _context.CbTransHs
+               .Where(x => x.KodeBank == kodeBank && (x.Tanggal < Tanggal1))
+              .Select(x => new RekeningView
+              {
+                  KodeBank = x.KodeBank,
+                  DocNo = x.DocNo,
+                  Tanggal = x.Tanggal,
+                  Keterangan = x.Keterangan,
+                  Kurs = x.Kurs,
+                  Saldo = (string.IsNullOrEmpty(x.Kurs) ? x.Saldo : x.KSaldo)
+              })
+               .ToList();
+
+            var SaldoAwal = TransAwal.Sum(x => x.Saldo);
+
+            Transaksi.Add( new RekeningView
+            {
+                KodeBank = kodeBank,
+                Tanggal = Tanggal1,
+                DocNo = "Saldo Awal",
+                Saldo = SaldoAwal
+
+            }
+                );
+
+
+            var Rincian = _context.CbTransHs
+                .Where(x => x.KodeBank == kodeBank && (Tanggal1 <= x.Tanggal && x.Tanggal <= Tanggal2))
+               .Select(x => new RekeningView { KodeBank = x.KodeBank,
+                   DocNo = x.DocNo,
+                   Tanggal = x.Tanggal,
+                   Keterangan = x.Keterangan,
+                   Kurs = x.Kurs,
+                   Saldo = (string.IsNullOrEmpty(x.Kurs) ? x.Saldo : x.KSaldo)
+
+
+               })
+                .ToList();
+
+            Transaksi.AddRange(Rincian);
+            SaldoAwal = 0;
+            Transaksi = Transaksi.Select(i => { SaldoAwal += i.Saldo; i.Balance = SaldoAwal; return i; }).ToList();
+
+            return Transaksi;
+        }
+
+        #endregion
     }
 
 }

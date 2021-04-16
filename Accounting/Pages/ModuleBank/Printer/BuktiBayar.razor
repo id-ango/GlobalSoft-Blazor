@@ -1,6 +1,7 @@
 ﻿@page "/PrintBuktiBayar/{Id:int}"
 @using eSoft.CashBank.Model
 @using eSoft.CashBank.View
+@using eSoft.Fungsi.Function
 
 @inject ICashBankServices service
 @inject NavigationManager navigationmanager
@@ -61,26 +62,27 @@ Email: cvbmateknik@gmail.com
 
         @foreach (var item in TransAll.CbTransDs)
         {
-<tr class="item-row">
-    <td class="no">@(noUrut++)</td>
-    <td class="source">@item.SrcCode</td>
-    <td class="description"><textarea>@item.Keterangan</textarea></td>
-    <td class="jumlah">@item.Jumlah.ToString("N")</td>
+            <tr class="item-row">
+                <td class="no">@(noUrut++)</td>
+                <td class="source">@item.SrcCode</td>
+                <td class="description"><textarea>@item.Keterangan</textarea></td>
+                <td class="jumlah">@item.Jumlah.ToString("N")</td>
 
-</tr>
-}
+            </tr>
+        }
 
         @if (TransAll.CbTransDs.Count < 8)
         {
             for (var x = TransAll.CbTransDs.Count; x < 8; x++)
             {
-<tr class="item-row">
-    <td class="no"></td>
-    <td class="source"></td>
-    <td class="description"><textarea></textarea></td>
-    <td class="jumlah"><textarea></textarea></td>
+                <tr class="item-row">
+                    <td class="no"></td>
+                    <td class="source"></td>
+                    <td class="description"><textarea></textarea></td>
+                    <td class="jumlah"><textarea></textarea></td>
 
-</tr>}
+                </tr>
+}
         }
         <tr>
             <td colspan="3" rowspan="2" class="description"><textarea class="keterangan">@TransAll.Keterangan</textarea></td>
@@ -92,30 +94,33 @@ Email: cvbmateknik@gmail.com
         </tr>
 
     </table>
-
-   <table id="items" >
-       <tr>
-           <th>Pembuat</th>
-           <th>Mengetahui</th>
-           <th>Accounting</th>
-       </tr>
-       <tr class="item-footer" >
-           <td >&nbsp;</td>
-           <td></td>
-           <td></td>
-       </tr>
-       <tr class="item-footer">
-           <td>&nbsp;</td>
-           <td></td>
-           <td></td>
-       </tr>
-       <tr class="item-footer">
-           <td>&nbsp;</td>
-           <td></td>
-           <td></td>
-       </tr>
-   </table>
+    @Fungsi.BilanganToText(TransAll.Saldo)
    
+
+
+    <table id="items">
+        <tr>
+            <th>Pembuat</th>
+            <th>Mengetahui</th>
+            <th>Accounting</th>
+        </tr>
+        <tr class="item-footer">
+            <td>&nbsp;</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr class="item-footer">
+            <td>&nbsp;</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr class="item-footer">
+            <td>&nbsp;</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+
 </div>
 
 

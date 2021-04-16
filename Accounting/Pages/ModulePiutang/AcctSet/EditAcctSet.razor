@@ -1,4 +1,4 @@
-﻿@page "/ModuleBank/AddSrcCode"
+﻿@page "/ModulePiutang/EditAcctSet/{Id:int}"
 @using eSoft.CashBank.Model
 @using eSoft.CashBank.View
 @using eSoft.Ledger.Model
@@ -8,53 +8,49 @@
 @inject ILedgerServices serviceGl
 @inject NavigationManager navigationmanager
 
+<h3>Edit CashBank</h3>
 
-<div class="top-row px-4 " style="z-index:5">
-    <h3>Add Source Code</h3>
-</div>
+<EditForm Model="@bank" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
 
-<div class="content px-4">
-    <EditForm Model="@bank" OnValidSubmit="@HandleValidSubmit">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <div class="form-group">
-            <label>
-                Source Code :
-                <InputText id="codeBank" class="form-control" @bind-Value="bank.SrcCode" style="text-transform:uppercase" @onfocusout="cekKode" />
-            </label>
-        </div>
-        <div class="form-group">
-            <label>
-                Nama Source :
-                <InputText class="form-control" @bind-Value="bank.NamaSrc" />
-            </label>
-        </div>
+    <div class="form-group">
+        <label>
+            Source Code :
+            <InputText id="codeBank" class="form-control" @bind-Value="bank.SrcCode" style="text-transform:uppercase" @onfocusout="cekKode" disabled="disabled" />
+        </label>
+    </div>
+    <div class="form-group">
+        <label>
+            Nama Source :
+            <InputText class="form-control" @bind-Value="bank.NamaSrc" />
+        </label>
+    </div>
 
-        <div class="form-group">
-            <label>
-                GL Account :
-                <InputSelect class="form-control" @bind-Value="bank.GlAcct" style="width:80%; display:inline">
-                    <option value="">&nbsp;&nbsp;---Select GL Account---&nbsp;&nbsp;</option>
-                    @foreach (var item in GlAccounts)
-                    {
-                        <option value="@item.GlAcct">@item.NamaLengkap</option>
-                    }
+    <div class="form-group">
+        <label>
+            GL Account :
+            <InputSelect class="form-control" @bind-Value="bank.GlAcct" style="width:80%; display:inline">
+                <option value="">&nbsp;&nbsp;---Select GL Account---&nbsp;&nbsp;</option>
+                @foreach (var item in GlAccounts)
+                {
+                    <option value="@item.GlAcct">@item.NamaLengkap</option>
+                }
 
-                </InputSelect>
-                <button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>
-            </label>
-        </div>
+            </InputSelect>
+            <button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>
+        </label>
+    </div>
 
-        <div class="float-md-right">
-            <button class="btn-success" type="submit">Simpan</button>
-        </div>
+    <div class="float-md-right">
+        <button class="btn-success" type="submit">Simpan</button>
+    </div>
 
-    </EditForm>
-</div>
+</EditForm>
 
 @if (DialogOpen)
 {
-    <ModalDialogComponent Title="Alert" Text="Kode Source Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
+    <ModalDialogComponent Title="Alert" Text="Kode Bank Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
 }
 
 @if (SearchOpen)
@@ -82,7 +78,11 @@
 }
 
 @code {
+    [Parameter]
+    public int Id { get; set; }
+
     SrcCodeView bank = new SrcCodeView();
+    CbSrcCode Bank = new CbSrcCode();
     public string Testing { get; set; }
     private bool DialogOpen { get; set; }
     private List<GlAccount> GlAccounts;
@@ -91,8 +91,18 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        bank.SrcCode = "";
+        LoadBank();
         LoadGlAccounts();
+    }
+
+    void LoadBank()
+    {
+        Bank = service.GetSrcCodeId(Id);
+        bank.SrcCodeId = Bank.CbSrcCodeId;
+        bank.SrcCode = Bank.SrcCode;
+        bank.NamaSrc = Bank.NamaSrc;
+        bank.GlAcct = Bank.GlAcct;
+
     }
 
     private void cekKode()
@@ -116,9 +126,9 @@
 
 
 
-    private void HandleValidSubmit()
+    private async Task HandleValidSubmit()
     {
-        var newEdit = service.AddSrcCode(bank);
+        var newEdit = await service.EditSrcCode(bank);
         if (newEdit)
         {
 
@@ -153,3 +163,5 @@
 
     }
 }
+
+

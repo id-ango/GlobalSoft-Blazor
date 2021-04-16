@@ -17,7 +17,8 @@ using eSoft.Ledger.Services;
 using eSoft.Ledger.Data;
 
 using Microsoft.EntityFrameworkCore;
-
+using eSoft.Piutang.Data;
+using eSoft.Piutang.Services;
 
 namespace Accounting
 {
@@ -40,15 +41,18 @@ namespace Accounting
             services.AddDbContext<DbContextLedger>(options =>
                   options.UseSqlServer(
                       Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Accounting")));
-
+            services.AddDbContext<DbContextPiutang>(options =>
+                  options.UseSqlServer(
+                      Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Accounting")));
 
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
             services.AddTransient<ICashBankServices, CashBankServices>();
-            services.AddTransient<SrcCodeServices>();
+          //  services.AddTransient<SrcCodeServices>();
             services.AddTransient<ILedgerServices,LedgerServices>();
+            services.AddTransient<IReceivableServices, ReceivableServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

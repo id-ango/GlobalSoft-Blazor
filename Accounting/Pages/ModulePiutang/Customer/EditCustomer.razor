@@ -1,0 +1,220 @@
+﻿@page "/ModulePiutang/EditCustomer/{Id:int}"
+@using eSoft.Piutang.Model
+@using eSoft.Piutang.View
+@using eSoft.Piutang.Services
+
+@inject IReceivableServices service
+@inject NavigationManager navigationmanager
+
+<h3>Edit CashBank</h3>
+
+<EditForm Model="@bank" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>
+            Customer :
+            <InputText id="codeBank" class="form-control" @bind-Value="bank.Customer" style="text-transform:uppercase" @onfocusout="cekKode" disabled="disabled" />
+        </label>
+    </div>
+    <div class="form-group">
+        <label>
+            Name :
+            <InputText class="form-control" @bind-Value="bank.NamaCust" />
+        </label>
+    </div>
+    <div class="form-group">
+        <table>
+            <tr>
+                <td>
+                    <label>
+                        Address :
+                        <InputTextArea class="form-control" @bind-Value="bank.Alamat" />
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        City :
+                        <InputText class="form-control" @bind-Value="bank.Kota" />
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>
+                        Alamat Kirim :
+                        <InputTextArea class="form-control" @bind-Value="bank.AlmtKrm" />
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        Kota Kirim :
+                        <InputText class="form-control" @bind-Value="bank.KotaKrm" />
+                    </label>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+
+    <div class="form-group">
+        <label>
+            Telpon :
+            <InputText class="form-control" @bind-Value="bank.Telpon" />
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label>
+            Kontak :
+            <InputText class="form-control" @bind-Value="bank.Kontak" />
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label>
+            GL Account :
+            <InputSelect class="form-control" @bind-Value="bank.AcctSet" style="width:80%; display:inline">
+                <option value="">&nbsp;&nbsp;---Select GL Account---&nbsp;&nbsp;</option>
+                @foreach (var item in GlAccounts)
+                {
+                    <option value="@item.AcctSet">@item.Description</option>
+                }
+
+            </InputSelect>
+            <button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>
+        </label>
+    </div>
+
+
+    <div class="float-md-right">
+        <button class="btn-success" type="submit">Simpan</button>
+    </div>
+
+
+</EditForm>
+
+@if (DialogOpen)
+{
+    <ModalDialogComponent Title="Alert" Text="Customer Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
+}
+
+@if (SearchOpen)
+{
+
+    <ModalSearchComponent OnClose="OnSearchClose" Items="GlAccounts" Context="cbBank" GetFilterableText="@(item =>$"{item.AcctSet} {item.Description} ")">
+        <TableHeader>
+            <th scope="col">Code</th>
+            <th scope="col">Description</th>
+
+            <th></th>
+        </TableHeader>
+        <RowTemplate>
+            <td>@cbBank.AcctSet</td>
+            <td>@cbBank.Description</td>
+
+            <td>
+                <button @onclick="() => BtnChoose(cbBank.AcctSet)" class="btn btn-success">Choose</button>
+
+            </td>
+        </RowTemplate>
+    </ModalSearchComponent>
+
+
+}
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    CustomerView bank = new CustomerView();
+    ArCust Bank = new ArCust();
+    public string Testing { get; set; }
+    private bool DialogOpen { get; set; }
+    private List<ArAcct> GlAccounts;
+    public bool SearchOpen { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        LoadBank();
+        LoadGlAccounts();
+    }
+
+    void LoadBank()
+    {
+        Bank = service.GetCustomerId(Id);
+        bank.ArCustId = Bank.ArCustId;
+        bank.Customer = Bank.Customer;
+        bank.NamaCust = Bank.NamaCust;
+        bank.Alamat = Bank.Alamat;
+        bank.Kota = Bank.Kota;
+        bank.AlmtKrm = Bank.AlmtKrm;
+        bank.KotaKrm = Bank.KotaKrm;
+        bank.Telpon = Bank.Telpon;
+        bank.Kontak = Bank.Kontak;
+        bank.AcctSet = Bank.AcctSet;
+
+    }
+
+    private void cekKode()
+    {
+        Testing = bank.Customer;
+        DialogOpen = service.CekKdCustomer(Testing);
+        if (DialogOpen)
+        {
+            bank.Customer = "";
+        }
+        StateHasChanged();
+    }
+
+    private void OnDialogClose(bool accepted)
+    {
+
+        DialogOpen = false;
+        StateHasChanged();
+
+    }
+
+
+
+    private async Task HandleValidSubmit()
+    {
+        var newEdit = await service.EditCustomer(bank);
+        if (newEdit)
+        {
+
+
+        }
+
+        navigationmanager.NavigateTo("/ModulePiutang/SetupCustomer", false);
+
+    }
+
+    void LoadGlAccounts()
+    {
+        GlAccounts = service.GetArAkunSet();
+    }
+
+    private void BtnChoose(string textSearch)
+    {
+        if (textSearch != null || textSearch != "")
+        {
+            bank.AcctSet = textSearch;
+        }
+
+        SearchOpen = false;
+        StateHasChanged();
+    }
+
+    private void OnSearchClose(bool accepted)
+    {
+
+        SearchOpen = false;
+        StateHasChanged();
+
+    }
+}

@@ -1,5 +1,6 @@
 ﻿using eSoft.CashBank.Model;
 using eSoft.CashBank.View;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -32,5 +33,6 @@ namespace eSoft.CashBank.Services
         Task<CbTransfer> AddTransfer(TransferView transfer);
         Task<CbTransfer> EditTransfer(TransferView transH);
         Task<bool> DelTransfer(int id);
+        List<RekeningView> CetakMutasi(DateTime Tanggal1, DateTime Tanggal2, string KodeBank);
     }
 }

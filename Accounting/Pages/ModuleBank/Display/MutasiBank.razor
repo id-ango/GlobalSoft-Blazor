@@ -1,0 +1,155 @@
+﻿@page "/ModuleBank/MutasiBank"
+@using eSoft.CashBank.Model
+@using eSoft.CashBank.View
+
+@using eSoft.CashBank.Services
+
+@inject ICashBankServices cashBank
+
+@inject NavigationManager navigationmanager
+
+<div class="container">
+    <h1>Mutasi Cash Bank</h1>
+</div>
+
+
+<div class="container">
+
+    <EditForm Model="@Banks" OnValidSubmit="@HandleValidSubmit" >
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+    
+        <div class="form-group">
+            <label>
+                Kode Bank :
+                <InputSelect class="form-control" @bind-Value="@kodeBank" style="width:80%; display:inline" @oninput="OnKurs">
+                    <option value="">&nbsp;&nbsp;---Select Bank---&nbsp;&nbsp;</option>
+                    @foreach (var item in Banks)
+                    {
+                        <option value="@item.KodeBank">[@item.KodeBank]&nbsp; @item.NmBank</option>
+                    }
+
+                </InputSelect>
+                &nbsp;@kurs
+            </label>
+        </div>
+        <div class="form-group">
+            <label>
+                Tanggal :
+                <InputDate class="form-control" @bind-Value="@TglStart" />
+            </label>
+        </div>
+        <div class="form-group">
+            <label>
+                Tanggal :
+                <InputDate class="form-control" @bind-Value="@TglEnd" />
+            </label>
+        </div>
+       
+
+
+        <div class="float-md-right">
+            <button class="btn-success" type="submit">Mutasi</button>
+        </div>
+        <br />
+        <br />
+
+    </EditForm>
+</div>
+
+<br />
+<br />
+
+
+<div class="container">
+    <DataGridComponent Items="RekKoran" Context="cbBank" GetFilterableText="@(item =>$"{item.Keterangan} {item.DocNo} ")">
+        <TableHeader>
+            <th scope="col">Doc #</th>
+            <th scope="col">Tanggal</th>
+            <th scope="col">Keterangan</th>
+            <th scope="col">Mutasi</th>
+            <th scope="col">Saldo</th>
+            <th></th>
+        </TableHeader>
+        <RowTemplate>
+            <td>@cbBank.DocNo</td>
+            <td>@cbBank.Tanggal.ToShortDateString()</td>
+            <td>@cbBank.Keterangan</td>
+            <td style="text-align:right">@cbBank.Saldo.ToString("N")</td>
+            <td style="text-align:right">@cbBank.Balance.ToString("N")</td>
+            <td>
+                @*<button @onclick="() => BtnChoose(cbBank.GlAcct)" class="btn btn-success">Choose</button>*@
+
+            </td>
+        </RowTemplate>
+    </DataGridComponent>
+
+
+</div>
+
+
+
+@code {
+
+    private List<CbBank> Banks;
+    private List<CbBank> BankView = new List<CbBank>();
+    private List<RekeningView> RekKoran = new List<RekeningView>();
+
+    public string kurs { get; set; } = "";
+    private string kodeBank { get; set; } = "";
+
+    private DateTime TglStart = DateTime.Now;
+    private DateTime TglEnd = DateTime.Now;
+
+    public bool DeleteDialogOpen { get; set; }
+    public bool NullDialogOpen { get; set; }
+    public bool SearchOpen { get; set; }
+
+
+    public bool asChecked { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        LoadGet();
+
+    }
+
+    private void LoadGet()
+    {
+        Banks = cashBank.GetBank();
+    }
+
+
+
+
+    //private void OpenCetak(DateTime Tanggal1, DateTime Tanggal2, string KodeBank)
+    //{
+    //    RekKoran = cashBank.CetakMutasi(Tanggal1, Tanggal2, KodeBank);
+    //    SearchOpen = !SearchOpen;
+    //}
+
+
+    private void OnKurs(ChangeEventArgs args)
+    {
+        kurs = (from e in Banks where e.KodeBank == args.Value.ToString() select e.Kurs).FirstOrDefault();
+    }
+
+
+    private void HandleValidSubmit()
+    {
+        //Transh.Kurs = kurs;
+        //var newEdit = service.AddTransH(Transh);
+        //if (newEdit != null)
+        //{
+        //    var id = newEdit.CbTransHId.ToString().Trim();
+        //    //  navigationmanager.NavigateTo("/PrintBuktiBayar/{id", false);
+        //    //  navigationmanager.NavigateTo("/ModuleBank/TransBank", false);
+        //    navigationmanager.NavigateTo($"/PrintBuktiBayar/{id}");
+
+        RekKoran = cashBank.CetakMutasi(TglStart, TglEnd, kodeBank);
+    }
+
+
+}
+}
