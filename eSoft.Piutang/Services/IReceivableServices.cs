@@ -22,20 +22,22 @@ namespace eSoft.Piutang.Services
         bool AddAkunSet(ArAcctView codeview);
         Task<bool> EditAkunSet(ArAcctView codeview);
         Task<bool> DelAkunSet(int codeview);
-        Task<List<ArDist>> GetDist();
+        bool CekDistCode(string distcode);
+        List<ArDist> GetDist();
         ArDist GetDistId(int id);
-        Task<bool> AddDist(ArDistView codeview);
+        bool AddDist(ArDistView codeview);
         Task<bool> EditDist(ArDistView codeview);
         Task<bool> DelDist(int codeview);
 
-        Task<ArTransH> GetTrans(int id);
-        Task<List<ArTransH>> GetTransH();
-        Task<List<ArTransH>> Get3TransH();
-        Task<List<ArTransD>> GetTransD();
-        Task<ArTransH> AddTransH(ArTransHView transH);
-        Task<ArTransH> EditTransH(ArTransHView transH);
+        ArTransH GetTrans(int id);
+        List<ArTransH> GetTransH();
+        List<ArTransH> Get3TransH();
+        List<ArTransD> GetTransD();
+        ArTransH AddTransH(ArTransHView transH);
+        ArTransH EditTransH(ArTransHView transH);
         Task<bool> DelTransH(int id);
         ArPiutng GetPiutang(string bukti);
+        bool CekAlreadyPayment(string dokumen);
 
     }
 }

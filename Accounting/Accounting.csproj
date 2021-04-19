@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Components\ModalDetailCashBankComponent.razor" />
+    <Content Remove="Components\ModalDetailPiutangComponent.razor" />
     <Content Remove="Components\RadioButtonComponent.razor" />
   </ItemGroup>
 
@@ -35,8 +37,8 @@
   <ItemGroup>
     <Folder Include="Pages\ModuleBank\CashBank\" />
     <Folder Include="Pages\ModuleBank\SrcCode\" />
+    <Folder Include="Pages\ModuleInventory\Inventory\" />
     <Folder Include="Pages\ModuleLedger\Account\" />
-    <Folder Include="Pages\ModuleInventory\" />
   </ItemGroup>
 
 </Project>

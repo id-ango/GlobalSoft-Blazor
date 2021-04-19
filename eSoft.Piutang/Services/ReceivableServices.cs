@@ -239,9 +239,21 @@ namespace eSoft.Piutang.Services
 
         #region ArDist Class
 
-        public async Task<List<ArDist>> GetDist()
+        public bool CekDistCode(string distcode)
         {
-            return await _context.ArDists.ToListAsync();
+            string test = distcode.ToUpper();
+            var cekFirst = _context.ArDists.Where(x => x.DistCode == test).ToList();
+            if (cekFirst.Count == 0)
+            {
+                return false;
+            }
+            return true;
+        }
+
+
+        public List<ArDist> GetDist()
+        {
+            return _context.ArDists.ToList();
         }
 
         public ArDist GetDistId(int id)
@@ -249,7 +261,7 @@ namespace eSoft.Piutang.Services
             return _context.ArDists.Where(x => x.ArDistId == id).FirstOrDefault();
         }
 
-        public async Task<bool> AddDist(ArDistView codeview)
+        public bool AddDist(ArDistView codeview)
         {
             string test = codeview.DistCode.ToUpper();
             var cekFirst = _context.ArDists.Where(x => x.DistCode == test).ToList();
@@ -263,7 +275,7 @@ namespace eSoft.Piutang.Services
 
                 };
                 _context.ArDists.Add(AcctCode);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return true;
             }
             else
@@ -317,9 +329,9 @@ namespace eSoft.Piutang.Services
 
         #region Transaksi Piutang Class
 
-        public async Task<ArTransH> GetTrans(int id)
+        public ArTransH GetTrans(int id)
         {
-            return await _context.ArTransHs.Include(p => p.ArTransDs).Where(x => x.ArTransHId == id).FirstOrDefaultAsync();
+            return _context.ArTransHs.Include(p => p.ArTransDs).Where(x => x.ArTransHId == id).FirstOrDefault();
         }
 
         public ArPiutng GetPiutang(string bukti)
@@ -327,12 +339,12 @@ namespace eSoft.Piutang.Services
             return _context.ArPiutngs.Where(x => x.Dokumen == bukti).FirstOrDefault();
 
         }
-        public async Task<List<ArTransH>> GetTransH()
+        public List<ArTransH> GetTransH()
         {
             List<ArTransH> arTrans = new List<ArTransH>();
             try
             {
-                arTrans = await _context.ArTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Kode == "11").ToListAsync();
+                arTrans = _context.ArTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Kode == "11").ToList();
                 foreach (var item in arTrans)
                 {
                     item.NamaCust = (from e in _context.ArCusts where e.ArCustId == item.ArCustId select e.NamaCust).FirstOrDefault();
@@ -349,15 +361,27 @@ namespace eSoft.Piutang.Services
 
         }
 
-        public async Task<List<ArTransH>> Get3TransH()
+        public List<ArTransH> Get3TransH()
         {
             List<ArTransH> arTrans = new List<ArTransH>();
 
-            arTrans = await _context.ArTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Tanggal > DateTime.Today.AddMonths(-3) && x.Kode == "11").ToListAsync();
-            foreach (var item in arTrans)
-            {
-                item.NamaCust = (from e in _context.ArCusts where e.ArCustId == item.ArCustId select e.NamaCust).FirstOrDefault();
-            }
+            //  arTrans = _context.ArTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Tanggal > DateTime.Today.AddMonths(-3) && x.Kode == "11").ToList();
+            arTrans = _context.ArTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Tanggal > DateTime.Today.AddMonths(-3) && x.Kode == "11")
+                .Select(x => new ArTransH
+                {
+                    ArTransHId = x.ArTransHId,
+                    Bukti = x.Bukti,
+                    Tanggal = x.Tanggal,
+                    Keterangan = x.Keterangan,
+                    Customer = x.Customer,
+                    NamaCust = (from e in _context.ArCusts where e.Customer == x.Customer select e.NamaCust).SingleOrDefault(),
+                    Jumlah = x.Jumlah,
+                })
+                .ToList();
+            //foreach (var item in arTrans)
+            //{
+            //    item.NamaCust = (from e in _context.ArCusts where e.ArCustId == item.ArCustId select e.NamaCust).FirstOrDefault();
+            //}
 
             return arTrans;
 
@@ -366,12 +390,12 @@ namespace eSoft.Piutang.Services
 
         }
 
-        public async Task<List<ArTransD>> GetTransD()
+        public List<ArTransD> GetTransD()
         {
-            return await _context.ArTransDs.ToListAsync();
+            return _context.ArTransDs.ToList();
         }
 
-        public async Task<ArTransH> AddTransH(ArTransHView trans)
+        public ArTransH AddTransH(ArTransHView trans)
         {
             //string test = codeview.SrcCode.ToUpper();
             //var cekFirst = _context.CbSrcCodes.Where(x => x.SrcCode == test).ToList();
@@ -442,16 +466,16 @@ namespace eSoft.Piutang.Services
             _context.ArCusts.Update(customer);
             _context.ArTransHs.Add(transH);
             _context.ArPiutngs.Add(transaksi);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
 
             var TempTrans = GetTransDoc(transH.Bukti);
 
-            return await TempTrans;
+            return TempTrans;
 
 
         }
 
-        public async Task<ArTransH> EditTransH(ArTransHView trans)
+        public ArTransH EditTransH(ArTransHView trans)
         {
             //string test = codeview.SrcCode.ToUpper();
             //var cekFirst = _context.CbSrcCodes.Where(x => x.SrcCode == test).ToList();
@@ -537,11 +561,11 @@ namespace eSoft.Piutang.Services
 
                 _context.ArTransHs.Add(transH);
                 _context.ArPiutngs.Add(transaksi);
-                await _context.SaveChangesAsync();
+                 _context.SaveChanges();
 
                 var TempTrans = GetTransDoc(transH.Bukti);
 
-                return await TempTrans;
+                return TempTrans;
 
             }
             else
@@ -555,6 +579,17 @@ namespace eSoft.Piutang.Services
 
         }
 
+        public bool CekAlreadyPayment(string dokumen)
+        {
+            var cekFirst = _context.ArPiutngs.Where(x => x.Dokumen == dokumen).FirstOrDefault();
+
+            if (cekFirst.SldSisa != cekFirst.Sisa)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public async Task<bool> DelTransH(int id)
         {
             try
@@ -566,7 +601,7 @@ namespace eSoft.Piutang.Services
                     var customer = (from e in _context.ArCusts where e.Customer == ExistingTrans.Customer select e).FirstOrDefault();
 
                     customer.Piutang -= ExistingTrans.Jumlah;
-
+                    
 
                     _context.ArCusts.Update(customer);
                     _context.ArTransHs.Remove(ExistingTrans);
@@ -584,9 +619,9 @@ namespace eSoft.Piutang.Services
 
         }
 
-        public async Task<ArTransH> GetTransDoc(string docno)
+        public ArTransH GetTransDoc(string docno)
         {
-            return await _context.ArTransHs.Include(p => p.ArTransDs).Where(x => x.Bukti == docno).FirstOrDefaultAsync();
+            return _context.ArTransHs.Include(p => p.ArTransDs).Where(x => x.Bukti == docno).FirstOrDefault();
         }
 
         #endregion Transaksi Piutang Class
