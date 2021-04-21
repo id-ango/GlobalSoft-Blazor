@@ -39,6 +39,7 @@
     <Folder Include="Pages\ModuleBank\SrcCode\" />
     <Folder Include="Pages\ModuleInventory\Inventory\" />
     <Folder Include="Pages\ModuleLedger\Account\" />
+    <Folder Include="Pages\ModuleHutang\" />
   </ItemGroup>
 
 </Project>

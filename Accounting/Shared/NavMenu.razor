@@ -13,9 +13,47 @@
             </NavLink>
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
+            <NavLink class="nav-link" href="#" @onclick="(()=>expandHutang = !expandHutang)">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Hutang
             </NavLink>
+            @if (expandHutang)
+            {
+                <ul class="nav flex-column">
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ModuleHutang/TransHutang">
+                            <span aria-hidden="true"></span> Transaksi Hutang
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ModuleHutang/TransApCa">
+                            <span aria-hidden="true"></span> Pembayaran
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ModuleHutang/TransApDp">
+                            <span aria-hidden="true"></span> Pembayaran Dimuka
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ModuleHutang/SetupSupplier">
+                            <span aria-hidden="true"></span> Setup Vendor
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ModuleHutang/SetupAcctSet">
+                            <span aria-hidden="true"></span> Setup Account Set
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ModuleHutang/SetupDistCode">
+                            <span aria-hidden="true"></span> Setup Distribution
+                        </NavLink>
+                    </li>
+
+                </ul>
+
+
+            }
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="#" @onclick="(()=>expandPiutang = !expandPiutang)">
@@ -29,8 +67,16 @@
                     <span aria-hidden="true"></span> Transaksi Piutang
                 </NavLink>
             </li>
-
-
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="ModulePiutang/TransArCa">
+                    <span aria-hidden="true"></span> Pembayaran
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="ModulePiutang/TransArDp">
+                    <span aria-hidden="true"></span> Pembayaran Dimuka
+                </NavLink>
+            </li>
             <li class="nav-item px-3">
                 <NavLink class="nav-link" href="ModulePiutang/SetupCustomer">
                     <span aria-hidden="true"></span> Setup Customer
@@ -124,7 +170,7 @@
     private bool expandCashBank;
     private bool expandLedger;
     private bool expandPiutang;
-
+    private bool expandHutang;
     //
 
 

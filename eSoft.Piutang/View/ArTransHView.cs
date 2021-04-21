@@ -58,7 +58,7 @@ namespace eSoft.Piutang.View
         {
             get
             {
-                return JumBayar - ArTransDs.Sum(p => p.Bayar + p.Discount);
+                return JumBayar - ArTransDs.Sum(p => p.Bayar );
             }
         }
 

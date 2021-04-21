@@ -834,7 +834,7 @@ namespace eSoft.CashBank.Services
 
 
             var Rincian = _context.CbTransHs
-                .Where(x => x.KodeBank == kodeBank && (Tanggal1 <= x.Tanggal && x.Tanggal <= Tanggal2))
+                .Where(x => x.KodeBank == kodeBank && (Tanggal1.Date <= x.Tanggal.Date && x.Tanggal.Date <= Tanggal2.Date))
                .Select(x => new RekeningView { KodeBank = x.KodeBank,
                    DocNo = x.DocNo,
                    Tanggal = x.Tanggal,
