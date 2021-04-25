@@ -1,19 +1,19 @@
-﻿@page "/ModulePiutang/TransArCa"
-@using eSoft.Piutang.Model
-@using eSoft.Piutang.Services
+﻿@page "/ModuleHutang/TransApCa"
+@using eSoft.Hutang.Model
+@using eSoft.Hutang.Services
 
-@inject IPaymentArServices service
-@inject IReceivableServices cashBank
+@inject IPaymentApServices service
+@inject IPayableServices cashBank
 @implements IDisposable
 @inject NavigationManager navigationmanager
 
 <div class="container">
-    <h1>Transaksi Bayar Piutang</h1>
+    <h1>Transaksi Bayar Hutang</h1>
 </div>
 
 
 <div class="container">
-    <NavLink href="/ModulePiutang/AddTransArPy" class="btn btn-primary">Add</NavLink>
+    <NavLink href="/ModuleHutang/AddTransApPy" class="btn btn-primary">Add</NavLink>
 </div>
 
 <br />
@@ -21,11 +21,11 @@
 
 
 <div class="container">
-    <DataGridComponent Items="TransHeader" Context="transaksi" GetFilterableText="@(item =>$"{item.Bukti} {item.Keterangan} {item.Customer}")">
+    <DataGridComponent Items="TransHeader" Context="transaksi" GetFilterableText="@(item =>$"{item.Bukti} {item.Keterangan} {item.NamaSup}")">
         <TableHeader>
             <th scope="col">Doc #</th>
             <th scope="col">Bank</th>
-            <th scope="col">Customer</th>
+            <th scope="col">Supplier</th>
             <th scope="col">Tanggal</th>
             <th scope="col">Keterangan</th>
             <th scope="col">Saldo</th>
@@ -34,14 +34,14 @@
         <RowTemplate>
             <td>@transaksi.Bukti</td>
             <td>@transaksi.KdBank</td>
-            <td>@transaksi.NamaCust</td>
+            <td>@transaksi.NamaSup</td>
             <td>@transaksi.Tanggal.ToShortDateString()</td>
             <td>@transaksi.Keterangan</td>
             <td>@transaksi.Jumlah.ToString("N")</td>
             <td>
                 @*<button @onclick="() => OpenRubah(transaksi.ArTransHId)" class="btn btn-success">Edit</button>*@
                 <button @onclick="() => OpenDeleteDialog(transaksi)" class="btn btn-danger">Delete</button>
-                <button @onclick="() => OpenPrint(transaksi.ArTransHId)" class="btn btn-danger">Print</button>
+                <button @onclick="() => OpenPrint(transaksi.ApTransHId)" class="btn btn-danger">Print</button>
             </td>
         </RowTemplate>
     </DataGridComponent>
@@ -56,16 +56,16 @@
 
 @if (NullDialogOpen)
 {
-    <ModalDialogComponent Title="MESSAGE" Text="Transaction Already Posting" TombolSave="false" OnClose="OnDeleteNullClose"></ModalDialogComponent>
+    <ModalDialogComponent Title="MESSAGE" Text="Transaction Already Has Payment" TombolSave="false" OnClose="OnDeleteNullClose"></ModalDialogComponent>
 }
 
 
 
 @code {
 
-    private List<ArTransH> TransHeader;
-    private List<ArTransD> TransDetail;
-    private ArTransH _bankToDelete;
+    private List<ApTransH> TransHeader;
+    private List<ApTransD> TransDetail;
+    private ApTransH _bankToDelete;
 
     public bool DeleteDialogOpen { get; set; }
     public bool NullDialogOpen { get; set; }
@@ -88,7 +88,7 @@
     {
         if (accepted)
         {
-            await service.DelTransH(_bankToDelete.ArTransHId);
+            await service.DelTransH(_bankToDelete.ApTransHId);
             _bankToDelete = null;
         }
 
@@ -113,9 +113,9 @@
         StateHasChanged();
 
     }
-    private void OpenDeleteDialog(ArTransH bank)
+    private void OpenDeleteDialog(ApTransH bank)
     {
-        var cekSaldo = service.CekAlreadyPosting(bank.Bukti);
+        bool cekSaldo = service.CekAlreadyPosting(bank.Bukti);
 
         if (cekSaldo)
         {
@@ -132,7 +132,7 @@
 
     private void OpenRubah(int xKdBank)
     {
-        navigationmanager.NavigateTo($"/ModulePiutang/EditTransPiutang/{xKdBank}");
+        navigationmanager.NavigateTo($"/ModuleHutang/EditTransHutang/{xKdBank}");
     }
 
     private void OpenPrint(int xKdBank)

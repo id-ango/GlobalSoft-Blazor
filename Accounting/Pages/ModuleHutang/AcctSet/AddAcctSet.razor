@@ -1,15 +1,18 @@
-﻿@page "/ModulePiutang/EditAcctSet/{Id:int}"
-@using eSoft.Piutang.Model
-@using eSoft.Piutang.View
-@using eSoft.Piutang.Services
+﻿@page "/ModuleHutang/AddAcctSet"
+@using eSoft.Hutang.Model
+@using eSoft.Hutang.View
+@using eSoft.Hutang.Services
 @using eSoft.Ledger.Model
 @using eSoft.Ledger.Services
 
-@inject IReceivableServices service
+@inject IPayableServices service
 @inject ILedgerServices serviceGl
 @inject NavigationManager navigationmanager
 
-<h3>Edit Source Code</h3>
+
+<div class="top-row px-4 " style="z-index:5">
+    <h3>Add Source Code</h3>
+</div>
 
 <div class="content px-4">
     <EditForm Model="@bank" OnValidSubmit="@HandleValidSubmit">
@@ -18,7 +21,7 @@
         <div class="form-group">
             <label>
                 Source Code :
-                <InputText id="codeBank" class="form-control" @bind-Value="bank.AcctSet" style="text-transform:uppercase" @onfocusout="cekKode" disabled="disabled" />
+                <InputText id="codeBank" class="form-control" @bind-Value="bank.AcctSet" style="text-transform:uppercase" @onfocusout="cekKode" />
             </label>
         </div>
         <div class="form-group">
@@ -140,7 +143,7 @@
             <td>@cbBank.GlNama</td>
 
             <td>
-
+               
                 <button @onclick="() => BtnChoose(cbBank.GlAcct,i)" class="btn btn-success">Choose</button>
 
             </td>
@@ -150,124 +153,103 @@
 
 }
 
-@code {
-    [Parameter]
-    public int Id { get; set; }
+                @code {
+                    ApAcctView bank = new ApAcctView();
+                    public string Testing { get; set; }
+                    private bool DialogOpen { get; set; }
+                    private List<GlAccount> GlAccounts;
+                    public bool SearchOpen { get; set; }
+                    public int i = 1;
+                    protected override void OnInitialized()
+                    {
+                        base.OnInitialized();
+                        bank.AcctSet = "";
+                        LoadGlAccounts();
+                    }
 
-    ArAcctView bank = new ArAcctView();
+                    private void cekKode()
+                    {
+                        Testing = bank.AcctSet;
+                        DialogOpen = service.CekAcctSet(Testing);
+                        if (DialogOpen)
+                        {
+                            bank.AcctSet = "";
+                        }
+                        StateHasChanged();
+                    }
 
-    ArAcct Bank = new ArAcct();
-    public string Testing { get; set; }
-    private bool DialogOpen { get; set; }
-    private List<GlAccount> GlAccounts;
-    public bool SearchOpen { get; set; }
-    public int i = 1;
+                    private void OnDialogClose(bool accepted)
+                    {
 
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        LoadBank();
-        LoadGlAccounts();
-    }
+                        DialogOpen = false;
+                        StateHasChanged();
 
-    void LoadBank()
-    {
-        Bank = service.GetArAkunSetId(Id);
-        bank.ArAcctId = Bank.ArAcctId;
-        bank.AcctSet = Bank.AcctSet;
-        bank.Description = Bank.Description;
-        bank.Acct1 = Bank.Acct1;
-        bank.Acct2 = Bank.Acct2;
-        bank.Acct3 = Bank.Acct3;
-        bank.Acct4 = Bank.Acct4;
-        bank.Acct5 = Bank.Acct5;
-        bank.Acct6 = Bank.Acct6;
-
-    }
-
-    private void cekKode()
-    {
-        Testing = bank.AcctSet;
-        DialogOpen = service.CekAcctSet(Testing);
-        if (DialogOpen)
-        {
-            bank.AcctSet = "";
-        }
-        StateHasChanged();
-    }
-
-    private void OnDialogClose(bool accepted)
-    {
-
-        DialogOpen = false;
-        StateHasChanged();
-
-    }
-
-    private async Task HandleValidSubmit()
-    {
-        var newEdit = await service.EditAkunSet(bank);
-        if (newEdit)
-        {
+                    }
 
 
-        }
 
-        navigationmanager.NavigateTo("/ModulePiutang/SetupAcctSet", false);
+                    private void HandleValidSubmit()
+                    {
+                        var newEdit = service.AddAkunSet(bank);
+                        if (newEdit)
+                        {
 
-    }
 
-    void LoadGlAccounts()
-    {
-        GlAccounts = serviceGl.GetGlAccount();
-    }
+                        }
 
-    private void BtnChoose(string textSearch, int i)
-    {
-        if (!string.IsNullOrEmpty(textSearch))
-        {
-            switch (i)
-            {
-                case 1:
-                    bank.Acct1 = textSearch;
-                    break;
-                case 2:
-                    bank.Acct2 = textSearch;
-                    break;
-                case 3:
-                    bank.Acct3 = textSearch;
-                    break;
-                case 4:
-                    bank.Acct4 = textSearch;
-                    break;
-                case 5:
-                    bank.Acct5 = textSearch;
-                    break;
-                case 6:
-                    bank.Acct6 = textSearch;
-                    break;
-            }
+                        navigationmanager.NavigateTo("/ModuleHutang/SetupAcctSet", false);
 
-        }
+                    }
 
-        SearchOpen = false;
-        StateHasChanged();
-    }
+                    void LoadGlAccounts()
+                    {
+                        GlAccounts = serviceGl.GetGlAccount();
+                    }
 
-    private void openSearch(int i)
-    {
-        SearchOpen = !SearchOpen;
-        this.i = i;
+                    private void openSearch(int i)
+                    {
+                        SearchOpen = !SearchOpen;
+                        this.i = i;
 
-    }
+                    }
 
-    private void OnSearchClose(bool accepted)
-    {
+                    private void BtnChoose(string textSearch, int i)
+                    {
+                        if (!string.IsNullOrEmpty(textSearch))
+                        {
+                            switch (i)
+                            {
+                                case 1:
+                                    bank.Acct1 = textSearch;
+                                    break;
+                                case 2:
+                                    bank.Acct2 = textSearch;
+                                    break;
+                                case 3:
+                                    bank.Acct3 = textSearch;
+                                    break;
+                                case 4:
+                                    bank.Acct4 = textSearch;
+                                    break;
+                                case 5:
+                                    bank.Acct5 = textSearch;
+                                    break;
+                                case 6:
+                                    bank.Acct6 = textSearch;
+                                    break;
+                            }
 
-        SearchOpen = false;
-        StateHasChanged();
+                        }
 
-    }
+                        SearchOpen = false;
+                        StateHasChanged();
+                    }
+
+                    private void OnSearchClose(bool accepted)
+                    {
+
+                        SearchOpen = false;
+                        StateHasChanged();
+
+                    }
 }
-
-

@@ -13,12 +13,18 @@ using System.Threading.Tasks;
 
 using eSoft.CashBank.Services;
 using eSoft.CashBank.Data;
+
 using eSoft.Ledger.Services;
 using eSoft.Ledger.Data;
 
-using Microsoft.EntityFrameworkCore;
+using eSoft.Hutang.Services;
+using eSoft.Hutang.Data;
+
 using eSoft.Piutang.Data;
 using eSoft.Piutang.Services;
+
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Accounting
 {
@@ -44,17 +50,22 @@ namespace Accounting
             services.AddDbContext<DbContextPiutang>(options =>
                   options.UseSqlServer(
                       Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Accounting")));
-
+            services.AddDbContext<DbContextHutang>(options =>
+                 options.UseSqlServer(
+                     Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Accounting")));
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
             services.AddTransient<ICashBankServices, CashBankServices>();
-          //  services.AddTransient<SrcCodeServices>();
+         
             services.AddTransient<ILedgerServices,LedgerServices>();
             services.AddTransient<IReceivableServices, ReceivableServices>();
             services.AddTransient<IPaymentArServices, PaymentArServices>();
             services.AddTransient<IPaymentArDpServices, PaymentArDpServices>();
+            services.AddTransient<IPayableServices, PayableServices>();
+            services.AddTransient<IPaymentApServices, PaymentApServices>();
+            services.AddTransient<IPaymentApDpServices, PaymentApDpServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

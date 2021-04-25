@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -6,13 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eSoft.CashBank\eSoft.CashBank.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data\" />
-    <Folder Include="Model\" />
-    <Folder Include="View\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

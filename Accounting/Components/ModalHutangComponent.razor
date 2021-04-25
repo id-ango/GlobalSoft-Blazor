@@ -1,5 +1,5 @@
-﻿@using eSoft.Piutang.Model
-@using eSoft.Piutang.View
+﻿@using eSoft.Hutang.Model
+@using eSoft.Hutang.View
 
 
 <div class="modal fade show" role="dialog" style="display:block">
@@ -85,21 +85,21 @@
     public string Currency { get; set; }
 
     [Parameter]
-    public List<ArDist> SrcCode { get; set; }
+    public List<ApDist> SrcCode { get; set; }
 
     [Parameter]
     public EventCallback<bool> OnClose { get; set; }
 
     [Parameter]
-    public EventCallback<ArTransDView> OnDetail { get; set; }
+    public EventCallback<ApTransDView> OnDetail { get; set; }
 
     [Parameter]
-    public ArTransDView DetailRubah { get; set; }
+    public ApTransDView DetailRubah { get; set; }
 
     [Parameter]
     public bool isEdit { get; set; }
 
-    public ArTransDView Detail = new ArTransDView();
+    public ApTransDView Detail = new ApTransDView();
 
     public bool SearchOpen { get; set; }
 

@@ -1,11 +1,11 @@
-﻿@page "/ModulePiutang/EditAcctSet/{Id:int}"
-@using eSoft.Piutang.Model
-@using eSoft.Piutang.View
-@using eSoft.Piutang.Services
+﻿@page "/ModuleHutang/EditAcctSet/{Id:int}"
+@using eSoft.Hutang.Model
+@using eSoft.Hutang.View
+@using eSoft.Hutang.Services
 @using eSoft.Ledger.Model
 @using eSoft.Ledger.Services
 
-@inject IReceivableServices service
+@inject IPayableServices service
 @inject ILedgerServices serviceGl
 @inject NavigationManager navigationmanager
 
@@ -154,9 +154,9 @@
     [Parameter]
     public int Id { get; set; }
 
-    ArAcctView bank = new ArAcctView();
+    ApAcctView bank = new ApAcctView();
 
-    ArAcct Bank = new ArAcct();
+    ApAcct Bank = new ApAcct();
     public string Testing { get; set; }
     private bool DialogOpen { get; set; }
     private List<GlAccount> GlAccounts;
@@ -172,8 +172,8 @@
 
     void LoadBank()
     {
-        Bank = service.GetArAkunSetId(Id);
-        bank.ArAcctId = Bank.ArAcctId;
+        Bank = service.GetApAkunSetId(Id);
+        bank.ApAcctId = Bank.ApAcctId;
         bank.AcctSet = Bank.AcctSet;
         bank.Description = Bank.Description;
         bank.Acct1 = Bank.Acct1;
@@ -213,7 +213,7 @@
 
         }
 
-        navigationmanager.NavigateTo("/ModulePiutang/SetupAcctSet", false);
+        navigationmanager.NavigateTo("/ModuleHutang/SetupAcctSet", false);
 
     }
 

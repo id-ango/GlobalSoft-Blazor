@@ -3,99 +3,99 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using eSoft.Piutang.Data;
-using eSoft.Piutang.Model;
-using eSoft.Piutang.View;
+using eSoft.Hutang.Data;
+using eSoft.Hutang.Model;
+using eSoft.Hutang.View;
 using eSoft.CashBank.Data;
 using eSoft.CashBank.Model;
 using eSoft.CashBank.View;
 using Microsoft.EntityFrameworkCore;
 
-namespace eSoft.Piutang.Services
+namespace eSoft.Hutang.Services
 {
-    public class PaymentArServices: IPaymentArServices
+    public class PaymentApServices : IPaymentApServices
     {
-        private readonly DbContextPiutang _context;
+        private readonly DbContextHutang _context;
         private readonly DbContextBank _contextBank;
 
-        public PaymentArServices(DbContextPiutang context, DbContextBank contextBank)
+        public PaymentApServices(DbContextHutang context, DbContextBank contextBank)
         {
             _context = context;
             _contextBank = contextBank;
         }
 
-        #region Transaksi Piutang Pembayaran Class
+        #region Transaksi Hutang Pembayaran Class
 
-        public ArTransH GetTrans(int id)
+        public ApTransH GetTrans(int id)
         {
-            return _context.ArTransHs.Include(p => p.ArTransDs).Where(x => x.ArTransHId == id).FirstOrDefault();
+            return _context.ApTransHs.Include(p => p.ApTransDs).Where(x => x.ApTransHId == id).FirstOrDefault();
         }
 
-        public List<ArPiutng> GetPiutangSisa(string customer)
+        public List<ApHutang> GetHutangSisa(string Supplier)
         {
-            return _context.ArPiutngs.Where(x => x.Customer == customer && x.Sisa != 0).ToList();
+            return _context.ApHutangs.Where(x => x.Supplier == Supplier && x.Sisa != 0).ToList();
 
         }
-        public List<ArTransH> GetTransH()
+        public List<ApTransH> GetTransH()
         {
-            List<ArTransH> arTrans = new List<ArTransH>();
+            List<ApTransH> ApTrans = new List<ApTransH>();
             try
             {
-                arTrans = _context.ArTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Kode == "14").ToList();
-                foreach (var item in arTrans)
+                ApTrans = _context.ApTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Kode == "24").ToList();
+                foreach (var item in ApTrans)
                 {
-                    item.NamaCust = (from e in _context.ArCusts where e.Customer == item.Customer select e.NamaCust).FirstOrDefault();
+                    item.NamaSup = (from e in _context.ApSuppls where e.ApSupplId == item.ApSupplId select e.NamaSup).FirstOrDefault();
                 }
             }
             catch (Exception)
             {
                 throw;
             }
-            return arTrans;
+            return ApTrans;
             // return  _context.CbTransHs.Include(p =>p.CbTransDs).OrderByDescending(x =>x.Tanggal).ToListAsync();
-            //  return await _context.ArTransHs.OrderByDescending(x => x.Tanggal).ToListAsync();
-            //  return await _context.ArTransHs.ToListAsync();
+            //  return await _context.ApTransHs.OrderByDescending(x => x.Tanggal).ToListAsync();
+            //  return await _context.ApTransHs.ToListAsync();
 
         }
 
-        public List<ArTransH> Get3TransH()
+        public List<ApTransH> Get3TransH()
         {
-            List<ArTransH> arTrans = new List<ArTransH>();
+            List<ApTransH> ApTrans = new List<ApTransH>();
 
-            arTrans = _context.ArTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Tanggal > DateTime.Today.AddMonths(-3) && x.Kode == "14").ToList();
-            foreach (var item in arTrans)
+            ApTrans = _context.ApTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Tanggal > DateTime.Today.AddMonths(-3) && x.Kode == "24").ToList();
+            foreach (var item in ApTrans)
             {
-                item.NamaCust = (from e in _context.ArCusts where e.Customer == item.Customer select e.NamaCust).FirstOrDefault();
+                item.NamaSup = (from e in _context.ApSuppls where e.ApSupplId == item.ApSupplId select e.NamaSup).FirstOrDefault();
             }
 
-            return arTrans;
+            return ApTrans;
 
             // return  _context.CbTransHs.Include(p =>p.CbTransDs).OrderByDescending(x =>x.Tanggal).ToListAsync();
-            //   return _context.ArTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Tanggal > DateTime.Today.AddMonths(-3)).ToListAsync();
+            //   return _context.ApTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Tanggal > DateTime.Today.AddMonths(-3)).ToListAsync();
 
         }
 
-        public List<ArTransD> GetTransD()
+        public List<ApTransD> GetTransD()
         {
-            return _context.ArTransDs.Where(x => x.Kode == "14").ToList();
+            return _context.ApTransDs.Where(x => x.Kode == "24").ToList();
         }
 
-        public ArTransH AddTransH(ArTransHView trans)
+        public ApTransH AddTransH(ApTransHView trans)
         {
             //string test = codeview.SrcCode.ToUpper();
             //var cekFirst = _context.CbSrcCodes.Where(x => x.SrcCode == test).ToList();
-            string KdSrc = "AR";
+            string KdSrc = "AP";
 
-            ArTransH transH = new ArTransH
+            ApTransH transH = new ApTransH
             {
                 Bukti = GetNumber(),
-                Customer = trans.Customer.ToUpper(),
+                Supplier = trans.Supplier.ToUpper(),
                 Tanggal = trans.Tanggal,
                 Keterangan = trans.Keterangan,
                 Jumlah = trans.JumBayar,
                 Discount = trans.JumDiskon,
                 Unapplied = trans.UpdateUnapplied,
-                Piutang = trans.JumPiutang,
+                Hutang = trans.JumHutang,
                 KdBank = trans.KdBank,
                 PPn = 0,
                 PPh = 0,
@@ -104,21 +104,21 @@ namespace eSoft.Piutang.Services
                 Bruto = 0,
                 Netto = 0,
                 Pajak = false,
-                Kode = "14",
-                ArCustId = trans.ArCustId,
+                Kode = "24",
+                ApSupplId = trans.ApSupplId,
 
-                ArTransDs = new List<ArTransD>()
+                ApTransDs = new List<ApTransD>()
             };
 
-            List<ArPiutng> transaksi = new List<ArPiutng>();
-            transaksi = _context.ArPiutngs.Where(x => x.Customer == trans.Customer).ToList();
+            List<ApHutang> transaksi = new List<ApHutang>();
+            transaksi = _context.ApHutangs.Where(x => x.Supplier == trans.Supplier).ToList();
 
-            foreach (var item in trans.ArTransDs)
+            foreach (var item in trans.ApTransDs)
             {
-                transH.ArTransDs.Add(new ArTransD()
+                transH.ApTransDs.Add(new ApTransD()
                 {
                     Jumlah = item.Jumlah,
-                    Kode = "14",
+                    Kode = "24",
                     KodeTran = item.KodeTran,
                     Bukti = transH.Bukti,
                     Lpb = item.Lpb,
@@ -130,31 +130,41 @@ namespace eSoft.Piutang.Services
 
                 });
 
+
+
                 transaksi.Where(x => x.Dokumen == item.Lpb).ToList()
                     .ForEach(s =>
                     {
                         s.Bayar += item.Bayar + item.Discount;
                         s.Discount += item.Discount;
                         s.Sisa -= item.Bayar + item.Discount;
+                        if (s.Bayar + s.Discount != 0)
+                        {
+                          //  _context.IrTransHs.Where(x => x.NoLpb == item.Lpb).FirstOrDefault().Cek = "3";
+                        }
+                        else
+                        {
+                         //   _context.IrTransHs.Where(x => x.NoLpb == item.Lpb).FirstOrDefault().Cek = "1";
+                        }
                     });
 
             }
-            transH.ArTransDs.RemoveAll(x => x.Bayar == 0 && x.Discount == 0);
+            transH.ApTransDs.RemoveAll(x => x.Bayar == 0 && x.Discount == 0);
             transaksi.RemoveAll(x => x.Bayar == 0 && x.Discount == 0);
 
-            var customer = (from e in _context.ArCusts where e.Customer == trans.Customer select e).FirstOrDefault();
-            customer.Piutang -= trans.JumPiutang;
+            var Supplier = (from e in _context.ApSuppls where e.Supplier == trans.Supplier select e).FirstOrDefault();
+            Supplier.Hutang -= trans.JumHutang;
 
-            ArPiutng Newtransaksi = new ArPiutng
+            ApHutang Newtransaksi = new ApHutang
             {
                 Kode = "CA",
                 Dokumen = transH.Bukti,
                 Tanggal = transH.Tanggal,
-                Customer = transH.Customer,
+                Supplier = transH.Supplier,
                 Keterangan = transH.Keterangan,
-                KodeTran = "14",
-                Jumlah = -1 * trans.JumPiutang,
-                SldSisa = -1 * trans.JumPiutang,
+                KodeTran = "24",
+                Jumlah = -1 * trans.JumHutang,
+                SldSisa = -1 * trans.JumHutang,
                 Bayar = -1 * trans.JumBayar,
                 Discount = 0,
                 UnApplied = -1 * trans.UpdateUnapplied,
@@ -168,11 +178,11 @@ namespace eSoft.Piutang.Services
                 SldUnpl = 0
             };
 
-            _context.ArCusts.Update(customer);
-            _context.ArTransHs.Add(transH);
-            _context.ArPiutngs.UpdateRange(transaksi);
-            _context.ArPiutngs.Add(Newtransaksi);
-
+            _context.ApSuppls.Update(Supplier);
+            _context.ApTransHs.Add(transH);
+            _context.ApHutangs.UpdateRange(transaksi);
+            _context.ApHutangs.Add(Newtransaksi);
+            _context.SaveChanges();
 
 
 
@@ -180,7 +190,7 @@ namespace eSoft.Piutang.Services
 
             if (cekBukti == null)
             {
-                if (!string.IsNullOrEmpty(transH.KdBank) )
+                if (!string.IsNullOrEmpty(transH.KdBank))
                 {
                     CbTransH transBank = new CbTransH
                     {
@@ -188,38 +198,31 @@ namespace eSoft.Piutang.Services
                         KodeBank = trans.KdBank,
                         Tanggal = trans.Tanggal,
                         Keterangan = trans.Keterangan,
-                        Saldo = trans.JumBayar,
+                        Saldo = -1 * trans.JumBayar,
 
                         CbTransDs = new List<CbTransD>()
                     };
-                    foreach (var item in trans.ArTransDs)
+                    foreach (var item in trans.ApTransDs)
                     {
-                        if(item.Bayar != 0)
+                        transBank.CbTransDs.Add(new CbTransD()
                         {
-                            transBank.CbTransDs.Add(new CbTransD()
-                            {
+                            SrcCode = KdSrc,
+                            Keterangan = "Pembayaran Hutang" + trans.Supplier.ToUpper() + "," + Supplier.NamaSup,
+                            Bayar = item.Bayar,
+                            Jumlah = -1 * item.Bayar,
 
-                                SrcCode = KdSrc,
-                                Keterangan = "Pembayaran Piutang" + trans.Customer.ToUpper() + "," + customer.NamaCust,
-                                Terima = item.Bayar,
-                                Jumlah = item.Bayar,
-
-                            });
-                        }
-                        
+                        });
                     }
                     var bank = (from e in _contextBank.Banks where e.KodeBank == trans.KdBank select e).FirstOrDefault();
-                    bank.Saldo += trans.JumBayar;
+                    bank.Saldo -= trans.JumBayar;
 
                     _contextBank.Banks.Update(bank);
                     _contextBank.CbTransHs.Add(transBank);
 
-
+                    _contextBank.SaveChanges();
 
                 }
             }
-            _context.SaveChanges();
-            _contextBank.SaveChanges();
 
             var TempTrans = GetTransDoc(transH.Bukti);
 
@@ -234,16 +237,15 @@ namespace eSoft.Piutang.Services
         {
             try
             {
-                var ExistingTrans = _context.ArTransHs.Where(x => x.ArTransHId == id).FirstOrDefault();
-                var cekFirst = _context.ArPiutngs.Where(x => x.Dokumen == ExistingTrans.Bukti).FirstOrDefault();
+                var ExistingTrans = _context.ApTransHs.Where(x => x.ApTransHId == id).FirstOrDefault();
+                var cekFirst = _context.ApHutangs.Where(x => x.Dokumen == ExistingTrans.Bukti).FirstOrDefault();
 
-                List<ArPiutng> transaksi = new List<ArPiutng>();
-                transaksi = _context.ArPiutngs.Where(x => x.Customer == ExistingTrans.Customer).ToList();
-
+                List<ApHutang> transaksi = new List<ApHutang>();
+                transaksi = _context.ApHutangs.Where(x => x.Supplier == ExistingTrans.Supplier).ToList();
                 if (ExistingTrans != null)
                 {
 
-                    foreach (var item in ExistingTrans.ArTransDs)
+                    foreach (var item in ExistingTrans.ApTransDs)
                     {
                         transaksi.Where(x => x.Dokumen == item.Lpb).ToList()
                     .ForEach(s =>
@@ -251,17 +253,28 @@ namespace eSoft.Piutang.Services
                         s.Bayar -= item.Bayar + item.Discount;
                         s.Discount -= item.Discount;
                         s.Sisa += item.Bayar + item.Discount;
+
+                        if (s.Bayar + s.Discount != 0)
+                        {
+                          //  _context.IrTransHs.Where(x => x.NoLpb == item.Lpb).FirstOrDefault().Cek = "3";
+                        }
+                        else
+                        {
+                          //  _context.IrTransHs.Where(x => x.NoLpb == item.Lpb).FirstOrDefault().Cek = "1";
+                        }
                     });
                     }
                 }
-                var customer = (from e in _context.ArCusts where e.Customer == ExistingTrans.Customer select e).FirstOrDefault();
-
-                customer.Piutang += ExistingTrans.Piutang;
 
 
-                _context.ArCusts.Update(customer);
-                _context.ArTransHs.Remove(ExistingTrans);
-                _context.ArPiutngs.Remove(cekFirst);
+                var Supplier = (from e in _context.ApSuppls where e.Supplier == ExistingTrans.Supplier select e).FirstOrDefault();
+
+                Supplier.Hutang += ExistingTrans.Jumlah;
+
+
+                _context.ApSuppls.Update(Supplier);
+                _context.ApTransHs.Remove(ExistingTrans);
+                _context.ApHutangs.Remove(cekFirst);
                 await _context.SaveChangesAsync();
                 return true;
 
@@ -271,11 +284,13 @@ namespace eSoft.Piutang.Services
                 throw;
             }
 
+
+
         }
 
         public bool CekAlreadyPosting(string dokumen)
         {
-            var cekFirst = _context.ArTransHs.Where(x => x.Bukti == dokumen).FirstOrDefault();
+            var cekFirst = _context.ApTransHs.Where(x => x.Bukti == dokumen).FirstOrDefault();
 
             if (!string.IsNullOrEmpty(cekFirst.AcctSet))
             {
@@ -285,21 +300,21 @@ namespace eSoft.Piutang.Services
         }
 
 
-        public ArTransH GetTransDoc(string docno)
-        {
-            return _context.ArTransHs.Include(p => p.ArTransDs).Where(x => x.Bukti == docno).FirstOrDefault();
-        }
+        #endregion Transaksi Hutang Class
 
-        #endregion Transaksi Piutang Class
+        public ApTransH GetTransDoc(string docno)
+        {
+            return _context.ApTransHs.Include(p => p.ApTransDs).Where(x => x.Bukti == docno).FirstOrDefault();
+        }
 
         public string GetNumber()
         {
-            string kodeno = "BMY";
+            string kodeno = "BKY";
             string kodeurut = kodeno + '-';
             string thnbln = DateTime.Now.ToString("yyMM");
             string xbukti = kodeurut + thnbln.Substring(0, 2) + '3' + thnbln.Substring(2, 2) + '-';
             var maxvalue = "";
-            var maxlist = _context.ArTransHs.Where(x => x.Bukti.Substring(0, 10).Equals(xbukti)).ToList();
+            var maxlist = _context.ApTransHs.Where(x => x.Bukti.Substring(0, 10).Equals(xbukti)).ToList();
             if (maxlist != null)
             {
                 maxvalue = maxlist.Max(x => x.Bukti);
@@ -326,7 +341,4 @@ namespace eSoft.Piutang.Services
 
         }
     }
-
-
 }
-

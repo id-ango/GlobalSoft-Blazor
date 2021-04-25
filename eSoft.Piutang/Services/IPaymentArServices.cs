@@ -21,6 +21,7 @@ namespace eSoft.Piutang.Services
         List<ArTransD> GetTransD();
         ArTransH AddTransH(ArTransHView transH);
         Task<bool> DelTransH(int id);
+        bool CekAlreadyPosting(string dokumen);
         List<ArPiutng> GetPiutangSisa(string customer);
     }
 }
