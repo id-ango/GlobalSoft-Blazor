@@ -53,7 +53,7 @@ namespace eSoft.Piutang.Services
                 arTrans = _context.ArTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Kode == "13").ToList();
                 foreach (var item in arTrans)
                 {
-                    item.NamaCust = (from e in _context.ArCusts where e.ArCustId == item.ArCustId select e.NamaCust).FirstOrDefault();
+                    item.NamaCust = (from e in _context.ArCusts where e.Customer == item.Customer select e.NamaCust).FirstOrDefault();
                 }
             }
             catch (Exception)
@@ -74,7 +74,7 @@ namespace eSoft.Piutang.Services
             arTrans = _context.ArTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Tanggal > DateTime.Today.AddMonths(-3) && x.Kode == "13").ToList();
             foreach (var item in arTrans)
             {
-                item.NamaCust = (from e in _context.ArCusts where e.ArCustId == item.ArCustId select e.NamaCust).FirstOrDefault();
+                item.NamaCust = (from e in _context.ArCusts where e.Customer == item.Customer select e.NamaCust).FirstOrDefault();
             }
 
             return arTrans;
@@ -213,10 +213,10 @@ namespace eSoft.Piutang.Services
 
                     });
 
-                    var bank = (from e in _contextBank.Banks where e.KodeBank == trans.KdBank select e).FirstOrDefault();
+                    var bank = (from e in _contextBank.CbBanks where e.KodeBank == trans.KdBank select e).FirstOrDefault();
                     bank.Saldo += trans.JumBayar;
 
-                    _contextBank.Banks.Update(bank);
+                    _contextBank.CbBanks.Update(bank);
                     _contextBank.CbTransHs.Add(transBank);
                     _contextBank.SaveChanges();
 

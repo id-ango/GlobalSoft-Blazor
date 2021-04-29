@@ -23,22 +23,22 @@ namespace eSoft.CashBank.Services
 
         public List<CbBank> GetBank()
         {
-            return _context.Banks.ToList();
+            return _context.CbBanks.ToList();
         }
 
         public CbBank GetBankId(int id)
         {
-            return _context.Banks.Where(x => x.CbBankId == id).FirstOrDefault();
+            return _context.CbBanks.Where(x => x.CbBankId == id).FirstOrDefault();
         }
         public CbBank GetBankKd(string id)
         {
-            return _context.Banks.Where(x => x.KodeBank == id).FirstOrDefault();
+            return _context.CbBanks.Where(x => x.KodeBank == id).FirstOrDefault();
         }
 
         public bool CekKdBank(string kodeBank)
         {
             string test = kodeBank.ToUpper();
-            var cekFirst = _context.Banks.Where(x => x.KodeBank == test).ToList();
+            var cekFirst = _context.CbBanks.Where(x => x.KodeBank == test).ToList();
             if (cekFirst.Count == 0)
             {
                 return false;
@@ -49,7 +49,7 @@ namespace eSoft.CashBank.Services
         public bool AddBank(BankView banks)
         {
             string test = banks.Kdbank.ToUpper();
-            var cekFirst = _context.Banks.Where(x => x.KodeBank == test).ToList();
+            var cekFirst = _context.CbBanks.Where(x => x.KodeBank == test).ToList();
             if (cekFirst.Count == 0)
             {
                 CbBank Bank = new ()
@@ -67,7 +67,7 @@ namespace eSoft.CashBank.Services
                     Pajak = banks.Pajak
 
                 };
-                _context.Banks.Add(Bank);
+                _context.CbBanks.Add(Bank);
                  _context.SaveChanges();
                 return true;
             }
@@ -83,7 +83,7 @@ namespace eSoft.CashBank.Services
         {
             try
             {
-                var ExistingBank = _context.Banks.Where(x => x.CbBankId == banks.BankId).FirstOrDefault();
+                var ExistingBank = _context.CbBanks.Where(x => x.CbBankId == banks.BankId).FirstOrDefault();
                 if (ExistingBank != null)
                 {
                     ExistingBank.NmBank = banks.Namabank;
@@ -97,7 +97,7 @@ namespace eSoft.CashBank.Services
                     ExistingBank.Pajak = banks.Pajak;
                     ExistingBank.Kurs = banks.Kurs;
 
-                    _context.Banks.Update(ExistingBank);
+                    _context.CbBanks.Update(ExistingBank);
                     await _context.SaveChangesAsync();
                     return true;
                 }
@@ -115,11 +115,11 @@ namespace eSoft.CashBank.Services
         {
             try
             {
-                var ExistingBank = _context.Banks.Single(item => item.CbBankId == banks);
+                var ExistingBank = _context.CbBanks.Single(item => item.CbBankId == banks);
               //  var ExistingBank = _context.Banks.Where(x => x.CbBankId == banks).FirstOrDefault();
                 if (ExistingBank != null && ExistingBank.Saldo == 0)
                 {
-                    _context.Banks.Remove(ExistingBank);
+                    _context.CbBanks.Remove(ExistingBank);
                     await _context.SaveChangesAsync();
                     return true;
                 }
@@ -298,10 +298,10 @@ namespace eSoft.CashBank.Services
                 Kurs = trans.Kurs
             });
 
-            var bank = (from e in _context.Banks where e.KodeBank == trans.KodeBank1 select e).FirstOrDefault();
+            var bank = (from e in _context.CbBanks where e.KodeBank == trans.KodeBank1 select e).FirstOrDefault();
             bank.Saldo -= trans.Saldo;
             bank.KSaldo -= trans.KSaldo;
-            _context.Banks.Update(bank);
+            _context.CbBanks.Update(bank);
             _context.CbTransHs.Add(transH);
 
             /* ke bank */
@@ -332,10 +332,10 @@ namespace eSoft.CashBank.Services
                 Kurs = trans.Kurs
             });
 
-            var bankd = (from e in _context.Banks where e.KodeBank == trans.KodeBank2 select e).FirstOrDefault();
+            var bankd = (from e in _context.CbBanks where e.KodeBank == trans.KodeBank2 select e).FirstOrDefault();
             bankd.Saldo += trans.Saldo;
             bankd.KSaldo += trans.KSaldo;
-            _context.Banks.Update(bankd);
+            _context.CbBanks.Update(bankd);
             _context.CbTransHs.Add(transHd);
 
             await _context.SaveChangesAsync();
@@ -361,20 +361,20 @@ namespace eSoft.CashBank.Services
                 if (listTrans1 != null)
                 {
                     _context.CbTransHs.Remove(listTrans1);
-                    var bank1 = (from e in _context.Banks where e.KodeBank == ExistingTrans.KodeBank1 select e).FirstOrDefault();
+                    var bank1 = (from e in _context.CbBanks where e.KodeBank == ExistingTrans.KodeBank1 select e).FirstOrDefault();
                     bank1.Saldo += ExistingTrans.Saldo;
                     bank1.KSaldo += ExistingTrans.KSaldo;
-                    _context.Banks.Update(bank1);
+                    _context.CbBanks.Update(bank1);
                 }
 
                 var listTrans2 = _context.CbTransHs.Where(x => x.Refno == ExistingTrans.DocNo && x.KodeBank == ExistingTrans.KodeBank2).FirstOrDefault();
                 if (listTrans2 != null)
                 {
                     _context.CbTransHs.Remove(listTrans2);
-                    var bank2 = (from e in _context.Banks where e.KodeBank == ExistingTrans.KodeBank2 select e).FirstOrDefault();
+                    var bank2 = (from e in _context.CbBanks where e.KodeBank == ExistingTrans.KodeBank2 select e).FirstOrDefault();
                     bank2.Saldo -= ExistingTrans.Saldo;
                     bank2.KSaldo -= ExistingTrans.KSaldo;
-                    _context.Banks.Update(bank2);
+                    _context.CbBanks.Update(bank2);
                 }
 
                 CbTransfer transfer = new()
@@ -419,10 +419,10 @@ namespace eSoft.CashBank.Services
                     Kurs = trans.Kurs
                 });
 
-                var bank = (from e in _context.Banks where e.KodeBank == trans.KodeBank1 select e).FirstOrDefault();
+                var bank = (from e in _context.CbBanks where e.KodeBank == trans.KodeBank1 select e).FirstOrDefault();
                 bank.Saldo -= trans.Saldo;
                 bank.KSaldo -= trans.KSaldo;
-                _context.Banks.Update(bank);
+                _context.CbBanks.Update(bank);
                 _context.CbTransHs.Add(transH);
 
                 /* ke bank */
@@ -453,10 +453,10 @@ namespace eSoft.CashBank.Services
                     Kurs = trans.Kurs
                 });
 
-                var bankd = (from e in _context.Banks where e.KodeBank == trans.KodeBank2 select e).FirstOrDefault();
+                var bankd = (from e in _context.CbBanks where e.KodeBank == trans.KodeBank2 select e).FirstOrDefault();
                 bankd.Saldo += trans.Saldo;
                 bankd.KSaldo += trans.KSaldo;
-                _context.Banks.Update(bankd);
+                _context.CbBanks.Update(bankd);
                 _context.CbTransHs.Add(transHd);
 
                 await _context.SaveChangesAsync();
@@ -492,20 +492,20 @@ namespace eSoft.CashBank.Services
                     if (listTrans1 != null)
                     {
                         _context.CbTransHs.Remove(listTrans1);
-                        var bank1 = (from e in _context.Banks where e.KodeBank == ExistingTrans.KodeBank1 select e).FirstOrDefault();
+                        var bank1 = (from e in _context.CbBanks where e.KodeBank == ExistingTrans.KodeBank1 select e).FirstOrDefault();
                         bank1.Saldo += ExistingTrans.Saldo;
                         bank1.KSaldo += ExistingTrans.KSaldo;
-                        _context.Banks.Update(bank1);
+                        _context.CbBanks.Update(bank1);
                     }
 
                     var listTrans2 = _context.CbTransHs.Where(x => x.Refno == ExistingTrans.DocNo && x.KodeBank == ExistingTrans.KodeBank2).FirstOrDefault();
                     if (listTrans2 != null)
                     {
                         _context.CbTransHs.Remove(listTrans2);
-                        var bank2 = (from e in _context.Banks where e.KodeBank == ExistingTrans.KodeBank2 select e).FirstOrDefault();
+                        var bank2 = (from e in _context.CbBanks where e.KodeBank == ExistingTrans.KodeBank2 select e).FirstOrDefault();
                         bank2.Saldo -= ExistingTrans.Saldo;
                         bank2.KSaldo -= ExistingTrans.KSaldo;
-                        _context.Banks.Update(bank2);
+                        _context.CbBanks.Update(bank2);
                     }
 
                     await _context.SaveChangesAsync();
@@ -535,7 +535,30 @@ namespace eSoft.CashBank.Services
         public List<CbTransH> GetTransH()
         {
             // return  _context.CbTransHs.Include(p =>p.CbTransDs).OrderByDescending(x =>x.Tanggal).ToListAsync();
-            return _context.CbTransHs.OrderByDescending(x => x.Tanggal).ToList();
+            var test = (from e in _context.CbTransHs orderby e.Tanggal descending select e ).ToList();
+
+            return test;
+            
+         //   return _context.CbTransHs.OrderByDescending(x => x.Tanggal).ToList();
+
+        }
+
+        public List<SearchTransHView> GetTransHSearch()
+        {
+            // return  _context.CbTransHs.Include(p =>p.CbTransDs).OrderByDescending(x =>x.Tanggal).ToListAsync();
+            var test = (from e in _context.CbTransHs orderby e.Tanggal
+                        select new SearchTransHView 
+                        {CbTransHId = e.CbTransHId,
+                         DocNo = e.DocNo,
+                         Tanggal = e.Tanggal,
+                         Keterangan = e.Keterangan,
+                         Kurs = e.Kurs,
+                         KodeBank = e.KodeBank
+                        }).ToList();
+
+            return test;
+
+            //   return _context.CbTransHs.OrderByDescending(x => x.Tanggal).ToList();
 
         }
 
@@ -583,10 +606,10 @@ namespace eSoft.CashBank.Services
                     Kurs = item.Kurs
                 });
             }
-            var bank = (from e in _context.Banks where e.KodeBank == trans.KodeBank select e).FirstOrDefault();
+            var bank = (from e in _context.CbBanks where e.KodeBank == trans.KodeBank select e).FirstOrDefault();
             bank.Saldo += trans.Saldo;
             bank.KSaldo += trans.KSaldo;
-            _context.Banks.Update(bank);
+            _context.CbBanks.Update(bank);
             _context.CbTransHs.Add(transH);
              _context.SaveChanges();
 
@@ -613,10 +636,10 @@ namespace eSoft.CashBank.Services
 
                     _context.CbTransHs.Remove(ExistingTrans);
 
-                    var bank = (from e in _context.Banks where e.KodeBank == trans.KodeBank select e).FirstOrDefault();
+                    var bank = (from e in _context.CbBanks where e.KodeBank == trans.KodeBank select e).FirstOrDefault();
                     bank.Saldo -= ExistingTrans.Saldo;
                     bank.KSaldo -= ExistingTrans.KSaldo;
-                    _context.Banks.Update(bank);
+                    _context.CbBanks.Update(bank);
 
                     /* update */
 
@@ -651,7 +674,7 @@ namespace eSoft.CashBank.Services
                     bank.Saldo += trans.Saldo;
                     bank.KSaldo += trans.KSaldo;
 
-                    _context.Banks.Update(bank);
+                    _context.CbBanks.Update(bank);
                     _context.CbTransHs.Add(transH);
                     _context.SaveChanges();
 
@@ -680,10 +703,10 @@ namespace eSoft.CashBank.Services
                 var ExistingTrans = _context.CbTransHs.Where(x => x.CbTransHId == id).FirstOrDefault();
                 if (ExistingTrans != null)
                 {
-                    var bank = (from e in _context.Banks where e.KodeBank == ExistingTrans.KodeBank select e).FirstOrDefault();
+                    var bank = (from e in _context.CbBanks where e.KodeBank == ExistingTrans.KodeBank select e).FirstOrDefault();
                     bank.Saldo -= ExistingTrans.Saldo;
                     bank.KSaldo -= ExistingTrans.KSaldo;
-                    _context.Banks.Update(bank);
+                    _context.CbBanks.Update(bank);
                     _context.CbTransHs.Remove(ExistingTrans);
                     await _context.SaveChangesAsync();
                     return true;
@@ -807,8 +830,11 @@ namespace eSoft.CashBank.Services
             List<RekeningView> Transaksi = new List<RekeningView>();
             //     TransHView Transh = new TransHView() { TransDs = new List<TransDView>() };
 
+            var bankawal = _context.CbBanks
+                .Where(x => x.KodeBank == kodeBank).FirstOrDefault();
+
             var TransAwal = _context.CbTransHs
-               .Where(x => x.KodeBank == kodeBank && (x.Tanggal < Tanggal1))
+               .Where(x => x.KodeBank == kodeBank && (x.Tanggal > bankawal.ClrDate.Date   &&  x.Tanggal < Tanggal1))
               .Select(x => new RekeningView
               {
                   KodeBank = x.KodeBank,
@@ -816,11 +842,12 @@ namespace eSoft.CashBank.Services
                   Tanggal = x.Tanggal,
                   Keterangan = x.Keterangan,
                   Kurs = x.Kurs,
-                  Saldo = (string.IsNullOrEmpty(x.Kurs) ? x.Saldo : x.KSaldo)
+                  Saldo = (string.IsNullOrEmpty(bankawal.Kurs) ? x.Saldo : x.KSaldo)
+
               })
                .ToList();
 
-            var SaldoAwal = TransAwal.Sum(x => x.Saldo);
+            var SaldoAwal = TransAwal.Sum(x => x.Saldo) + (string.IsNullOrEmpty(bankawal.Kurs) ? bankawal.SldAwal : bankawal.KSldAwal);
 
             Transaksi.Add( new RekeningView
             {
@@ -835,12 +862,13 @@ namespace eSoft.CashBank.Services
 
             var Rincian = _context.CbTransHs
                 .Where(x => x.KodeBank == kodeBank && (Tanggal1.Date <= x.Tanggal.Date && x.Tanggal.Date <= Tanggal2.Date))
+                .OrderBy(x =>x.Tanggal)
                .Select(x => new RekeningView { KodeBank = x.KodeBank,
                    DocNo = x.DocNo,
                    Tanggal = x.Tanggal,
                    Keterangan = x.Keterangan,
                    Kurs = x.Kurs,
-                   Saldo = (string.IsNullOrEmpty(x.Kurs) ? x.Saldo : x.KSaldo)
+                   Saldo = string.IsNullOrEmpty(bankawal.Kurs) ? x.Saldo : x.KSaldo
 
 
                })
@@ -848,7 +876,9 @@ namespace eSoft.CashBank.Services
 
             Transaksi.AddRange(Rincian);
             SaldoAwal = 0;
-            Transaksi = Transaksi.Select(i => { SaldoAwal += i.Saldo; i.Balance = SaldoAwal; return i; }).ToList();
+            
+                Transaksi = Transaksi.Select(i => { SaldoAwal += i.Saldo; i.Balance = SaldoAwal; return i; }).ToList();
+         
 
             return Transaksi;
         }

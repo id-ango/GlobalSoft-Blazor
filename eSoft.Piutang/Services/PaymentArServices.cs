@@ -208,10 +208,10 @@ namespace eSoft.Piutang.Services
                         }
                         
                     }
-                    var bank = (from e in _contextBank.Banks where e.KodeBank == trans.KdBank select e).FirstOrDefault();
+                    var bank = (from e in _contextBank.CbBanks where e.KodeBank == trans.KdBank select e).FirstOrDefault();
                     bank.Saldo += trans.JumBayar;
 
-                    _contextBank.Banks.Update(bank);
+                    _contextBank.CbBanks.Update(bank);
                     _contextBank.CbTransHs.Add(transBank);
 
 

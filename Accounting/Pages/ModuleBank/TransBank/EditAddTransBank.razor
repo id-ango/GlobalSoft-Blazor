@@ -1,19 +1,13 @@
-﻿@page "/ModuleBank/AddTransBank"
+﻿@page "/ModuleBank/EditAddTransBank"
 @using eSoft.CashBank.Model
 @using eSoft.CashBank.View
-
 
 @inject ICashBankServices service
 @inject NavigationManager navigationmanager
 
-<div class="top-row">
-  
-    <NavLink href="/ModuleBank/TransBank" class="btn btn-primary">Back</NavLink>
-    
-</div>
 
 <div class="top-row px-4 " style="z-index:5">
-    <h3>Add Transaksi CashBank</h3>
+    <h3>Edit Transaksi CashBank</h3>
 </div>
 
 
@@ -21,10 +15,24 @@
     <EditForm Model="@Transh" OnValidSubmit="@HandleValidSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
-        <div class="form-group">
+        @*<div class="form-group">
             <label>
                 Kode :
-                <InputText class="form-control" @bind-Value="Transh.KodeDoc" style="text-transform:uppercase" />
+                <InputText class="form-control" @bind-Value="Transh.DocNo" style="text-transform:uppercase" />
+            </label>
+        </div>*@
+        <div class="form-group">
+            <label>
+                GL Account 1 :
+                <InputSelect class="form-control" @bind-Value="Transh.DocNo" style="width:80%; display:inline">
+                    <option value="">&nbsp;&nbsp;---Select GL Account---&nbsp;&nbsp;</option>
+                    @foreach (var item in searchTransh)
+                    {
+                        <option value="@item.CbTransHId">@item.DocNo&nbsp;@item.Keterangan&nbsp;@item.Tanggal.ToShortDateString()</option>
+                    }
+
+                </InputSelect>
+               @*<button class="btn btn-primary" type="button" @onclick="@(() => openSearch(1))">Cari</button>*@
             </label>
         </div>
 
@@ -102,6 +110,7 @@
 @if (IsVisible)
 {
     <ModalCashBankComponent SrcCode="srccode" OnClose="OnVisibleClose" OnDetail="OnDetailTrans" isEdit="IsEdit" DetailRubah="Transd"></ModalCashBankComponent>
+
 }
 
 @if (IsKurs)
@@ -116,7 +125,15 @@
 
 
 @code {
-    TransHView Transh = new TransHView() { TransDs = new List<TransDView>() };
+
+    //[Parameter]
+    public int Id { get; set; }
+
+    private TransHView Transh = new TransHView() { TransDs = new List<TransDView>() };
+    private CbTransH TransAll = new CbTransH() { CbTransDs = new List<CbTransD>() };
+
+    private List<SearchTransHView> searchTransh = new List<SearchTransHView>();
+
     private List<CbBank> banks;
     private List<CbSrcCode> srccode;
     private TransDView Transd = new TransDView();
@@ -133,11 +150,15 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        Transh.Tanggal = DateTime.Now;
-        Transh.KodeDoc = "";
+        // Transh.Tanggal = DateTime.Now;
         LoadBank();
         LoadSrcCode();
+        LoadGlAccounts();
+
+    //    LoadTrans();
     }
+
+    #region ondialogbutton
 
     private void OnVisibleClose()
     {
@@ -147,7 +168,6 @@
         StateHasChanged();
 
     }
-
 
     private void OnDialogClose(bool accepted)
     {
@@ -161,27 +181,25 @@
     {
         kurs = (from e in banks where e.KodeBank == args.Value.ToString() select e.Kurs).FirstOrDefault();
     }
-
+    #endregion
 
 
     private void HandleValidSubmit()
     {
         Transh.Kurs = kurs;
-        var newEdit = service.AddTransH(Transh);
+        var newEdit = service.EditTransH(Transh);
         if (newEdit != null)
         {
             var id = newEdit.CbTransHId.ToString().Trim();
-          //  navigationmanager.NavigateTo("/PrintBuktiBayar/{id", false);
-            //  navigationmanager.NavigateTo("/ModuleBank/TransBank", false);
+
             navigationmanager.NavigateTo($"/PrintBuktiBayar/{id}");
         }
-
 
     }
 
     private void OnDetailTrans(TransDView transD)
     {
-        if(!IsEdit)
+        if (!IsEdit)
         {
             Transh.TransDs.Add(transD);
         }
@@ -190,38 +208,6 @@
         IsKurs = false;
         IsEdit = false;
         StateHasChanged();
-    }
-
-
-    void LoadBank()
-    {
-
-        banks = service.GetBank();
-
-    }
-
-    void LoadSrcCode()
-    {
-
-        srccode = service.GetSrcCode();
-
-    }
-
-
-    private void Rubah(TransDView transd)
-    {
-        Transd = new TransDView();
-        Transd = transd;
-        IsEdit = true;
-        OnAddLine();
-
-    }
-
-    private void Hapus(TransDView transd)
-    {
-
-        Transh.TransDs.Remove(transd);
-        //ShowOnClick();
     }
 
     private void OnAddLine()
@@ -237,12 +223,79 @@
             this.IsKurs = false;
         }
 
-
-
         StateHasChanged();
 
-        //IsEdit = false;
+
+    }
+
+    #region loadall
+
+    void LoadBank()
+    {
+
+        banks = service.GetBank();
+
+    }
+
+    void LoadSrcCode()
+    {
+
+        srccode = service.GetSrcCode();
+
+    }
+
+    void LoadTrans()
+    {
+        TransAll = service.GetTrans(Id);
+        Transh.CbTransHId = Id;
+        Transh.DocNo = TransAll.DocNo;
+        Transh.Tanggal = TransAll.Tanggal;
+        Transh.Kurs = TransAll.Kurs;
+        Transh.KodeBank = TransAll.KodeBank;
+        kurs = TransAll.Kurs;
+        Transh.Keterangan = TransAll.Keterangan;
+        foreach (var item in TransAll.CbTransDs)
+        {
+            Transh.TransDs.Add(new TransDView
+            {
+                Bayar = item.Bayar,
+                KBayar = item.KBayar,
+                Keterangan = item.Keterangan,
+                Kurs = item.Kurs,
+                SrcCode = item.SrcCode,
+                Terima = item.Terima,
+                KTerima = item.KTerima,
+                KValue = item.KValue
+            });
+        }
+    }
+    #endregion
+
+    #region button detail
+    private void Rubah(TransDView transd)
+    {
+        Transd = new TransDView();
+        Transd = transd;
+        IsEdit = true;
+        OnAddLine();
+
+
+    }
+
+    private void Hapus(TransDView transd)
+    {
+
+        Transh.TransDs.Remove(transd);
         //ShowOnClick();
+    }
+    #endregion
+
+
+    private  void LoadGlAccounts()
+    {
+        searchTransh =  service.GetTransHSearch();
+
+
     }
 
 

@@ -49,7 +49,8 @@
 
 
         <div class="float-md-right">
-            <button class="btn-success" type="submit">Mutasi</button>
+            @*<button class="btn-success" type="submit">Mutasi</button>*@
+            <button class="btn-success" type="button" @onclick="OpenCetak">Mutasi</button>
         </div>
         <br />
         <br />
@@ -62,7 +63,7 @@
 
 
 <div class="container">
-    <DataGridComponent Items="RekKoran" Context="cbBank" GetFilterableText="@(item =>$"{item.Keterangan} {item.DocNo} ")">
+    <DataGridVerticalComponent Items="RekKoran" Context="cbBank" GetFilterableText="@(item => $"{item.Keterangan} {item.DocNo} ")">
         <TableHeader>
             <th scope="col">Doc #</th>
             <th scope="col">Tanggal</th>
@@ -82,11 +83,11 @@
 
             </td>
         </RowTemplate>
-    </DataGridComponent>
+    </DataGridVerticalComponent>
 
 
 </div>
-
+}
 
 
 @code {
@@ -101,6 +102,7 @@
     private DateTime TglStart = DateTime.Now;
     private DateTime TglEnd = DateTime.Now;
 
+  
     public bool DeleteDialogOpen { get; set; }
     public bool NullDialogOpen { get; set; }
     public bool SearchOpen { get; set; }
@@ -123,11 +125,14 @@
 
 
 
-    //private void OpenCetak(DateTime Tanggal1, DateTime Tanggal2, string KodeBank)
-    //{
-    //    RekKoran = cashBank.CetakMutasi(Tanggal1, Tanggal2, KodeBank);
-    //    SearchOpen = !SearchOpen;
-    //}
+    private void OpenCetak()
+    {
+        SearchOpen = !SearchOpen;
+
+        RekKoran = cashBank.CetakMutasi(TglStart, TglEnd, kodeBank);
+        StateHasChanged();
+
+    }
 
 
     private void OnKurs(ChangeEventArgs args)
@@ -135,6 +140,7 @@
         kurs = (from e in Banks where e.KodeBank == args.Value.ToString() select e.Kurs).FirstOrDefault();
     }
 
+  
 
     private void HandleValidSubmit()
     {
@@ -147,9 +153,11 @@
         //    //  navigationmanager.NavigateTo("/ModuleBank/TransBank", false);
         //    navigationmanager.NavigateTo($"/PrintBuktiBayar/{id}");
 
-        RekKoran = cashBank.CetakMutasi(TglStart, TglEnd, kodeBank);
+   //     SearchOpen = !SearchOpen;
+   //     RekKoran = cashBank.CetakMutasi(TglStart, TglEnd, kodeBank);
+       // totalPage = MaxPageNumber(RekKoran.Count());
     }
 
 
 }
-}
+

@@ -21,7 +21,7 @@
 
 
 <div class="container">
-    <DataGridComponent Items="TransHeader" Context="transaksi" GetFilterableText="@(item =>$"{item.KodeBank} {item.DocNo} {item.Keterangan}")">
+    <DataGridVerticalComponent Items="TransHeader" Context="transaksi" GetFilterableText="@(item =>$"{item.KodeBank} {item.DocNo} {item.Keterangan}")">
         <TableHeader>
             <th scope="col">Bank</th>
             <th scope="col">No Bukti</th>
@@ -42,7 +42,7 @@
                 <button @onclick="() => OpenPrint(transaksi.CbTransHId)" class="btn btn-danger">Print</button>
             </td>
         </RowTemplate>
-    </DataGridComponent>
+    </DataGridVerticalComponent>
 
 
 </div>
@@ -77,7 +77,7 @@
 
     private void LoadGet()
     {
-        TransHeader = cashBank.Get3TransH();
+        TransHeader = cashBank.GetTransH();
         TransDetail = cashBank.GetTransD();
     }
 

@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSoft.Fungsi", "eSoft.Fungs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSoft.Piutang", "eSoft.Piutang\eSoft.Piutang.csproj", "{B7658A98-8662-4ADA-AA9C-FDFEDCED7344}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eSoft.Hutang", "eSoft.Hutang\eSoft.Hutang.csproj", "{F24358AF-4F44-4BD9-867C-329A4C5161B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSoft.Hutang", "eSoft.Hutang\eSoft.Hutang.csproj", "{F24358AF-4F44-4BD9-867C-329A4C5161B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eSoft.Persediaan", "eSoft.Persediaan\eSoft.Persediaan.csproj", "{4CF286F0-9F85-4D0A-ADD9-E8DA783AE1FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{F24358AF-4F44-4BD9-867C-329A4C5161B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F24358AF-4F44-4BD9-867C-329A4C5161B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F24358AF-4F44-4BD9-867C-329A4C5161B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CF286F0-9F85-4D0A-ADD9-E8DA783AE1FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CF286F0-9F85-4D0A-ADD9-E8DA783AE1FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CF286F0-9F85-4D0A-ADD9-E8DA783AE1FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CF286F0-9F85-4D0A-ADD9-E8DA783AE1FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

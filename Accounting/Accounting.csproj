@@ -32,13 +32,13 @@
     <ProjectReference Include="..\eSoft.Fungsi\eSoft.Fungsi.csproj" />
     <ProjectReference Include="..\eSoft.Hutang\eSoft.Hutang.csproj" />
     <ProjectReference Include="..\eSoft.Ledger\eSoft.Ledger.csproj" />
+    <ProjectReference Include="..\eSoft.Persediaan\eSoft.Persediaan.csproj" />
     <ProjectReference Include="..\eSoft.Piutang\eSoft.Piutang.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Pages\ModuleBank\CashBank\" />
     <Folder Include="Pages\ModuleBank\SrcCode\" />
-    <Folder Include="Pages\ModuleInventory\Inventory\" />
     <Folder Include="Pages\ModuleLedger\Account\" />
   </ItemGroup>
 

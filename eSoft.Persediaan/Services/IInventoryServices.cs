@@ -1,0 +1,54 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using eSoft.Persediaan.Data;
+using eSoft.Persediaan.Model;
+using eSoft.Persediaan.View;
+using Microsoft.EntityFrameworkCore;
+
+
+namespace eSoft.Persediaan.Services
+{
+    public interface IInventoryServices
+    {
+        List<IcItem> GetIcItem();
+        List<IcAltItem> GetIcAltItem();
+        IcItem GetIcItemId(int itemKode);
+        IcItem GetIcItemProduk(string produk);
+        Task<bool> DelIcItem(int codeview);
+        Task<bool> AddIcItem(IcItemView produk);
+        Task<bool> EditIcItem(IcItemView produk);
+        Task<List<IcDiv>> GetIcDiv();
+        IcDiv GetIcDivId(int id);
+        Task<bool> AddIcDiv(IcDivView codeview);
+        Task<bool> EditIcDiv(IcDivView codeview);
+        Task<bool> DelIcDiv(int codeview);
+        Task<List<IcLokasi>> GetIcLokasi();
+        IcLokasi GetIcLokasiId(int id);
+        Task<bool> AddIcLokasi(IcLokasiView codeview);
+        Task<bool> EditIcLokasi(IcLokasiView codeview);
+        Task<bool> DelIcLokasi(int codeview);
+        bool CekCategory(string item);
+        List<IcCat> GetIcCat();
+        IcCat GetIcCatId(int id);
+        bool AddIcCat(IcCatView codeview);
+        Task<bool> EditIcCat(IcCatView codeview);
+        Task<bool> DelIcCat(int codeview);
+        bool CekAcctSet(string item);
+        List<IcAcct> GetIcAcct();
+        IcAcct GetIcAcctId(int id);
+        bool AddIcAcct(IcAcctView codeview);
+        Task<bool> EditIcAcct(IcAcctView codeview);
+        Task<bool> DelIcAcct(int codeview);
+        IcTransH GetIcTrans(int id);
+        Task<List<IcTransH>> GetTransH();
+        Task<List<IcTransH>> Get3TransH();
+        Task<List<IcTransD>> GetTransD();
+        Task<bool> AddTransH(IcTransHView codeview);
+        Task<bool> EditTransH(IcTransHView codeview);
+        Task<bool> DelTransH(int codeview);
+    }
+
+}

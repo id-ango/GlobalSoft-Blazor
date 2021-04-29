@@ -23,6 +23,9 @@ using eSoft.Hutang.Data;
 using eSoft.Piutang.Data;
 using eSoft.Piutang.Services;
 
+using eSoft.Persediaan.Data;
+using eSoft.Persediaan.Services;
+
 using Microsoft.EntityFrameworkCore;
 
 
@@ -53,6 +56,9 @@ namespace Accounting
             services.AddDbContext<DbContextHutang>(options =>
                  options.UseSqlServer(
                      Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Accounting")));
+            services.AddDbContext<DbContextPersediaan>(options =>
+                 options.UseSqlServer(
+                     Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Accounting")));
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
@@ -66,6 +72,7 @@ namespace Accounting
             services.AddTransient<IPayableServices, PayableServices>();
             services.AddTransient<IPaymentApServices, PaymentApServices>();
             services.AddTransient<IPaymentApDpServices, PaymentApDpServices>();
+            services.AddTransient<IInventoryServices, InventoryServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

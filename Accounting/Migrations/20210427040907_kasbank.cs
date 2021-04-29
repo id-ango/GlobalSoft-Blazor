@@ -3,21 +3,21 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Accounting.Migrations
 {
-    public partial class initial_Create : Migration
+    public partial class kasbank : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Banks",
+                name: "CbBanks",
                 columns: table => new
                 {
                     CbBankId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    KodeBank = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    KodeBank = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NmBank = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Kurs = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: true),
-                    Acctset = table.Column<string>(type: "nvarchar(6)", maxLength: 6, nullable: true),
-                    SldAWal = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    Acctset = table.Column<string>(type: "nvarchar(7)", maxLength: 7, nullable: true),
+                    SldAwal = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
                     KSldAwal = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
                     ClrDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Saldo = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
@@ -29,7 +29,7 @@ namespace Accounting.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Banks", x => x.CbBankId);
+                    table.PrimaryKey("PK_CbBanks", x => x.CbBankId);
                 });
 
             migrationBuilder.CreateTable(
@@ -149,13 +149,6 @@ namespace Accounting.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Banks_KodeBank",
-                table: "Banks",
-                column: "KodeBank",
-                unique: true,
-                filter: "[KodeBank] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CbTransDs_CbTransHId",
                 table: "CbTransDs",
                 column: "CbTransHId");
@@ -164,7 +157,7 @@ namespace Accounting.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Banks");
+                name: "CbBanks");
 
             migrationBuilder.DropTable(
                 name: "CbGrps");

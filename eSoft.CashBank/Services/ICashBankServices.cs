@@ -22,6 +22,7 @@ namespace eSoft.CashBank.Services
         Task<bool> EditSrcCode(SrcCodeView codeview);
         Task<bool> DelSrcCode(int codeview);
         CbTransH GetTrans(int id);
+        List<SearchTransHView> GetTransHSearch();
         List<CbTransH> GetTransH();
         List<CbTransH> Get3TransH();
         List<CbTransD> GetTransD();

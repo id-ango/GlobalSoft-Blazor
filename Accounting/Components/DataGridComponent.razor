@@ -55,7 +55,8 @@
 
     [Parameter]
     public int PageSize { get; set; } = 10;
-
+    
+    
     private string searchText;
 
     private int currentPageNumber { get; set; } = 1;
@@ -120,6 +121,7 @@
 
     protected override void OnInitialized()
     {
+
         TotalPage = MaxPageNumber(Items.Count());
     }
 

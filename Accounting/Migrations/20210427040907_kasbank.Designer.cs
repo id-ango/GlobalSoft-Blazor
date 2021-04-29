@@ -10,15 +10,15 @@ using eSoft.CashBank.Data;
 namespace Accounting.Migrations
 {
     [DbContext(typeof(DbContextBank))]
-    [Migration("20210319092500_ubahacctset")]
-    partial class ubahacctset
+    [Migration("20210427040907_kasbank")]
+    partial class kasbank
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.4")
+                .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("eSoft.CashBank.Model.CbBank", b =>
@@ -45,7 +45,7 @@ namespace Accounting.Migrations
                         .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("KodeBank")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Kurs")
                         .HasMaxLength(3)
@@ -64,7 +64,7 @@ namespace Accounting.Migrations
                     b.Property<decimal>("Saldo")
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<decimal>("SldAWal")
+                    b.Property<decimal>("SldAwal")
                         .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("Status")
@@ -72,11 +72,7 @@ namespace Accounting.Migrations
 
                     b.HasKey("CbBankId");
 
-                    b.HasIndex("KodeBank")
-                        .IsUnique()
-                        .HasFilter("[KodeBank] IS NOT NULL");
-
-                    b.ToTable("Banks");
+                    b.ToTable("CbBanks");
                 });
 
             modelBuilder.Entity("eSoft.CashBank.Model.CbGrp", b =>
