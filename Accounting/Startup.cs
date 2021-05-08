@@ -73,6 +73,7 @@ namespace Accounting
             services.AddTransient<IPaymentApServices, PaymentApServices>();
             services.AddTransient<IPaymentApDpServices, PaymentApDpServices>();
             services.AddTransient<IInventoryServices, InventoryServices>();
+            services.AddTransient<IIcAdjustServices, IcAdjustServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

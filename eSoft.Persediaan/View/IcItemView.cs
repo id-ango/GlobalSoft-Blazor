@@ -44,14 +44,12 @@ namespace eSoft.Persediaan.View
         public string Category { get; set; }
         public bool SerialNo { get; set; }
         [Required]
-        public int CostMethod { get; set; }
+        public costMethod CostMethod { get; set; } = costMethod.Moving_Avg;
         [Required]
-        public int JnsBrng { get; set; }
+        public jnsBrng JnsBrng { get; set; } = jnsBrng.Stock;
         [Column(TypeName = "decimal(18,2)")]
-        public decimal StdPrice { get; set; }
-       
+        public decimal StdPrice { get; set; }      
         public Nullable<DateTime> TglPost { get; set; }
-       
         public Nullable<DateTime> LastNetto { get; set; }
         public string NamaLengkap
         {
@@ -61,4 +59,7 @@ namespace eSoft.Persediaan.View
             }
         }
     }
+
+    public enum costMethod { Moving_Avg = 1, Standard_Cost = 2 };
+    public enum jnsBrng { Stock = 1, Service = 2, Consumable = 3 };
 }

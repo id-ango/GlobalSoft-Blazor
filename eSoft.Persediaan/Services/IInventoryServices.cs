@@ -13,21 +13,24 @@ namespace eSoft.Persediaan.Services
 {
     public interface IInventoryServices
     {
+        bool CekKdItem(string item);
         List<IcItem> GetIcItem();
         List<IcAltItem> GetIcAltItem();
         IcItem GetIcItemId(int itemKode);
         IcItem GetIcItemProduk(string produk);
         Task<bool> DelIcItem(int codeview);
-        Task<bool> AddIcItem(IcItemView produk);
+        bool AddIcItem(IcItemView produk);
         Task<bool> EditIcItem(IcItemView produk);
-        Task<List<IcDiv>> GetIcDiv();
+        bool CekKdDivisi(string item);
+        List<IcDiv> GetIcDiv();
         IcDiv GetIcDivId(int id);
-        Task<bool> AddIcDiv(IcDivView codeview);
+        bool AddIcDiv(IcDivView codeview);
         Task<bool> EditIcDiv(IcDivView codeview);
         Task<bool> DelIcDiv(int codeview);
-        Task<List<IcLokasi>> GetIcLokasi();
+        bool CekKdLokasi(string item);
+        List<IcLokasi> GetIcLokasi();
         IcLokasi GetIcLokasiId(int id);
-        Task<bool> AddIcLokasi(IcLokasiView codeview);
+        bool AddIcLokasi(IcLokasiView codeview);
         Task<bool> EditIcLokasi(IcLokasiView codeview);
         Task<bool> DelIcLokasi(int codeview);
         bool CekCategory(string item);

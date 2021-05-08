@@ -21,6 +21,17 @@ namespace eSoft.Persediaan.Services
             _context = context;
         }
 
+        public bool CekKdItem(string item)
+        {
+            string test = item.ToUpper();
+            var cekFirst = _context.IcItems.Where(x => x.ItemCode == test).ToList();
+            if (cekFirst.Count == 0)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public List<IcItem> GetIcItem()
         {
             return _context.IcItems.OrderBy(x => x.NamaItem).ToList();
@@ -62,7 +73,7 @@ namespace eSoft.Persediaan.Services
 
         }
 
-        public async Task<bool> AddIcItem(IcItemView produk)
+        public bool AddIcItem(IcItemView produk)
         {
             string test = produk.ItemCode.ToUpper();
             var cekFirst = _context.IcItems.Where(x => x.ItemCode == test).ToList();
@@ -74,8 +85,8 @@ namespace eSoft.Persediaan.Services
                     NamaItem = produk.NamaItem,
                     Satuan = produk.Satuan,
                     Divisi = produk.Divisi,
-                    JnsBrng = produk.JnsBrng,
-                    CostMethod = produk.CostMethod,
+                    JnsBrng = (int)produk.JnsBrng,
+                    CostMethod = (int)produk.CostMethod,
                     AcctSet = produk.AcctSet,
                     Category = produk.Category,
                     StdPrice = produk.StdPrice,
@@ -83,7 +94,7 @@ namespace eSoft.Persediaan.Services
 
                 };
                 _context.IcItems.Add(Produk);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return true;
             }
             else
@@ -104,8 +115,8 @@ namespace eSoft.Persediaan.Services
                     ExistingItem.NamaItem = produk.NamaItem;
                     ExistingItem.Satuan = produk.Satuan;
                     ExistingItem.Divisi = produk.Divisi;
-                    ExistingItem.JnsBrng = produk.JnsBrng;
-                    ExistingItem.CostMethod = produk.CostMethod;
+                    ExistingItem.JnsBrng = (int)produk.JnsBrng;
+                    ExistingItem.CostMethod = (int)produk.CostMethod;
                     ExistingItem.AcctSet = produk.AcctSet;
                     ExistingItem.Category = produk.Category;
                     ExistingItem.NamaLengkap = produk.NamaLengkap;
@@ -128,9 +139,20 @@ namespace eSoft.Persediaan.Services
 
         #region IcDiv Class
 
-        public async Task<List<IcDiv>> GetIcDiv()
+        public bool CekKdDivisi(string item)
         {
-            return await _context.IcDivs.OrderBy(x => x.Divisi).ToListAsync();
+            string test = item.ToUpper();
+            var cekFirst = _context.IcDivs.Where(x => x.Divisi == test).ToList();
+            if (cekFirst.Count == 0)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public List<IcDiv> GetIcDiv()
+        {
+            return _context.IcDivs.OrderBy(x => x.Divisi).ToList();
         }
 
         public IcDiv GetIcDivId(int id)
@@ -138,7 +160,7 @@ namespace eSoft.Persediaan.Services
             return _context.IcDivs.Where(x => x.IcDivId == id).FirstOrDefault();
         }
 
-        public async Task<bool> AddIcDiv(IcDivView codeview)
+        public bool AddIcDiv(IcDivView codeview)
         {
             string test = codeview.Divisi.ToUpper();
             var cekFirst = _context.IcDivs.Where(x => x.Divisi == test).ToList();
@@ -151,7 +173,7 @@ namespace eSoft.Persediaan.Services
 
                 };
                 _context.IcDivs.Add(Division);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return true;
             }
             else
@@ -210,10 +232,21 @@ namespace eSoft.Persediaan.Services
         #endregion IcDiv Class
 
         #region IcLokasi Class
-
-        public async Task<List<IcLokasi>> GetIcLokasi()
+        
+        public bool CekKdLokasi(string item)
         {
-            return await _context.Iclokasis.OrderBy(x => x.Lokasi).ToListAsync();
+            string test = item.ToUpper();
+            var cekFirst = _context.Iclokasis.Where(x => x.Lokasi == test).ToList();
+            if (cekFirst.Count == 0)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public List<IcLokasi> GetIcLokasi()
+        {
+            return  _context.Iclokasis.OrderBy(x => x.Lokasi).ToList();
         }
 
         public IcLokasi GetIcLokasiId(int id)
@@ -221,7 +254,7 @@ namespace eSoft.Persediaan.Services
             return _context.Iclokasis.Where(x => x.IcLokasiId == id).FirstOrDefault();
         }
 
-        public async Task<bool> AddIcLokasi(IcLokasiView codeview)
+        public bool AddIcLokasi(IcLokasiView codeview)
         {
             string test = codeview.Lokasi.ToUpper();
             var cekFirst = _context.Iclokasis.Where(x => x.Lokasi == test).ToList();
@@ -234,7 +267,7 @@ namespace eSoft.Persediaan.Services
 
                 };
                 _context.Iclokasis.Add(Location);
-                await _context.SaveChangesAsync();
+                 _context.SaveChanges();
                 return true;
             }
             else

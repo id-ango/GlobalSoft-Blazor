@@ -1,0 +1,218 @@
+﻿@page "/ModulePersediaan/AddItem"
+@using eSoft.Persediaan.Model
+@using eSoft.Persediaan.View
+@using eSoft.Persediaan.Services
+
+@inject IInventoryServices service
+@inject NavigationManager navigationmanager
+
+
+<div class="top-row px-4 " style="z-index:5">
+    <h3>Add Item</h3>
+</div>
+
+<div class="content px-4">
+    <EditForm Model="@bank" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group">
+            <label>
+                Item Code :
+                <InputText id="codeBank" class="form-control" @bind-Value="bank.ItemCode" style="text-transform:uppercase" @onfocusout="cekKode" />
+            </label>
+        </div>
+        <div class="form-group">
+            <label>
+                Item Name :
+                <InputText class="form-control" @bind-Value="bank.NamaItem" />
+            </label>
+        </div>
+        <div class="form-group">
+            <label>
+                Item Satuan :
+                <InputText class="form-control" @bind-Value="bank.Satuan" />
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label>
+                Divisi :
+                <InputSelect class="form-control" @bind-Value="bank.Divisi" style="width:80%; display:inline">
+                    <option value="">&nbsp;&nbsp;---Select Divisi---&nbsp;&nbsp;</option>
+                    @foreach (var item in DivisiSet)
+                    {
+                        <option value="@item.Divisi">@item.NamaDiv</option>
+                    }
+
+                </InputSelect>
+                @*<button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>*@
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label>
+                Tipe Produk :
+                <br />
+                @*<RadioButtonComponent TEnum="StatusGl" ></RadioButtonComponent>*@
+                <InputRadioGroup @bind-Value="bank.JnsBrng">
+                    @foreach (var jenisbarang in (jnsBrng[])Enum.GetValues(typeof(jnsBrng)))
+                    {
+                        <InputRadio Value="jenisbarang" />
+                        @jenisbarang
+                        <br />
+
+                    }
+
+                </InputRadioGroup>
+
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label>
+                Tipe Produk :
+                <br />
+                @*<RadioButtonComponent TEnum="StatusGl" ></RadioButtonComponent>*@
+                <InputRadioGroup @bind-Value="bank.CostMethod">
+                    @foreach (var costing in (costMethod[])Enum.GetValues(typeof(costMethod)))
+                    {
+                        <InputRadio Value="costing" />
+                        @costing
+                        <br />
+
+                    }
+
+                </InputRadioGroup>
+
+            </label>
+        </div>
+        @if (bank.CostMethod == costMethod.Standard_Cost)
+        {
+            <div class="form-group">
+                <label>
+                    Standard Cost :
+                    <InputNumber class="form-control" @bind-Value="bank.StdPrice" />
+                </label>
+            </div>
+        }
+
+        <div class="form-group">
+            <label>
+                Account Set :
+                <InputSelect class="form-control" @bind-Value="bank.AcctSet" style="width:80%; display:inline">
+                    <option value="">&nbsp;&nbsp;---Select Account Set---&nbsp;&nbsp;</option>
+                    @foreach (var item in AkunSet)
+                    {
+                        <option value="@item.AcctSet">@item.Description</option>
+                    }
+
+                </InputSelect>
+                @*<button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>*@
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label>
+                Category Set :
+                <InputSelect class="form-control" @bind-Value="bank.Category" style="width:80%; display:inline">
+                    <option value="">&nbsp;&nbsp;---Select Category Set---&nbsp;&nbsp;</option>
+                    @foreach (var item in CategorySet)
+                    {
+                        <option value="@item.CatCode">@item.Description</option>
+                    }
+
+                </InputSelect>
+                @*<button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>*@
+            </label>
+        </div>
+
+        <div class="float-md-right">
+            <button class="btn-success" type="submit">Simpan</button>
+        </div>
+
+    </EditForm>
+</div>
+
+@if (DialogOpen)
+{
+    <ModalDialogComponent Title="Alert" Text="Kode Item Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
+}
+
+
+@code {
+
+    IcItemView bank = new IcItemView();
+    public string Testing { get; set; }
+    private bool DialogOpen { get; set; }
+    private costMethod JnsCost { get; set; }
+    private jnsBrng JnsBarang { get; set; }
+    private List<IcAcct> AkunSet;
+    private List<IcCat> CategorySet;
+    private List<IcDiv> DivisiSet;
+
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        LoadAkun();
+        LoadDivisi();
+        LoadKategory();
+        //   bank.GlTipe = 1;
+
+    }
+
+    private void cekKode()
+    {
+        Testing = bank.ItemCode;
+        DialogOpen = service.CekKdItem(Testing);
+        if (DialogOpen)
+        {
+            bank.ItemCode = "";
+        }
+        StateHasChanged();
+    }
+
+    private void OnDialogClose(bool accepted)
+    {
+
+        DialogOpen = false;
+        StateHasChanged();
+
+    }
+
+    void LoadDivisi()
+    {
+        DivisiSet = service.GetIcDiv();
+    }
+
+    void LoadAkun()
+    {
+        AkunSet = service.GetIcAcct();
+    }
+    void LoadKategory()
+    {
+        CategorySet = service.GetIcCat();
+    }
+
+    private void HandleValidSubmit()
+    {
+        var newEdit = service.AddIcItem(bank);
+        if (newEdit)
+        {
+
+
+        }
+
+        navigationmanager.NavigateTo("/ModulePersediaan/SetupItem", false);
+
+    }
+
+    //private void OnRadioClose(StatusGl accepted)
+    //{
+    //    bank.GlStatus = accepted;
+
+    //    //System.Console.WriteLine(accepted);
+    //    // StateHasChanged();
+
+    //}
+}
