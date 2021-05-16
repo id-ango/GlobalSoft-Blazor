@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>2f8a7a2f-8e71-4f81-939b-c55a6b7d730e</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,6 +33,7 @@
     <ProjectReference Include="..\eSoft.Fungsi\eSoft.Fungsi.csproj" />
     <ProjectReference Include="..\eSoft.Hutang\eSoft.Hutang.csproj" />
     <ProjectReference Include="..\eSoft.Ledger\eSoft.Ledger.csproj" />
+    <ProjectReference Include="..\eSoft.Pembelian\eSoft.Pembelian.csproj" />
     <ProjectReference Include="..\eSoft.Persediaan\eSoft.Persediaan.csproj" />
     <ProjectReference Include="..\eSoft.Piutang\eSoft.Piutang.csproj" />
   </ItemGroup>

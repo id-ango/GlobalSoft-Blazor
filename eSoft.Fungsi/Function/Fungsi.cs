@@ -17,12 +17,23 @@ namespace eSoft.Fungsi.Function
 
         private static string ConvertToText(decimal n)
         {
-            string desimal = n.ToString("N");
+            string desimal = n.ToString();
             string points = "";
             string andStr = "";
             string pointStr = "";
 
-            int decimalPlace = desimal.IndexOf(".");
+            int decimalPlace = -1;
+
+             if(desimal.IndexOf(",") > 0)
+            {
+                decimalPlace = desimal.IndexOf(",");
+                
+            } 
+            else
+            {
+                decimalPlace = desimal.IndexOf(".");
+            }
+
             if (decimalPlace > 0)
             {
                

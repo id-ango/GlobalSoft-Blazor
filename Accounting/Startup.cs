@@ -26,6 +26,9 @@ using eSoft.Piutang.Services;
 using eSoft.Persediaan.Data;
 using eSoft.Persediaan.Services;
 
+using eSoft.Pembelian.Data;
+using eSoft.Pembelian.Services;
+
 using Microsoft.EntityFrameworkCore;
 
 
@@ -60,6 +63,11 @@ namespace Accounting
                  options.UseSqlServer(
                      Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Accounting")));
 
+            services.AddDbContext<DbContextBeli>(options =>
+                 options.UseSqlServer(
+                     Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Accounting")));
+
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
@@ -74,6 +82,7 @@ namespace Accounting
             services.AddTransient<IPaymentApDpServices, PaymentApDpServices>();
             services.AddTransient<IInventoryServices, InventoryServices>();
             services.AddTransient<IIcAdjustServices, IcAdjustServices>();
+            services.AddTransient<IPurchaseServices, PurchaseServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

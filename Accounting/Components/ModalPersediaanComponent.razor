@@ -20,7 +20,7 @@
                         <label>
                             Source Code
                             <InputSelect class="form-control" @bind-Value="Detail.ItemCode" style="width:80%; display:inline">
-                                <option value="">&nbsp;&nbsp;---Select Source Code---&nbsp;&nbsp;</option>
+                                <option value="">&nbsp;&nbsp;---Select Item Code---&nbsp;&nbsp;</option>
                                 @foreach (var item in SrcCode)
                                 {
                                     <option value="@item.ItemCode">@item.NamaItem</option>
@@ -38,7 +38,7 @@
                     </div>
                     <div class="form-group">
                         <label>
-                            Qty
+                            Cost
                             <InputNumber class="form-control" @bind-Value="@Detail.Harga" @onfocusout="UbahJumlah"></InputNumber>
                         </label>
                     </div>
@@ -49,7 +49,20 @@
                             <InputNumber class="form-control" @bind-Value="@Detail.Jumlah" />
                         </label>
                     </div>
+                    <div class="form-group">
+                        <label>
+                            Lokasi
+                            <InputSelect class="form-control" @bind-Value="Detail.Lokasi" style="width:80%; display:inline">
+                                <option value="">&nbsp;&nbsp;---Select Lokasi---&nbsp;&nbsp;</option>
+                                @foreach (var item in Location)
+                                {
+                                    <option value="@item.Lokasi">@item.NamaLokasi</option>
+                                }
 
+                            </InputSelect>
+                           
+                        </label>
+                    </div>
 
                 </EditForm>
             </div>
@@ -93,6 +106,9 @@
 
     [Parameter]
     public List<IcItem> SrcCode { get; set; }
+
+    [Parameter]
+    public List<IcLokasi> Location { get; set; }
 
     [Parameter]
     public EventCallback<bool> OnClose { get; set; }
