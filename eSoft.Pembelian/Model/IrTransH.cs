@@ -15,6 +15,7 @@ namespace eSoft.Pembelian.Model
         [StringLength(2)]
         public string Kode { get; set; }
         public string NoLpb { get; set; }
+        public string NoSJ { get; set; }
         public string NoPrj { get; set; }
         public string Lokasi { get; set; }
         public DateTime Tanggal { get; set; }
@@ -35,6 +36,7 @@ namespace eSoft.Pembelian.Model
         public decimal Tagihan { get; set; }
         [Column(TypeName = "decimal(18,4)")]
         public decimal TotalQty { get; set; }
+        public decimal QtyTerima { get; set; }
         public string Supplier { get; set; }
         public string NamaSup { get; set; }
         public string Keterangan { get; set; }

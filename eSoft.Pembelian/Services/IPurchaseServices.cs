@@ -16,10 +16,10 @@ namespace eSoft.Pembelian.Services
     public interface IPurchaseServices
     {
         IrTransH GetIrTrans(int id);
-        Task<List<IrTransH>> GetTransH();
-        Task<List<IrTransH>> Get3TransH();
-        Task<List<IrTransD>> GetTransD();
-        Task<bool> AddTransH(IrTransHView trans);
+        List<IrTransH> GetTransH();
+        List<IrTransH> Get3TransH();
+        List<IrTransD> GetTransD();
+        bool AddTransH(IrTransHView trans);
         Task<bool> DelTransH(int id);
         Task<bool> EditTransH(IrTransHView trans);
     }

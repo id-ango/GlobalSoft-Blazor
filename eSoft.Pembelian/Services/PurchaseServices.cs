@@ -52,12 +52,30 @@ namespace eSoft.Pembelian.Services
         }
 
 
-        public async Task<List<IrTransH>> GetTransH()
+        public List<IrTransH> GetTransH()
         {
             List<IrTransH> IrTrans = new List<IrTransH>();
+           
             try
             {
-                IrTrans = await _context.IrTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Kode == "82").ToListAsync();
+                IrTrans = _context.IrTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Kode == "82")
+                    .Select(x => new IrTransH { 
+                        IrTransHId = x.IrTransHId,
+                        NoLpb = x.NoLpb,
+                        Supplier = x.Supplier,
+                        NamaSup = _contextAp.ApSuppls.Where( y =>y.Supplier == x.Supplier).FirstOrDefault().NamaLengkap,
+                        Tanggal = x.Tanggal,
+                        Keterangan = x.Keterangan,
+                        Jumlah = x.Jumlah,
+                        Ppn = x.Ppn,
+                        Ongkos = x.Ongkos,
+                        Cek = x.Cek,
+                        IrTransDs = x.IrTransDs}).ToList();
+
+                //foreach(var item in IrTrans)
+                //{
+                //    item.NamaSup = _contextAp.ApSuppls.Where(x => x.Supplier == item.Supplier).FirstOrDefault().NamaLengkap;
+                //}
 
             }
             catch (Exception)
@@ -71,11 +89,11 @@ namespace eSoft.Pembelian.Services
 
         }
 
-        public async Task<List<IrTransH>> Get3TransH()
+        public List<IrTransH> Get3TransH()
         {
             List<IrTransH> IrTrans = new List<IrTransH>();
 
-            IrTrans = await _context.IrTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Tanggal > DateTime.Today.AddMonths(-3) && x.Kode == "82").ToListAsync();
+            IrTrans = _context.IrTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Tanggal > DateTime.Today.AddMonths(-3) && x.Kode == "82").ToList();
 
             return IrTrans;
 
@@ -84,12 +102,12 @@ namespace eSoft.Pembelian.Services
 
         }
 
-        public async Task<List<IrTransD>> GetTransD()
+        public List<IrTransD> GetTransD()
         {
-            return await _context.IrTransDs.ToListAsync();
+            return  _context.IrTransDs.ToList();
         }
 
-        public async Task<bool> AddTransH(IrTransHView trans)
+        public bool AddTransH(IrTransHView trans)
         {
             //string test = codeview.SrcCode.ToUpper();
             //var cekFirst = _context.CbSrcCodes.Where(x => x.SrcCode == test).ToList();
@@ -224,9 +242,9 @@ namespace eSoft.Pembelian.Services
 
             _contextAp.ApSuppls.Update(supplier);
 
-            await _context.SaveChangesAsync();
-            await _contextAp.SaveChangesAsync();
-            await _contextIc.SaveChangesAsync();
+            _context.SaveChanges();
+             _contextAp.SaveChanges();
+            _contextIc.SaveChanges();
             return true;
         }
 
