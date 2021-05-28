@@ -19,7 +19,7 @@ namespace eSoft.Pembelian.Services
         List<IrTransH> GetTransH();
         List<IrTransH> Get3TransH();
         List<IrTransD> GetTransD();
-        bool AddTransH(IrTransHView trans);
+        IrTransH AddTransH(IrTransHView trans);
         Task<bool> DelTransH(int id);
         Task<bool> EditTransH(IrTransHView trans);
     }

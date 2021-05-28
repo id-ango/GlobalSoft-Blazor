@@ -23,11 +23,11 @@ namespace eSoft.Pembelian.View
         public string NamaItem { get; set; }
         public string Satuan { get; set; }
         public string Lokasi { get; set; }
-        [Column(TypeName = "decimal(18,4)")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Harga { get; set; }
         [Column(TypeName = "decimal(18,2)")]
         public decimal Persen { get; set; }
-        [Column(TypeName = "decimal(18,4)")]
+        [Column(TypeName = "decimal(18,2)")]
 
         public decimal Discount
         {
@@ -51,13 +51,13 @@ namespace eSoft.Pembelian.View
                 discount = value;
             }
         }
-        [Column(TypeName = "decimal(18,4)")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Qty { get; set; }
-        [Column(TypeName = "decimal(18,4)")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal QtyBo { get; set; }
-        [Column(TypeName = "decimal(18,4)")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal JumDpp { get; set; }
-        [Column(TypeName = "decimal(18,4)")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Jumlah
         {
             get

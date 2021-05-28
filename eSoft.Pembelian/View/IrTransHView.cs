@@ -21,7 +21,7 @@ namespace eSoft.Pembelian.View
         public string Lokasi { get; set; }
         public DateTime Tanggal { get; set; }
         public DateTime JthTempo { get; set; }
-        [Column(TypeName = "decimal(18,4)")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal TtlJumlah
         {
             get
@@ -29,13 +29,13 @@ namespace eSoft.Pembelian.View
                 return IrTransDs.Sum(p => p.Jumlah);
             }
         }
-        [Column(TypeName = "decimal(18,4)")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal DPayment { get; set; }
-        [Column(TypeName = "decimal(18,4)")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Ongkos { get; set; }
-        [Column(TypeName = "decimal(18,4)")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal PpnPersen { get; set; }
-        [Column(TypeName = "decimal(18,4)")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Ppn
         {
             get
@@ -57,7 +57,7 @@ namespace eSoft.Pembelian.View
             }
         }
 
-        [Column(TypeName = "decimal(18,4)")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Jumlah
         {
             get
@@ -65,7 +65,7 @@ namespace eSoft.Pembelian.View
                 return TtlJumlah + Ongkos + Ppn;
             }
         }
-        [Column(TypeName = "decimal(18,4)")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal TotalQty
         {
             get
@@ -73,7 +73,7 @@ namespace eSoft.Pembelian.View
                 return IrTransDs.Sum(p => p.Qty);
             }
         }
-        [Column(TypeName = "decimal(18,4)")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Tagihan
         {
             get
@@ -81,6 +81,7 @@ namespace eSoft.Pembelian.View
                 return Jumlah - DPayment;
             }
         }
+        [Required]
         public string Supplier { get; set; }
         public string NamaSup { get; set; }
         public string Keterangan { get; set; }

@@ -36,6 +36,7 @@ namespace eSoft.Pembelian.Model
         public decimal Tagihan { get; set; }
         [Column(TypeName = "decimal(18,4)")]
         public decimal TotalQty { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
         public decimal QtyTerima { get; set; }
         public string Supplier { get; set; }
         public string NamaSup { get; set; }

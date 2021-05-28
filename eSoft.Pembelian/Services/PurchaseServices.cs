@@ -10,6 +10,7 @@ using eSoft.Hutang.Data;
 using eSoft.Hutang.Model;
 using eSoft.Persediaan.Data;
 using eSoft.Persediaan.Model;
+using eSoft.Persediaan.View;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -56,26 +57,15 @@ namespace eSoft.Pembelian.Services
         {
             List<IrTransH> IrTrans = new List<IrTransH>();
            
+           
             try
             {
-                IrTrans = _context.IrTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Kode == "82")
-                    .Select(x => new IrTransH { 
-                        IrTransHId = x.IrTransHId,
-                        NoLpb = x.NoLpb,
-                        Supplier = x.Supplier,
-                        NamaSup = _contextAp.ApSuppls.Where( y =>y.Supplier == x.Supplier).FirstOrDefault().NamaLengkap,
-                        Tanggal = x.Tanggal,
-                        Keterangan = x.Keterangan,
-                        Jumlah = x.Jumlah,
-                        Ppn = x.Ppn,
-                        Ongkos = x.Ongkos,
-                        Cek = x.Cek,
-                        IrTransDs = x.IrTransDs}).ToList();
+                IrTrans = _context.IrTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Kode == "82").ToList();
 
-                //foreach(var item in IrTrans)
-                //{
-                //    item.NamaSup = _contextAp.ApSuppls.Where(x => x.Supplier == item.Supplier).FirstOrDefault().NamaLengkap;
-                //}
+                foreach (var item in IrTrans)
+                {
+                    item.NamaSup = _contextAp.ApSuppls.Where(x => x.Supplier == item.Supplier).FirstOrDefault().NamaLengkap;
+                }
 
             }
             catch (Exception)
@@ -107,7 +97,7 @@ namespace eSoft.Pembelian.Services
             return  _context.IrTransDs.ToList();
         }
 
-        public bool AddTransH(IrTransHView trans)
+        public IrTransH AddTransH(IrTransHView trans)
         {
             //string test = codeview.SrcCode.ToUpper();
             //var cekFirst = _context.CbSrcCodes.Where(x => x.SrcCode == test).ToList();
@@ -118,7 +108,7 @@ namespace eSoft.Pembelian.Services
                 NoLpb = GetNumber(),
                 Supplier = trans.Supplier.ToUpper(),
                 NamaSup = trans.NamaSup,
-                Lokasi = trans.Lokasi.ToUpper(),
+                
                 Tanggal = trans.Tanggal,
                 Keterangan = trans.Keterangan,
                 Jumlah = trans.Jumlah,
@@ -153,7 +143,7 @@ namespace eSoft.Pembelian.Services
                         ItemCode = item.ItemCode.ToUpper(),
                         NamaItem = item.NamaItem,
                         Satuan = item.Satuan,
-                        Lokasi = transH.Lokasi,
+                        Lokasi = item.Lokasi,
                         Harga = item.Harga,
                         Qty = item.Qty,
                         Persen = item.Persen,
@@ -195,12 +185,12 @@ namespace eSoft.Pembelian.Services
 
                         cekItem.Harga = item.Harga;  // harga beli barang
 
-                        if (cekItem.JnsBrng.Equals("Stock"))   // jika stock
+                        if (cekItem.JnsBrng == (int)jnsBrng.Stock)   // jika stock
                         {
                             cekItem.Qty += item.Qty;
                         }
 
-                        if (cekItem.CostMethod.Equals("Moving Avarage"))  // jika moving avarage
+                        if (cekItem.CostMethod == (int)costMethod.Moving_Avg)  // jika moving avarage
                         {
 
                             cekItem.Cost += mQty5;
@@ -245,9 +235,17 @@ namespace eSoft.Pembelian.Services
             _context.SaveChanges();
              _contextAp.SaveChanges();
             _contextIc.SaveChanges();
-            return true;
+
+            var TempTrans = GetTransDoc(transH.NoLpb);
+
+            return TempTrans;
+           
         }
 
+        public IrTransH GetTransDoc(string docno)
+        {
+            return _context.IrTransHs.Include(p => p.IrTransDs).Where(x => x.NoLpb == docno).FirstOrDefault();
+        }
 
         public async Task<bool> DelTransH(int id)
         {
@@ -286,12 +284,12 @@ namespace eSoft.Pembelian.Services
                                 }
                                 //   cekItem.Qty -= item.Qty;
                                 //   cekItem.Cost -= item.JumDpp;
-                                if (cekItem.JnsBrng.Equals("Stock"))   // jika stock
+                                if (cekItem.JnsBrng == (int)jnsBrng.Stock)   // jika stock
                                 {
                                     cekItem.Qty -= item.Qty;
                                 }
 
-                                if (cekItem.CostMethod.Equals("Moving Avarage"))  // jika moving avarage
+                                if (cekItem.CostMethod  == (int)costMethod.Moving_Avg)  // jika moving avarage
                                 {
 
                                     cekItem.Cost -= item.JumDpp;
@@ -337,12 +335,13 @@ namespace eSoft.Pembelian.Services
         {
             decimal mQty5 = 0;
 
-            var cekFirst = _contextAp.ApHutangs.Where(x => x.Dokumen == trans.NoLpb).FirstOrDefault();
+            var cekFirst = _contextAp.ApHutangs.Where(x => x.Dokumen == trans.NoLpb && x.Bayar == 0).FirstOrDefault();
 
             if (cekFirst != null)
             {
                 try
                 {
+
                     var ExistingTrans = _context.IrTransHs.Where(x => x.IrTransHId == trans.IrTransHId).FirstOrDefault();
 
                     if (ExistingTrans != null)
@@ -374,12 +373,12 @@ namespace eSoft.Pembelian.Services
                                         cekLokasi1.Qty -= item.Qty;
                                         _contextIc.IcAltItems.Update(cekLokasi1);
                                     }
-                                    if (cekItem.JnsBrng.Equals("Stock"))   // jika stock
+                                    if (cekItem.JnsBrng== (int)jnsBrng.Stock)   // jika stock
                                     {
                                         cekItem.Qty -= item.Qty;
                                     }
 
-                                    if (cekItem.CostMethod.Equals("Moving Avarage"))  // jika moving avarage
+                                    if (cekItem.CostMethod == (int)costMethod.Moving_Avg)  // jika moving avarage
                                     {
 
                                         cekItem.Cost -= item.JumDpp;
@@ -413,8 +412,7 @@ namespace eSoft.Pembelian.Services
                         {
                             NoLpb = trans.NoLpb,
                             Supplier = trans.Supplier.ToUpper(),
-                            NamaSup = trans.NamaSup,
-                            Lokasi = trans.Lokasi.ToUpper(),
+                            NamaSup = trans.NamaSup,                           
                             Tanggal = trans.Tanggal,
                             Keterangan = trans.Keterangan,
                             Jumlah = trans.Jumlah,
@@ -481,12 +479,12 @@ namespace eSoft.Pembelian.Services
                                         _contextIc.IcAltItems.Update(cekLokasi1);
                                     }
 
-                                    if (cekItem.JnsBrng.Equals("Stock"))   // jika stock
+                                    if (cekItem.JnsBrng == (int)jnsBrng.Stock)   // jika stock
                                     {
                                         cekItem.Qty += item.Qty;
                                     }
 
-                                    if (cekItem.CostMethod.Equals("Moving Avarage"))  // jika moving avarage
+                                    if (cekItem.CostMethod  == (int)costMethod.Moving_Avg )  // jika moving avarage
                                     {
 
                                         cekItem.Cost += mQty5;
@@ -530,24 +528,32 @@ namespace eSoft.Pembelian.Services
                         _contextAp.ApSuppls.Update(supplier);
                         _contextAp.ApHutangs.Add(hutang);
 
-                        await _context.SaveChangesAsync();
+                        
                         await _contextAp.SaveChangesAsync();
                         await _contextIc.SaveChangesAsync();
+                        await _context.SaveChangesAsync();
+
+                        //  var TempTrans = GetTransDoc(transH.NoLpb);
+
+                        //   return transH;
                         return true;
+                       
                     }
+                    else
+                    {
+                        return false;
+                    }
+
                 }
                 catch (Exception)
                 {
                     throw;
                 }
             }
-
-
-
-
-
-
             return false;
+
+
+
         }
 
         #endregion IrTransH Class
