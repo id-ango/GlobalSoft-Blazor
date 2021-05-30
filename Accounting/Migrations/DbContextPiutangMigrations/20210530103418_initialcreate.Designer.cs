@@ -10,15 +10,15 @@ using eSoft.Piutang.Data;
 namespace Accounting.Migrations.DbContextPiutangMigrations
 {
     [DbContext(typeof(DbContextPiutang))]
-    [Migration("20210416032109_dbpiutang")]
-    partial class dbpiutang
+    [Migration("20210530103418_initialcreate")]
+    partial class initialcreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.5")
+                .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("eSoft.Piutang.Model.ArAcct", b =>

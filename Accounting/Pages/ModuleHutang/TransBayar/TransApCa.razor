@@ -24,18 +24,22 @@
     <DataGridComponent Items="TransHeader" Context="transaksi" GetFilterableText="@(item =>$"{item.Bukti} {item.Keterangan} {item.NamaSup}")">
         <TableHeader>
             <th scope="col">Doc #</th>
-            <th scope="col">Bank</th>
+         
             <th scope="col">Supplier</th>
-            <th scope="col">Tanggal</th>
+         
             <th scope="col">Keterangan</th>
             <th scope="col">Saldo</th>
             <th></th>
         </TableHeader>
         <RowTemplate>
-            <td>@transaksi.Bukti</td>
-            <td>@transaksi.KdBank</td>
+            <td>
+                @transaksi.Bukti
+                <span class="badge badge-pill badge-light">@transaksi.Tanggal.ToShortDateString()</span>
+                <span class="badge badge-pill badge-success">@(transaksi.KdBank)</span>
+            </td>
+       
             <td>@transaksi.NamaSup</td>
-            <td>@transaksi.Tanggal.ToShortDateString()</td>
+           
             <td>@transaksi.Keterangan</td>
             <td>@transaksi.Jumlah.ToString("N")</td>
             <td>

@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Accounting.Migrations.DbContextLedgerMigrations
+namespace Accounting.Migrations
 {
-    public partial class initialdbledger : Migration
+    public partial class initialcreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

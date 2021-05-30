@@ -10,15 +10,15 @@ using eSoft.Hutang.Data;
 namespace Accounting.Migrations.DbContextHutangMigrations
 {
     [DbContext(typeof(DbContextHutang))]
-    [Migration("20210422032128_hutang")]
-    partial class hutang
+    [Migration("20210530103338_initialcreate")]
+    partial class initialcreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.5")
+                .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("eSoft.Hutang.Model.ApAcct", b =>
