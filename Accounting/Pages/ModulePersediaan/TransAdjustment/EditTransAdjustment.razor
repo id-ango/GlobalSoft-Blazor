@@ -1,15 +1,17 @@
-﻿@page "/ModulePersediaan/EditTransPersediaan/{Id:int}"
-@using eSoft.Hutang.Model
-@using eSoft.Hutang.View
-@using eSoft.Hutang.Services
+﻿@page "/ModulePersediaan/EditTransAdjustment/{Id:int}"
+@using eSoft.Persediaan.Model
+@using eSoft.Persediaan.View
+@using eSoft.Persediaan.Services
 
-@inject IPayableServices service
+@inject IIcAdjustServices service
+@inject IInventoryServices serviceIC
 @inject NavigationManager navigationmanager
 
 
 
+
 <div class="top-row px-4 " style="z-index:5">
-    <h3>Edit Transaksi Hutang</h3>
+    <h3>Edit Transaksi Adjustment</h3>
 </div>
 
 
@@ -17,33 +19,21 @@
     <EditForm Model="@Transh" OnValidSubmit="@HandleValidSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
+
+
         <div class="form-group">
             <label>
                 Kode :
-                <InputText class="form-control" @bind-Value="Transh.Bukti" style="text-transform:uppercase" disabled="disabled" />
+                <InputText class="form-control" @bind-Value="Transh.NoFaktur" style="text-transform:uppercase" disabled="disabled" />
             </label>
         </div>
-
         <div class="form-group">
             <label>
                 Tanggal :
                 <InputDate class="form-control" @bind-Value="Transh.Tanggal" />
             </label>
         </div>
-        <div class="form-group">
-            <label>
-                Customer :
-                <InputSelect class="form-control" @bind-Value="Transh.Supplier" style="width:80%; display:inline">
-                    <option value="">&nbsp;&nbsp;---Select Supplier---&nbsp;&nbsp;</option>
-                    @foreach (var item in banks)
-                    {
-                        <option value="@item.Supplier">[@item.Supplier]&nbsp; @item.NamaSup</option>
-                    }
 
-                </InputSelect>
-                <button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>
-            </label>
-        </div>
         <div class="form-group">
             <label>
                 Keterangan :
@@ -55,32 +45,31 @@
         <div class="float-md-right">
             <button class="btn-success" type="submit">Simpan</button>
         </div>
+
         <br />
         <br />
 
     </EditForm>
 </div>
 <div class="container">
-    <div class="row">
-        <div class=" col-sm  form-message">
-            <span>Saldo   : @Transh.Jumlah.ToString("N")</span>
-        </div>
-
-    </div>
-</div>
-
-<div class="container">
-    <DetailGridComponent Items="Transh.ApTransDs" Context="transaksi">
+    <DetailGridComponent Items="Transh.IcTransDs" Context="transaksi">
         <TableHeader>
-            <th scope="col">Source</th>
-            <th scope="col">Keterangan</th>
+            <th scope="col">Item</th>
+            <th scope="col">Nama</th>
+            <th scope="col">Satuan</th>
+            <th scope="col">Lokasi</th>
+            <th scope="col">Qty</th>
+            <th scope="col">Harga</th>
             <th scope="col">Jumlah</th>
-
             <th></th>
         </TableHeader>
         <RowTemplate>
-            <td>@transaksi.DistCode</td>
-            <td>@transaksi.Keterangan</td>
+            <td>@transaksi.ItemCode</td>
+            <td>@transaksi.NamaItem</td>
+            <td>@transaksi.Satuan</td>
+            <td>@transaksi.Lokasi</td>
+            <td>@transaksi.QtyShp.ToString("N")</td>
+            <td>@transaksi.Harga.ToString("N")</td>
             <td>@transaksi.Jumlah.ToString("N")</td>
 
             <td>
@@ -94,9 +83,8 @@
 
 @if (IsVisible)
 {
-    <ModalHutangComponent SrcCode="srccode" OnClose="OnVisibleClose" OnDetail="OnDetailTrans" isEdit="IsEdit" DetailRubah="Transd"></ModalHutangComponent>
+    <ModalPersediaanComponent SrcCode="srccode" OnClose="OnVisibleClose" OnDetail="OnDetailTrans" isEdit="IsEdit" DetailRubah="Transd" Location="banks"></ModalPersediaanComponent>
 }
-
 
 
 @if (DialogOpen)
@@ -104,45 +92,20 @@
     <ModalDialogComponent Title="Alert" Text="Kode Bank Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
 }
 
-@if (SearchOpen)
-{
 
-    <ModalSearchComponent OnClose="OnSearchClose" Items="banks" Context="cbBank" GetFilterableText="@(item =>$"{item.Supplier} {item.NamaSup} {item.Alamat} ")">
-        <TableHeader>
-            <th scope="col">Customer</th>
-            <th scope="col">Nama</th>
-            <th scope="col">Alamat</th>
-            <th scope="col">Telpon</th>
-            <th></th>
-        </TableHeader>
-        <RowTemplate>
-            <td>@cbBank.Supplier</td>
-            <td>@cbBank.NamaSup</td>
-            <td>@cbBank.Alamat</td>
-            <td>@cbBank.Telpon</td>
-            <td>
-                <button @onclick="() => BtnChoose(cbBank.Supplier)" class="btn btn-success">Choose</button>
-
-            </td>
-        </RowTemplate>
-    </ModalSearchComponent>
-
-
-}
 
 @code {
 
     [Parameter]
     public int Id { get; set; }
 
-    private ApTransHView Transh = new ApTransHView() { ApTransDs = new List<ApTransDView>() };
-    private ApTransH TransAll = new ApTransH() { ApTransDs = new List<ApTransD>() };
+    IcTransHView Transh = new IcTransHView() { IcTransDs = new List<IcTransDView>() };
+    private IcTransH TransAll = new IcTransH() { IcTransDs = new List<IcTransD>() };
+    private List<IcItem> srccode;
+    private List<IcLokasi> banks;
+    private IcTransDView Transd = new IcTransDView();
+    private IcTransDView TransK = new IcTransDView();
 
-    private List<ApDist> srccode;
-    private List<ApSuppl> banks;
-
-    private ApTransDView Transd = new ApTransDView();
-    private ApTransDView TransK = new ApTransDView();
 
     public string kurs { get; set; } = "";
 
@@ -190,18 +153,23 @@
         var newEdit = service.EditTransH(Transh);
         if (newEdit != null)
         {
-            var id = newEdit.ApTransHId.ToString().Trim();
-            navigationmanager.NavigateTo("/ModuleHutang/TransHutang", false);
+            //  var id = newEdit.IcTransHId.ToString().Trim();
+            var id = Transh.IcTransHId.ToString().Trim();
+            navigationmanager.NavigateTo("/ModulePersediaan/TransAdjustment", false);
             //  navigationmanager.NavigateTo($"/PrintBuktiBayar/{id}");
         }
 
     }
 
-    private void OnDetailTrans(ApTransDView transD)
+    private void OnDetailTrans(IcTransDView transD)
     {
+        transD.NamaItem = serviceIC.GetIcItemProduk(transD.ItemCode).NamaItem;
+        transD.Satuan = serviceIC.GetIcItemProduk(transD.ItemCode).Satuan;
+
         if (!IsEdit)
         {
-            Transh.ApTransDs.Add(transD);
+
+            Transh.IcTransDs.Add(transD);
         }
 
         IsVisible = false;
@@ -233,43 +201,48 @@
     void LoadBank()
     {
 
-        banks = service.GetSupplier();
-
+        banks = serviceIC.GetIcLokasi();
     }
 
     void LoadSrcCode()
     {
 
-        srccode = service.GetDist();
+        srccode = serviceIC.GetIcItem();
 
     }
 
     void LoadTrans()
     {
-        TransAll = service.GetTrans(Id);
-        Transh.ApTransHId = Id;
-        Transh.Bukti = TransAll.Bukti;
+        TransAll = service.GetIcTrans(Id);
+        Transh.IcTransHId = Id;
+        Transh.NoFaktur = TransAll.NoFaktur;
         Transh.Tanggal = TransAll.Tanggal;
 
-        Transh.Supplier = TransAll.Supplier;
+        //   Transh.Supplier = TransAll.Supplier;
 
         Transh.Keterangan = TransAll.Keterangan;
-        foreach (var item in TransAll.ApTransDs)
+        foreach (var item in TransAll.IcTransDs)
         {
-            Transh.ApTransDs.Add(new ApTransDView
+            Transh.IcTransDs.Add(new IcTransDView
             {
-                DistCode = item.DistCode,
-                Keterangan = item.Keterangan,
+                ItemCode = item.ItemCode,
+                NamaItem = item.NamaItem,
+                Satuan = item.Satuan,
+                Lokasi = item.Lokasi,
+                QtyShp = item.QtyShp,
+                Harga = item.Harga,
                 Jumlah = item.Jumlah
             });
         }
     }
+
+
     #endregion
 
     #region button detail
-    private void Rubah(ApTransDView transd)
+    private void Rubah(IcTransDView transd)
     {
-        Transd = new ApTransDView();
+        Transd = new IcTransDView();
         Transd = transd;
         IsEdit = true;
         OnAddLine();
@@ -277,25 +250,25 @@
 
     }
 
-    private void Hapus(ApTransDView transd)
+    private void Hapus(IcTransDView transd)
     {
 
-        Transh.ApTransDs.Remove(transd);
+        Transh.IcTransDs.Remove(transd);
         //ShowOnClick();
     }
     #endregion
 
 
-    private void BtnChoose(string textSearch)
-    {
-        if (!string.IsNullOrEmpty(textSearch))
-        {
-            Transh.Supplier = textSearch;
-        }
+    //private void BtnChoose(string textSearch)
+    //{
+    //    if (!string.IsNullOrEmpty(textSearch))
+    //    {
+    //        Transh.Supplier = textSearch;
+    //    }
 
-        SearchOpen = false;
-        StateHasChanged();
-    }
+    //    SearchOpen = false;
+    //    StateHasChanged();
+    //}
 
     private void OnSearchClose(bool accepted)
     {

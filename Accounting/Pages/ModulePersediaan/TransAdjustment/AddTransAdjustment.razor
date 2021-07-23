@@ -171,8 +171,12 @@
 
     private void OnDetailTrans(IcTransDView transD)
     {
+        transD.NamaItem = serviceIC.GetIcItemProduk(transD.ItemCode).NamaItem;
+        transD.Satuan = serviceIC.GetIcItemProduk(transD.ItemCode).Satuan;
+
         if (!IsEdit)
         {
+
             Transh.IcTransDs.Add(transD);
         }
 
