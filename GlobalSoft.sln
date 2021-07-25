@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSoft.Persediaan", "eSoft.P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSoft.Pembelian", "eSoft.Pembelian\eSoft.Pembelian.csproj", "{E48BE2E0-DEBB-4357-B0FF-BF2C5AC1656A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eSoft.Penjualan", "eSoft.Penjualan\eSoft.Penjualan.csproj", "{6E6AF7E2-580C-4322-BCFD-BF90A96D48EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSoft.Penjualan", "eSoft.Penjualan\eSoft.Penjualan.csproj", "{6E6AF7E2-580C-4322-BCFD-BF90A96D48EE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSoft.Order", "eSoft.Order\eSoft.Order.csproj", "{48E20EEA-DDB9-4922-BF22-02CD3D275BFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{6E6AF7E2-580C-4322-BCFD-BF90A96D48EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E6AF7E2-580C-4322-BCFD-BF90A96D48EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E6AF7E2-580C-4322-BCFD-BF90A96D48EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48E20EEA-DDB9-4922-BF22-02CD3D275BFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48E20EEA-DDB9-4922-BF22-02CD3D275BFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48E20EEA-DDB9-4922-BF22-02CD3D275BFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48E20EEA-DDB9-4922-BF22-02CD3D275BFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

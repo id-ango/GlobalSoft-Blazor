@@ -1,17 +1,18 @@
 ﻿@page "/ModuleJual/EditTransJual/{Id:int}"
-@using eSoft.Hutang.Model
-@using eSoft.Hutang.View
-@using eSoft.Hutang.Services
+@using eSoft.Piutang.Model
+@using eSoft.Piutang.View
+@using eSoft.Piutang.Services
 @using eSoft.Persediaan.Model
 @using eSoft.Persediaan.View
 @using eSoft.Persediaan.Services
-@using eSoft.Pembelian.Model
-@using eSoft.Pembelian.View
-@using eSoft.Pembelian.Services
+@using eSoft.Penjualan.Model
+@using eSoft.Penjualan.View
+@using eSoft.Penjualan.Services
 
-@inject IPurchaseServices  service
-@inject IPayableServices   serviceAP
+@inject ISalesServices  service
+@inject IReceivableServices   serviceAR
 @inject IInventoryServices serviceIC
+
 @inject NavigationManager navigationmanager
 
 <div class="top-row px-4 " style="z-index:5">
@@ -34,11 +35,11 @@
         <div class="form-group">
             <label>
                 Supplier :
-                <InputSelect class="form-control" @bind-Value="Transh.Supplier" style="width:80%; display:inline">
-                    <option value="">&nbsp;&nbsp;---Select Supplier---&nbsp;&nbsp;</option>
+                <InputSelect class="form-control" @bind-Value="Transh.Customer" style="width:80%; display:inline">
+                    <option value="">&nbsp;&nbsp;---Select Customer---&nbsp;&nbsp;</option>
                     @foreach (var item in supplier)
                     {
-                        <option value="@item.Supplier">[@item.Supplier]&nbsp; @item.NamaSup</option>
+                        <option value="@item.Customer">[@item.Customer]&nbsp; @item.NamaCust</option>
                     }
 
                 </InputSelect>
@@ -124,7 +125,7 @@
 </div>
 
 <div class="container">
-    <DetailGridComponent Items="Transh.IrTransDs" Context="transaksi">
+    <DetailGridComponent Items="Transh.OeTransDs" Context="transaksi">
         <TableHeader>
 
             <th scope="col">Item</th>
@@ -160,7 +161,7 @@
 
 @if (IsVisible)
 {
-    <ModalBeliComponent SrcCode="srccode" OnClose="OnVisibleClose" OnDetail="OnDetailTrans" isEdit="IsEdit" DetailRubah="Transd" Location="lokasi"></ModalBeliComponent>
+    <ModalJualComponent SrcCode="srccode" OnClose="OnVisibleClose" OnDetail="OnDetailTrans" isEdit="IsEdit" DetailRubah="Transd" Location="lokasi"></ModalJualComponent>
 }
 
 
@@ -176,13 +177,13 @@
     public int Id { get; set; }
 
 
-    private IrTransH TransAll = new IrTransH() { IrTransDs = new List<IrTransD>() };
-    IrTransHView Transh = new IrTransHView() { IrTransDs = new List<IrTransDView>() };
-    private List<ApSuppl> supplier;
+    private OeTransH TransAll = new OeTransH() { OeTransDs = new List<OeTransD>() };
+    OeTransHView Transh = new OeTransHView() { OeTransDs = new List<OeTransDView>() };
+    private List<ArCust> supplier;
     private List<IcItem> srccode;
     private List<IcLokasi> lokasi;
-    private IrTransDView Transd = new IrTransDView();
-    private IrTransDView TransK = new IrTransDView();
+    private OeTransDView Transd = new OeTransDView();
+    private OeTransDView TransK = new OeTransDView();
 
 
     private string enabled { get; set; }
@@ -223,7 +224,7 @@
     {
 
         DialogOpen = false;
-        navigationmanager.NavigateTo("/ModuleBeli/TransBeli", false);
+        navigationmanager.NavigateTo("/ModuleJual/TransJual", false);
         StateHasChanged();
 
     }
@@ -240,9 +241,9 @@
         if (newEdit)
         {
             // var id = newEdit.IrTransHId.ToString().Trim();
-            var id = Transh.IrTransHId.ToString().Trim();
+            var id = Transh.OeTransHId.ToString().Trim();
             //     navigationmanager.NavigateTo($"/PrintBuktiBayar/{id}");
-            navigationmanager.NavigateTo("/ModuleBeli/TransBeli", false);
+            navigationmanager.NavigateTo("/ModuleJual/TransJual", false);
         }
         else
         {
@@ -252,11 +253,11 @@
 
     }
 
-    private void OnDetailTrans(IrTransDView transD)
+    private void OnDetailTrans(OeTransDView transD)
     {
         if (!IsEdit)
         {
-            Transh.IrTransDs.Add(transD);
+            Transh.OeTransDs.Add(transD);
         }
 
         IsVisible = false;
@@ -267,9 +268,9 @@
 
 
 
-    private void Rubah(IrTransDView transd)
+    private void Rubah(OeTransDView transd)
     {
-        Transd = new IrTransDView();
+        Transd = new OeTransDView();
         Transd = transd;
         IsEdit = true;
         OnAddLine();
@@ -292,7 +293,7 @@
     void Loadsupplier()
     {
 
-        supplier = serviceAP.GetSupplier();
+        supplier = serviceAR.GetCustomer();
 
     }
 
@@ -312,12 +313,12 @@
 
     void LoadTrans()
     {
-        TransAll = service.GetIrTrans(Id);
-        Transh.IrTransHId = Id;
+        TransAll = service.GetOeTrans(Id);
+        Transh.OeTransHId = Id;
         Transh.NoLpb = TransAll.NoLpb;
         Transh.Tanggal = TransAll.Tanggal;
-        Transh.NamaSup = TransAll.NamaSup;
-        Transh.Supplier = TransAll.Supplier;
+        Transh.NamaCust = TransAll.NamaCust;
+        Transh.Customer = TransAll.Customer;
         Transh.Ongkos = TransAll.Ongkos;
         Transh.Ppn = TransAll.Ppn;
         Transh.PpnPersen = TransAll.PpnPersen;
@@ -325,9 +326,9 @@
         Transh.Kode = TransAll.Kode;
         Transh.Cek = TransAll.Cek;
         Transh.Keterangan = TransAll.Keterangan;
-        foreach (var item in TransAll.IrTransDs)
+        foreach (var item in TransAll.OeTransDs)
         {
-            Transh.IrTransDs.Add(new IrTransDView
+            Transh.OeTransDs.Add(new OeTransDView
             {
                 ItemCode = item.ItemCode,
                 NamaItem = item.NamaItem,
@@ -349,10 +350,10 @@
 
     #region button detail
 
-    private void Hapus(IrTransDView transd)
+    private void Hapus(OeTransDView transd)
     {
 
-        Transh.IrTransDs.Remove(transd);
+        Transh.OeTransDs.Remove(transd);
         //ShowOnClick();
     }
 

@@ -25,3 +25,4 @@ namespace eSoft.Penjualan.Services
         Task<bool> EditTransH(OeTransHView trans);
     }
 }
+
