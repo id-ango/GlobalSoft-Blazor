@@ -32,7 +32,7 @@ namespace eSoft.Order.Services
 
         #region getclass
 
-        private ApSuppl GetSupplierId(string id)
+        private ApSuppl GetVendorId(string id)
         {
             return _contextAp.ApSuppls.Where(x => x.Supplier == id).FirstOrDefault();
         }
@@ -64,7 +64,7 @@ namespace eSoft.Order.Services
 
                 foreach (var item in PoTrans)
                 {
-                    item.NamaSup = _contextAp.ApSuppls.Where(x => x.Supplier == item.Supplier).FirstOrDefault().NamaLengkap;
+                    item.NamaVendor = _contextAp.ApSuppls.Where(x => x.Supplier == item.Vendor).FirstOrDefault().NamaLengkap;
                 }
 
             }
@@ -106,8 +106,8 @@ namespace eSoft.Order.Services
             PoTransH transH = new PoTransH
             {
                 NoLpb = GetNumber(),
-                Supplier = trans.Supplier.ToUpper(),
-                NamaSup = trans.NamaSup,
+                Vendor = trans.Vendor.ToUpper(),
+                NamaVendor = trans.NamaVendor,
                 
                 Tanggal = trans.Tanggal,
                 Keterangan = trans.Keterangan,
@@ -218,7 +218,7 @@ namespace eSoft.Order.Services
                 Dokumen = transH.NoLpb,
                 Tanggal = transH.Tanggal,
                 DueDate = transH.Tanggal,
-                Supplier = transH.Supplier,
+                Supplier = transH.Vendor,
                 Keterangan = transH.Keterangan,
                 Jumlah = transH.Jumlah,
                 Sisa = transH.Jumlah,
@@ -227,10 +227,10 @@ namespace eSoft.Order.Services
             };
             _contextAp.ApHutangs.Add(hutang);
 
-            var supplier = GetSupplierId(transH.Supplier);
-            supplier.Hutang += transH.Jumlah;
+            var Vendor = GetVendorId(transH.Vendor);
+            Vendor.Hutang += transH.Jumlah;
 
-            _contextAp.ApSuppls.Update(supplier);
+            _contextAp.ApSuppls.Update(Vendor);
 
             _context.SaveChanges();
              _contextAp.SaveChanges();
@@ -309,12 +309,12 @@ namespace eSoft.Order.Services
                         }
 
                     }
-                    var supplier = GetSupplierId(ExistingTrans.Supplier);
+                    var Vendor = GetVendorId(ExistingTrans.Vendor);
                     var hutang = GetHutang(ExistingTrans.NoLpb);
 
-                    supplier.Hutang -= ExistingTrans.Jumlah;
+                    Vendor.Hutang -= ExistingTrans.Jumlah;
 
-                    _contextAp.ApSuppls.Update(supplier);
+                    _contextAp.ApSuppls.Update(Vendor);
                     _contextAp.ApHutangs.Remove(hutang);
                     _context.PoTransHs.Remove(ExistingTrans);
                     await _context.SaveChangesAsync();
@@ -400,10 +400,10 @@ namespace eSoft.Order.Services
 
                         }
 
-                        var existingsupplier = GetSupplierId(ExistingTrans.Supplier);
-                        existingsupplier.Hutang -= ExistingTrans.Jumlah;
+                        var existingVendor = GetVendorId(ExistingTrans.Vendor);
+                        existingVendor.Hutang -= ExistingTrans.Jumlah;
 
-                        _contextAp.ApSuppls.Update(existingsupplier);
+                        _contextAp.ApSuppls.Update(existingVendor);
                         _contextAp.ApHutangs.Remove(cekFirst);
                         _context.PoTransHs.Remove(ExistingTrans);
 
@@ -411,8 +411,8 @@ namespace eSoft.Order.Services
                         PoTransH transH = new PoTransH
                         {
                             NoLpb = trans.NoLpb,
-                            Supplier = trans.Supplier.ToUpper(),
-                            NamaSup = trans.NamaSup,                           
+                            Vendor = trans.Vendor.ToUpper(),
+                            NamaVendor = trans.NamaVendor,                           
                             Tanggal = trans.Tanggal,
                             Keterangan = trans.Keterangan,
                             Jumlah = trans.Jumlah,
@@ -512,7 +512,7 @@ namespace eSoft.Order.Services
                             Dokumen = transH.NoLpb,
                             Tanggal = transH.Tanggal,
                             DueDate = transH.Tanggal,
-                            Supplier = transH.Supplier,
+                            Supplier = transH.Vendor,
                             Keterangan = transH.Keterangan,
                             Jumlah = transH.Jumlah,
                             Sisa = transH.Jumlah,
@@ -521,11 +521,11 @@ namespace eSoft.Order.Services
                         };
 
 
-                        var supplier = GetSupplierId(transH.Supplier);
-                        supplier.Hutang += transH.Jumlah;
+                        var Vendor = GetVendorId(transH.Vendor);
+                        Vendor.Hutang += transH.Jumlah;
 
                         _context.PoTransHs.Add(transH);
-                        _contextAp.ApSuppls.Update(supplier);
+                        _contextAp.ApSuppls.Update(Vendor);
                         _contextAp.ApHutangs.Add(hutang);
 
                         

@@ -1,4 +1,4 @@
-﻿@page "/ModuleJual/AddTransJual"
+﻿@page "/ModuleJual/AddTransJualNon"
 
 @using eSoft.Piutang.Model
 @using eSoft.Piutang.View
@@ -17,7 +17,7 @@
 
 <div class="top-row">
 
-    <NavLink href="/ModuleJual/TransJual" class="btn btn-primary">Back</NavLink>
+    <NavLink href="/ModuleJual/TransJualNon" class="btn btn-primary">Back</NavLink>
 
 </div>
 
@@ -233,12 +233,12 @@
     private void HandleValidSubmit()
     {
 
-        var newEdit = service.AddTransH(Transh,true);
+        var newEdit = service.AddTransH(Transh,false);
         if (newEdit != null)
         {
             var id = newEdit.OeTransHId.ToString().Trim();
             //  navigationmanager.NavigateTo("/PrintBuktiBayar/{id", false);
-            navigationmanager.NavigateTo("/ModuleJual/TransJual", false);
+            navigationmanager.NavigateTo("/ModuleJual/TransJualNon", false);
             //  navigationmanager.NavigateTo($"/PrintBuktiBayar/{id}");
         }
 

@@ -32,6 +32,9 @@ using eSoft.Pembelian.Services;
 using eSoft.Penjualan.Data;
 using eSoft.Penjualan.Services;
 
+using eSoft.Order.Data;
+using eSoft.Order.Services;
+
 using Microsoft.EntityFrameworkCore;
 
 
@@ -71,6 +74,10 @@ namespace Accounting
                      Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Accounting")));
 
             services.AddDbContext<DbContextJual>(options =>
+                 options.UseSqlServer(
+                     Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Accounting")));
+
+            services.AddDbContext<DbContextOrder>(options =>
                  options.UseSqlServer(
                      Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Accounting")));
 

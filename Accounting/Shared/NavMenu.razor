@@ -19,21 +19,26 @@
             </NavLink>
             @if (expandPenjualan)
             {
-                <ul class="nav flex-column">
+        <ul class="nav flex-column">
 
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="ModuleJual/TransJual">
-                            <span aria-hidden="true"></span> Transaksi Jual
-                        </NavLink>
-                    </li>
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="ModuleJual/ReturJual">
-                            <span aria-hidden="true"></span> Retur Jual
-                        </NavLink>
-                    </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="ModuleJual/TransJual">
+                    <span aria-hidden="true"></span> Transaksi Jual
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="ModuleJual/TransJualNon">
+                    <span aria-hidden="true"></span> Transaksi Jual Non
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="ModuleJual/ReturJual">
+                    <span aria-hidden="true"></span> Retur Jual
+                </NavLink>
+            </li>
 
 
-                </ul>
+        </ul>
 
 
             }
@@ -44,21 +49,25 @@
             </NavLink>
             @if (expandPembelian)
             {
-                <ul class="nav flex-column">
+        <ul class="nav flex-column">
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="ModuleOrder/TransOrderBeli">
+                    <span aria-hidden="true"></span> Order Pembelian
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="ModuleBeli/TransBeli">
+                    <span aria-hidden="true"></span> Transaksi Beli
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="ModuleBeli/ReturBeli">
+                    <span aria-hidden="true"></span> Retur Beli
+                </NavLink>
+            </li>
 
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="ModuleBeli/TransBeli">
-                            <span aria-hidden="true"></span> Transaksi Beli
-                        </NavLink>
-                    </li>
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" href="ModuleBeli/ReturBeli">
-                            <span aria-hidden="true"></span> Retur Beli
-                        </NavLink>
-                    </li>
 
-
-                </ul>
+        </ul>
 
 
             }

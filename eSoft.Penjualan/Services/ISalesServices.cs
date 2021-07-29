@@ -18,9 +18,10 @@ namespace eSoft.Penjualan.Services
     {
         OeTransH GetOeTrans(int id);
         List<OeTransH> GetTransH();
+        List<OeTransH> GetTransHNon();
         List<OeTransH> Get3TransH();
         List<OeTransD> GetTransD();
-        OeTransH AddTransH(OeTransHView trans);
+        OeTransH AddTransH(OeTransHView trans,bool pajak);
         Task<bool> DelTransH(int id);
         Task<bool> EditTransH(OeTransHView trans);
     }

@@ -34,6 +34,7 @@
     <ProjectReference Include="..\eSoft.Fungsi\eSoft.Fungsi.csproj" />
     <ProjectReference Include="..\eSoft.Hutang\eSoft.Hutang.csproj" />
     <ProjectReference Include="..\eSoft.Ledger\eSoft.Ledger.csproj" />
+    <ProjectReference Include="..\eSoft.Order\eSoft.Order.csproj" />
     <ProjectReference Include="..\eSoft.Pembelian\eSoft.Pembelian.csproj" />
     <ProjectReference Include="..\eSoft.Penjualan\eSoft.Penjualan.csproj" />
     <ProjectReference Include="..\eSoft.Persediaan\eSoft.Persediaan.csproj" />
@@ -43,6 +44,7 @@
   <ItemGroup>
     <Folder Include="Pages\ModuleBank\CashBank\" />
     <Folder Include="Pages\ModuleBank\SrcCode\" />
+    <Folder Include="Pages\ModuleOrder\ReturOrderBeli\" />
     <Folder Include="Pages\ModuleBeli\ReturBeli\" />
     <Folder Include="Pages\ModuleJual\ReturJual\" />
     <Folder Include="Pages\ModuleLedger\Account\" />

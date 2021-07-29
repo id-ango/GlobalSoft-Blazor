@@ -60,12 +60,38 @@ namespace eSoft.Penjualan.Services
            
             try
             {
-                OeTrans = _context.OeTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Kode == "94").ToList();
+                OeTrans = _context.OeTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Kode == "94" && x.Pajak == true).ToList();
 
                // foreach (var item in OeTrans)
               //  {
               //      item.NamaCust = _contextAr.ArCusts.Where(x => x.Customer == item.Customer).FirstOrDefault().NamaLengkap;
               //  }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return OeTrans;
+            // return  _context.CbTransHs.Include(p =>p.CbTransDs).OrderByDescending(x =>x.Tanggal).ToListAsync();
+            //  return await _context.ApTransHs.OrderByDescending(x => x.Tanggal).ToListAsync();
+            //  return await _context.ApTransHs.ToListAsync();
+
+        }
+
+        public List<OeTransH> GetTransHNon()
+        {
+            List<OeTransH> OeTrans = new List<OeTransH>();
+
+
+            try
+            {
+                OeTrans = _context.OeTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Kode == "94" && x.Pajak == false).ToList();
+
+                // foreach (var item in OeTrans)
+                //  {
+                //      item.NamaCust = _contextAr.ArCusts.Where(x => x.Customer == item.Customer).FirstOrDefault().NamaLengkap;
+                //  }
 
             }
             catch (Exception)
@@ -97,7 +123,7 @@ namespace eSoft.Penjualan.Services
             return  _context.OeTransDs.ToList();
         }
 
-        public OeTransH AddTransH(OeTransHView trans)
+        public OeTransH AddTransH(OeTransHView trans,bool pajak)
         {
             //string test = codeview.SrcCode.ToUpper();
             //var cekFirst = _context.CbSrcCodes.Where(x => x.SrcCode == test).ToList();
@@ -105,7 +131,8 @@ namespace eSoft.Penjualan.Services
 
             OeTransH transH = new OeTransH
             {
-                NoLpb = GetNumber(),
+               
+                NoLpb = (pajak ? GetNumberTax() : GetNumber()),
                 Customer = trans.Customer.ToUpper(),
                 NamaCust = trans.NamaCust,
                 
@@ -121,7 +148,7 @@ namespace eSoft.Penjualan.Services
                 TotalQty = trans.TotalQty,
                 Kode = "94",
                 Cek = "1",
-
+                Pajak = pajak,
                 OeTransDs = new List<OeTransD>()
             };
 
@@ -425,6 +452,7 @@ namespace eSoft.Penjualan.Services
                             TotalQty = trans.TotalQty,
                             Kode = "94",
                             Cek = "1",
+                            Pajak = trans.Pajak,
 
                             OeTransDs = new List<OeTransD>()
                         };
