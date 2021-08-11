@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\ModuleOrder\TransOrderBeli\**" />
+    <Content Remove="Pages\ModuleOrder\TransOrderBeli\**" />
+    <EmbeddedResource Remove="Pages\ModuleOrder\TransOrderBeli\**" />
+    <None Remove="Pages\ModuleOrder\TransOrderBeli\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="Components\ModalDetailCashBankComponent.razor" />
     <Content Remove="Components\ModalDetailPiutangComponent.razor" />
     <Content Remove="Components\RadioButtonComponent.razor" />

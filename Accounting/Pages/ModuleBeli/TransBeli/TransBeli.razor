@@ -7,12 +7,12 @@
 @implements IDisposable
 @inject NavigationManager navigationmanager
 
-<div class="container">
+<div class="container-fluid">
     <h1>Transaksi Pembelian</h1>
 </div>
 
 
-<div class="container">
+<div class="container-fluid">
     <NavLink href="/ModuleBeli/AddTransBeli" class="btn btn-primary">Add</NavLink>
 </div>
 
@@ -20,7 +20,7 @@
 <br />
 
 
-<div class="container">
+<div class="container-fluid">
     <DataGridVerticalComponent Items="TransHeader" Context="transaksi" GetFilterableText="@(item =>$"{item.NoLpb} {item.NamaSup} {item.Keterangan}")">
         <TableHeader>
 
