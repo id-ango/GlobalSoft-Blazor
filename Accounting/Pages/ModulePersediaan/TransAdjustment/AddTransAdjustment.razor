@@ -24,17 +24,19 @@
                 <InputDate class="form-control" @bind-Value="Transh.Tanggal" />
             </label>
         </div>
-        
+
         <div class="form-group">
             <label>
                 Keterangan :
-                <InputTextArea class="form-control" @bind-Value="Transh.Keterangan" style="width:150%" />
+                <InputTextArea class="form-control" @bind-Value="Transh.Keterangan" />
             </label>
         </div>
 
 
-        <div class="float-md-right">
+        <br />
+        <div class="container">
             <button class="btn-success" type="submit">Simpan</button>
+            <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModulePersediaan/TransAdjustment", false))">Batal</button>
         </div>
         <br />
         <br />
@@ -80,33 +82,41 @@
 
 @if (DialogOpen)
 {
-    <ModalDialogComponent Title="Alert" Text="Kode Bank Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
+    <ModalDialogComponent Title="Alert" Text="Transaksi Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
 }
 @*@if (SearchOpen)
-{
+    {
 
-    <ModalSearchComponent OnClose="OnSearchClose" Items="banks" Context="cbBank" GetFilterableText="@(item =>$"{item.Supplier} {item.NamaSup} {item.Alamat} ")">
-        <TableHeader>
-            <th scope="col">Supplier</th>
-            <th scope="col">Nama</th>
-            <th scope="col">Alamat</th>
-            <th scope="col">Telpon</th>
-            <th></th>
-        </TableHeader>
-        <RowTemplate>
-            <td>@cbBank.Supplier</td>
-            <td>@cbBank.NamaSup</td>
-            <td>@cbBank.Alamat</td>
-            <td>@cbBank.Telpon</td>
-            <td>
-                <button @onclick="() => BtnChoose(cbBank.Supplier)" class="btn btn-success">Choose</button>
+        <ModalSearchComponent OnClose="OnSearchClose" Items="banks" Context="cbBank" GetFilterableText="@(item =>$"{item.Supplier} {item.NamaSup} {item.Alamat} ")">
+            <TableHeader>
+                <th scope="col">Supplier</th>
+                <th scope="col">Nama</th>
+                <th scope="col">Alamat</th>
+                <th scope="col">Telpon</th>
+                <th></th>
+            </TableHeader>
+            <RowTemplate>
+                <td>@cbBank.Supplier</td>
+                <td>@cbBank.NamaSup</td>
+                <td>@cbBank.Alamat</td>
+                <td>@cbBank.Telpon</td>
+                <td>
+                    <button @onclick="() => BtnChoose(cbBank.Supplier)" class="btn btn-success">Choose</button>
 
-            </td>
-        </RowTemplate>
-    </ModalSearchComponent>
+                </td>
+            </RowTemplate>
+        </ModalSearchComponent>
 
 
-}*@
+    }*@
+
+
+<style>
+    label {
+        width: 100%;
+    }
+</style>
+
 
 @code {
     IcTransHView Transh = new IcTransHView() { IcTransDs = new List<IcTransDView>() };
@@ -162,7 +172,7 @@
         {
             var id = newEdit.IcTransHId.ToString().Trim();
             //  navigationmanager.NavigateTo("/PrintBuktiBayar/{id", false);
-            navigationmanager.NavigateTo("/ModulePersediaan/TransAdjust", false);
+            navigationmanager.NavigateTo("/ModulePersediaan/TransAdjustment", false);
             //  navigationmanager.NavigateTo($"/PrintBuktiBayar/{id}");
         }
 

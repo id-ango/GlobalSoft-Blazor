@@ -12,7 +12,7 @@
 </div>
 
 <div class="content px-4">
-   
+
     <EditForm Model="@bank" OnValidSubmit="@HandleValidSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
@@ -28,14 +28,15 @@
                 <InputText class="form-control" @bind-Value="bank.NamaDiv" />
             </label>
         </div>
-        
 
-        <div class="float-md-right">
+        <br />
+        <div class="container">
             <button class="btn-success" type="submit">Simpan</button>
+            <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModulePersediaan/SetupDivisi", false))">Batal</button>
         </div>
 
     </EditForm>
-    
+
 </div>
 
 @if (DialogOpen)
@@ -43,19 +44,25 @@
     <ModalDialogComponent Title="Alert" Text="Divisi Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
 }
 
+<style>
+    label {
+        width: 100%;
+    }
+</style>
+
 
 @code {
     IcDivView bank = new IcDivView();
     public string Testing { get; set; }
     private bool DialogOpen { get; set; }
-   
+
     public bool SearchOpen { get; set; }
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
         bank.Divisi = "";
-     
+
     }
 
     private void cekKode()
@@ -92,5 +99,5 @@
 
     }
 
-  
+
 }

@@ -26,6 +26,7 @@
                 Item Name :
                 <InputText class="form-control" @bind-Value="bank.NamaItem" />
             </label>
+
         </div>
         <div class="form-group">
             <label>
@@ -37,7 +38,7 @@
         <div class="form-group">
             <label>
                 Divisi :
-                <InputSelect class="form-control" @bind-Value="bank.Divisi" style="width:80%; display:inline">
+                <InputSelect class="form-control" @bind-Value="bank.Divisi">
                     <option value="">&nbsp;&nbsp;---Select Divisi---&nbsp;&nbsp;</option>
                     @foreach (var item in DivisiSet)
                     {
@@ -48,12 +49,17 @@
                 @*<button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>*@
             </label>
         </div>
-
-        <div class="form-group">
+        <br />
+        <div class="form-group" style="border: 2px solid; padding: 3px 3px">
             <label>
                 Tipe Produk :
                 <br />
                 @*<RadioButtonComponent TEnum="StatusGl" ></RadioButtonComponent>*@
+
+
+
+            </label>
+            <div class="container">
                 <InputRadioGroup @bind-Value="bank.JnsBrng">
                     @foreach (var jenisbarang in (jnsBrng[])Enum.GetValues(typeof(jnsBrng)))
                     {
@@ -64,42 +70,46 @@
                     }
 
                 </InputRadioGroup>
-
-            </label>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label>
-                Tipe Produk :
-                <br />
-                @*<RadioButtonComponent TEnum="StatusGl" ></RadioButtonComponent>*@
-                <InputRadioGroup @bind-Value="bank.CostMethod">
-                    @foreach (var costing in (costMethod[])Enum.GetValues(typeof(costMethod)))
-                    {
-                        <InputRadio Value="costing" />
-                        @costing
-                        <br />
-
-                    }
-
-                </InputRadioGroup>
-
-            </label>
-        </div>
-        @if (bank.CostMethod == costMethod.Standard_Cost)
-        {
+        <br />
+        <div style="border:1px solid;padding: 3px 3px">
             <div class="form-group">
                 <label>
-                    Standard Cost :
-                    <InputNumber class="form-control" @bind-Value="bank.StdPrice" />
-                </label>
-            </div>
-        }
+                    Cost Method :
+                    <br />
+                    @*<RadioButtonComponent TEnum="StatusGl" ></RadioButtonComponent>*@
 
+                </label>
+                <div class="container">
+                    <InputRadioGroup @bind-Value="bank.CostMethod">
+                        @foreach (var costing in (costMethod[])Enum.GetValues(typeof(costMethod)))
+                        {
+                            <InputRadio Value="costing" />
+                            @costing
+                            <br />
+
+                        }
+
+                    </InputRadioGroup>
+                </div>
+            </div>
+            @if (bank.CostMethod == costMethod.Standard_Cost)
+            {
+                <div class="form-group">
+                    <label>
+                        Standard Cost :
+                        <InputNumber class="form-control" @bind-Value="bank.StdPrice" />
+                    </label>
+                </div>
+            }
+        </div>
+        <br/>
         <div class="form-group">
             <label>
                 Account Set :
-                <InputSelect class="form-control" @bind-Value="bank.AcctSet" style="width:80%; display:inline">
+                <InputSelect class="form-control" @bind-Value="bank.AcctSet">
                     <option value="">&nbsp;&nbsp;---Select Account Set---&nbsp;&nbsp;</option>
                     @foreach (var item in AkunSet)
                     {
@@ -114,7 +124,7 @@
         <div class="form-group">
             <label>
                 Category Set :
-                <InputSelect class="form-control" @bind-Value="bank.Category" style="width:80%; display:inline">
+                <InputSelect class="form-control" @bind-Value="bank.Category">
                     <option value="">&nbsp;&nbsp;---Select Category Set---&nbsp;&nbsp;</option>
                     @foreach (var item in CategorySet)
                     {
@@ -125,9 +135,10 @@
                 @*<button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>*@
             </label>
         </div>
-
-        <div class="float-md-right">
+        <br />
+        <div class="container">
             <button class="btn-success" type="submit">Simpan</button>
+            <button class="btn-danger"type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModulePersediaan/SetupItem", false))">Batal</button>
         </div>
 
     </EditForm>
@@ -138,7 +149,11 @@
     <ModalDialogComponent Title="Alert" Text="Kode Item Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
 }
 
-
+<style>
+    label {
+        width: 100%;
+    }
+</style>
 @code {
 
     IcItemView bank = new IcItemView();

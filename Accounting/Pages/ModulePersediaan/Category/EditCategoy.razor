@@ -27,11 +27,11 @@
                 <InputText class="form-control" @bind-Value="bank.Description" />
             </label>
         </div>
-
+        <br/>
         <div class="form-group">
             <label>
                 GL Account 1 :
-                <InputSelect class="form-control" @bind-Value="bank.Cat1" style="width:80%; display:inline">
+                <InputSelect class="form-control" @bind-Value="bank.Cat1" style="width:75%; display:inline">
                     <option value="">&nbsp;&nbsp;---Select GL Account---&nbsp;&nbsp;</option>
                     @foreach (var item in GlAccounts)
                     {
@@ -45,7 +45,7 @@
         <div class="form-group">
             <label>
                 GL Account 2 :
-                <InputSelect class="form-control" @bind-Value="bank.Cat2" style="width:80%; display:inline">
+                <InputSelect class="form-control" @bind-Value="bank.Cat2" style="width:75%; display:inline">
                     <option value="">&nbsp;&nbsp;---Select GL Account---&nbsp;&nbsp;</option>
                     @foreach (var item in GlAccounts)
                     {
@@ -59,7 +59,7 @@
         <div class="form-group">
             <label>
                 GL Account 3 :
-                <InputSelect class="form-control" @bind-Value="bank.Cat3" style="width:80%; display:inline">
+                <InputSelect class="form-control" @bind-Value="bank.Cat3" style="width:75%; display:inline">
                     <option value="">&nbsp;&nbsp;---Select GL Account---&nbsp;&nbsp;</option>
                     @foreach (var item in GlAccounts)
                     {
@@ -73,7 +73,7 @@
         <div class="form-group">
             <label>
                 GL Account 4 :
-                <InputSelect class="form-control" @bind-Value="bank.Cat4" style="width:80%; display:inline">
+                <InputSelect class="form-control" @bind-Value="bank.Cat4" style="width:75%; display:inline">
                     <option value="">&nbsp;&nbsp;---Select GL Account---&nbsp;&nbsp;</option>
                     @foreach (var item in GlAccounts)
                     {
@@ -86,8 +86,8 @@
         </div>
         <div class="form-group">
             <label>
-                GL Account 5:
-                <InputSelect class="form-control" @bind-Value="bank.Cat5" style="width:80%; display:inline">
+                GL Account 5 :
+                <InputSelect class="form-control" @bind-Value="bank.Cat5" style="width:75%; display:inline">
                     <option value="">&nbsp;&nbsp;---Select GL Account---&nbsp;&nbsp;</option>
                     @foreach (var item in GlAccounts)
                     {
@@ -101,7 +101,7 @@
         <div class="form-group">
             <label>
                 GL Account 6 :
-                <InputSelect class="form-control" @bind-Value="bank.Cat6" style="width:80%; display:inline">
+                <InputSelect class="form-control" @bind-Value="bank.Cat6" style="width:75%; display:inline">
                     <option value="">&nbsp;&nbsp;---Select GL Account---&nbsp;&nbsp;</option>
                     @foreach (var item in GlAccounts)
                     {
@@ -112,9 +112,10 @@
                 <button class="btn btn-primary" type="button" @onclick="@(() => openSearch(6))">Cari</button>
             </label>
         </div>
-
-        <div class="float-md-right">
+        <br/>
+        <div class="container">
             <button class="btn-success" type="submit">Simpan</button>
+            <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModulePersediaan/SetupCategory", false))">Batal</button>
         </div>
 
     </EditForm>
@@ -149,6 +150,11 @@
 
 
 }
+<style>
+    label {
+        width: 100%;
+    }
+</style>
 
 @code {
     [Parameter]

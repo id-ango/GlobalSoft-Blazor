@@ -23,11 +23,14 @@ namespace eSoft.Persediaan.Services
 
         public bool CekKdItem(string item)
         {
-            string test = item.ToUpper();
-            var cekFirst = _context.IcItems.Where(x => x.ItemCode == test).ToList();
-            if (cekFirst.Count == 0)
+            if (item != null)
             {
-                return false;
+                string test = item.ToUpper();
+                var cekFirst = _context.IcItems.Where(x => x.ItemCode == test).ToList();
+                if (cekFirst.Count == 0)
+                {
+                    return false;
+                }
             }
             return true;
         }
@@ -232,7 +235,7 @@ namespace eSoft.Persediaan.Services
         #endregion IcDiv Class
 
         #region IcLokasi Class
-        
+
         public bool CekKdLokasi(string item)
         {
             string test = item.ToUpper();
@@ -246,7 +249,7 @@ namespace eSoft.Persediaan.Services
 
         public List<IcLokasi> GetIcLokasi()
         {
-            return  _context.Iclokasis.OrderBy(x => x.Lokasi).ToList();
+            return _context.Iclokasis.OrderBy(x => x.Lokasi).ToList();
         }
 
         public IcLokasi GetIcLokasiId(int id)
@@ -267,7 +270,7 @@ namespace eSoft.Persediaan.Services
 
                 };
                 _context.Iclokasis.Add(Location);
-                 _context.SaveChanges();
+                _context.SaveChanges();
                 return true;
             }
             else
@@ -467,11 +470,11 @@ namespace eSoft.Persediaan.Services
                     Acct3 = codeview.Acct3,
                     Acct4 = codeview.Acct4,
                     Acct5 = codeview.Acct5,
-                     Acct6 = codeview.Acct6
+                    Acct6 = codeview.Acct6
 
                 };
                 _context.IcAccts.Add(AcctCode);
-                 _context.SaveChanges();
+                _context.SaveChanges();
                 return true;
             }
             else
@@ -854,6 +857,6 @@ namespace eSoft.Persediaan.Services
             return cAngNo;
 
         }
-    
-}
+
+    }
 }

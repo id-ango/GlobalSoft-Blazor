@@ -19,7 +19,7 @@
                     <div class="form-group">
                         <label>
                             Item
-                            <InputSelect class="form-control" @bind-Value="Detail.ItemCode" style="width:80%; display:inline">
+                            <InputSelect class="form-control" @bind-Value="Detail.ItemCode" style="width:75%; display:inline">
                                 <option value="">&nbsp;&nbsp;---Select Item Code---&nbsp;&nbsp;</option>
                                 @foreach (var item in SrcCode)
                                 {
@@ -52,7 +52,7 @@
                     <div class="form-group">
                         <label>
                             Lokasi
-                            <InputSelect class="form-control" @bind-Value="Detail.Lokasi" style="width:80%; display:inline">
+                            <InputSelect class="form-control" @bind-Value="Detail.Lokasi" >
                                 <option value="">&nbsp;&nbsp;---Select Lokasi---&nbsp;&nbsp;</option>
                                 @foreach (var item in Location)
                                 {

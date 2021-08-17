@@ -29,9 +29,10 @@
             </label>
         </div>
         
-
-        <div class="float-md-right">
+        <br/>
+        <div class="container">
             <button class="btn-success" type="submit">Simpan</button>
+            <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModulePersediaan/SetupLokasi", false))">Batal</button>
         </div>
 
     </EditForm>
@@ -43,6 +44,11 @@
     <ModalDialogComponent Title="Alert" Text="Lokasi Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
 }
 
+<style>
+    label {
+        width: 100%;
+    }
+</style>
 
 @code {
     IcLokasiView bank = new IcLokasiView();

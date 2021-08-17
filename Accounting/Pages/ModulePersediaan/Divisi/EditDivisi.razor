@@ -25,10 +25,11 @@
         </label>
     </div>
 
+    <br />
 
-
-    <div class="float-md-right">
+    <div class="container">
         <button class="btn-success" type="submit">Simpan</button>
+        <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModulePersediaan/SetupDivisi", false))">Batal</button>
     </div>
 
 
@@ -47,13 +48,13 @@
     IcDiv Bank = new IcDiv();
     public string Testing { get; set; }
     private bool DialogOpen { get; set; }
-    
+
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
         LoadBank();
-      
+
     }
 
     void LoadBank()
@@ -62,7 +63,7 @@
         bank.IcDivId = Bank.IcDivId;
         bank.Divisi = Bank.Divisi;
         bank.NamaDiv = Bank.NamaDiv;
-        
+
 
     }
 
@@ -100,5 +101,5 @@
 
     }
 
-   
+
 }

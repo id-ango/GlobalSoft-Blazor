@@ -37,13 +37,15 @@
         <div class="form-group">
             <label>
                 Keterangan :
-                <InputTextArea class="form-control" @bind-Value="Transh.Keterangan" style="width:150%" />
+                <InputTextArea class="form-control" @bind-Value="Transh.Keterangan" />
             </label>
         </div>
 
 
-        <div class="float-md-right">
+        <br />
+        <div class="container">
             <button class="btn-success" type="submit">Simpan</button>
+            <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModulePersediaan/TransAdjustment", false))">Batal</button>
         </div>
 
         <br />
@@ -89,9 +91,14 @@
 
 @if (DialogOpen)
 {
-    <ModalDialogComponent Title="Alert" Text="Kode Bank Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
+    <ModalDialogComponent Title="Alert" Text="Transaksi Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
 }
 
+<style>
+    label {
+        width: 100%;
+    }
+</style>
 
 
 @code {
