@@ -36,7 +36,7 @@ using eSoft.Order.Data;
 using eSoft.Order.Services;
 
 using Microsoft.EntityFrameworkCore;
-
+using BlazorFluentUI;
 
 namespace Accounting
 {
@@ -83,6 +83,8 @@ namespace Accounting
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddBlazorFluentUI();
+
             services.AddSingleton<WeatherForecastService>();
             services.AddTransient<ICashBankServices, CashBankServices>();
          
