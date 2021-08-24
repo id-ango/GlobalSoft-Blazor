@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <None Remove="Pages\ModuleBank\Printer\BuktiBayar.razor.css" />
+    <None Remove="Pages\ModuleJual\Printer\BuktiBayar.razor.css" />
   </ItemGroup>
 
   <ItemGroup>

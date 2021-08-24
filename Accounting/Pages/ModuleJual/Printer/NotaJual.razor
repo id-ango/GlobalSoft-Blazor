@@ -1,16 +1,19 @@
 ﻿@layout PrintLayout
 
-@page "/PrintBuktiBayar/{Id:int}"
-@using eSoft.CashBank.Model
-@using eSoft.CashBank.View
+@page "/PrintNotaJual/{Id:int}"
+@using eSoft.Penjualan.Model
+@using eSoft.Penjualan.View
+@using eSoft.Piutang.Model
+@using eSoft.Persediaan.Model
 @using eSoft.Fungsi.Function
+@using eSoft.Penjualan.Services
 
-@inject ICashBankServices service
+@inject ISalesServices service
 @inject NavigationManager navigationmanager
 
 
 <div class="dontprint" style="display:none inline">
-    <br/>
+    <br />
     &emsp;<NavLink href="/ModuleBank/TransBank" class="btn btn-primary btn-lg">&nbsp;Back&nbsp;</NavLink>&emsp;
     <NavLink class="btn btn-success btn-lg" onclick="window.print()">&nbsp; Cetak &nbsp;</NavLink>
 </div>
@@ -35,7 +38,7 @@ Email: cvbmateknik@gmail.com
         <table id="meta">
             <tr>
                 <td class="meta-head">Document #</td>
-                <td>@TransAll.DocNo</td>
+                <td>@TransAll.NoLpb</td>
             </tr>
             <tr>
 
@@ -44,7 +47,7 @@ Email: cvbmateknik@gmail.com
             </tr>
             <tr>
                 <td class="meta-head">Bank/Kas</td>
-                <td><div class="due">@TransAll.KodeBank</div></td>
+                <td><div class="due">@TransAll.Customer</div></td>
             </tr>
 
         </table>
@@ -61,20 +64,20 @@ Email: cvbmateknik@gmail.com
 
         </tr>
 
-        @foreach (var item in TransAll.CbTransDs)
+        @foreach (var item in TransAll.OeTransDs)
         {
             <tr class="item-row">
                 <td class="no">@(noUrut++)</td>
-                <td class="source">@item.SrcCode</td>
-                <td class="description"><textarea>@item.Keterangan</textarea></td>
+                <td class="source">@item.ItemCode</td>
+                <td class="description"><textarea>@item.NamaItem</textarea></td>
                 <td class="jumlah">@item.Jumlah.ToString("N")</td>
 
             </tr>
         }
 
-        @if (TransAll.CbTransDs.Count < 6)
+        @if (TransAll.OeTransDs.Count < 6)
         {
-            for (var x = TransAll.CbTransDs.Count; x < 6; x++)
+            for (var x = TransAll.OeTransDs.Count; x < 6; x++)
             {
                 <tr class="item-row">
                     <td class="no"></td>
@@ -91,11 +94,11 @@ Email: cvbmateknik@gmail.com
 
         </tr>
         <tr>
-            <td class="total-value">@TransAll.Saldo.ToString("N")</td>
+            <td class="total-value">@TransAll.Jumlah.ToString("N")</td>
         </tr>
 
     </table>
-    @Fungsi.BilanganToText(TransAll.Saldo)
+    @Fungsi.BilanganToText(TransAll.Jumlah)
 
 
 
@@ -125,15 +128,15 @@ Email: cvbmateknik@gmail.com
 </div>
 
 
-@code { [Parameter] public string Title { get; set; } = "BUKTI KAS BANK";
+@code { [Parameter] public string Title { get; set; } = "NOTA PENJUALAN";
     [Parameter] public int Id { get; set; }
 
-    private TransHView Transh = new TransHView() { TransDs = new List<TransDView>() };
-    private CbTransH TransAll = new CbTransH() { CbTransDs = new List<CbTransD>() };
-    private List<CbBank> banks;
-    private List<CbSrcCode> srccode;
-    private TransDView Transd = new TransDView();
-    private TransDView TransK = new TransDView();
+    private OeTransHView Transh = new OeTransHView() { OeTransDs = new List<OeTransDView>() };
+    private OeTransH TransAll = new OeTransH() { OeTransDs = new List<OeTransD>() };
+    private List<ArCust> banks;
+    private List<IcItem> srccode;
+    private OeTransDView Transd = new OeTransDView();
+    private OeTransDView TransK = new OeTransDView();
     //   private List<TransDView> TransDs = new List<TransDView>();
     private string enabled { get; set; }
 

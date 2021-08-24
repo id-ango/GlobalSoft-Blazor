@@ -6,13 +6,17 @@
 @implements IDisposable
 @inject NavigationManager navigationmanager
 
+
 <div class="container">
     <h1>Setup Lokasi</h1>
 </div>
 
 
+
+
 <div class="container">
     <NavLink href="/ModulePersediaan/AddLokasi" class="btn btn-primary">Add</NavLink>
+
 </div>
 
 <br />
@@ -24,13 +28,13 @@
         <TableHeader>
             <th scope="col">Code</th>
             <th scope="col">Name</th>
-            
+
             <th></th>
         </TableHeader>
         <RowTemplate>
             <td>@cbBank.Lokasi</td>
             <td>@cbBank.NamaLokasi</td>
-            
+
             <td>
                 <button @onclick="() => OpenRubah(cbBank.IcLokasiId)" class="btn btn-success">Edit</button>
                 <button @onclick="() => OpenDeleteDialog(cbBank)" class="btn btn-danger">Delete</button>
@@ -105,8 +109,8 @@
     }
     private void OpenDeleteDialog(IcLokasi bank)
     {
-            DeleteDialogOpen = true;
-       
+        DeleteDialogOpen = true;
+
 
         _bankToDelete = bank;
         StateHasChanged();
@@ -122,4 +126,6 @@
     {
 
     }
+
+
 }
