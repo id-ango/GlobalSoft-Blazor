@@ -14,7 +14,7 @@
 
 <div class="dontprint" style="display:none inline">
     <br />
-    &emsp;<NavLink href="/ModuleBank/TransBank" class="btn btn-primary btn-lg">&nbsp;Back&nbsp;</NavLink>&emsp;
+    &emsp;<NavLink href="/ModuleJual/TransJual" class="btn btn-primary btn-lg">&nbsp;Back&nbsp;</NavLink>&emsp;
     <NavLink class="btn btn-success btn-lg" onclick="window.print()">&nbsp; Cetak &nbsp;</NavLink>
 </div>
 
@@ -133,8 +133,8 @@ Email: cvbmateknik@gmail.com
 
     private OeTransHView Transh = new OeTransHView() { OeTransDs = new List<OeTransDView>() };
     private OeTransH TransAll = new OeTransH() { OeTransDs = new List<OeTransD>() };
-    private List<ArCust> banks;
-    private List<IcItem> srccode;
+   // private List<ArCust> banks;
+   // private List<IcItem> srccode;
     private OeTransDView Transd = new OeTransDView();
     private OeTransDView TransK = new OeTransDView();
     //   private List<TransDView> TransDs = new List<TransDView>();
@@ -147,24 +147,24 @@ Email: cvbmateknik@gmail.com
     {
         // Transh.Tanggal = DateTime.Now;
 
-        LoadBank();
-        LoadSrcCode();
+        //LoadBank();
+        //LoadSrcCode();
         LoadTrans();
     }
 
-    void LoadBank()
-    {
-        banks = service.GetBank();
-    }
+    //void LoadBank()
+    //{
+    //    banks = service.GetBank();
+    //}
 
-    void LoadSrcCode()
-    {
-        srccode = service.GetSrcCode();
-    }
+    //void LoadSrcCode()
+    //{
+    //    srccode = service.GetSrcCode();
+    //}
 
     void LoadTrans()
     {
-        TransAll = service.GetTrans(Id);
+        TransAll = service.GetOeTrans(Id);
 
 
     }
