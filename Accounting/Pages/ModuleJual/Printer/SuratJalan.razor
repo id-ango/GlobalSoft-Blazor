@@ -1,6 +1,6 @@
 ﻿@layout PrintLayout
 
-@page "/PrintNotaJual/{Id:int}"
+@page "/PrintSuratJalan/{Id:int}"
 @using eSoft.Penjualan.Model
 @using eSoft.Penjualan.View
 @using eSoft.Piutang.Model
@@ -16,21 +16,31 @@
     <br />
     &emsp;<NavLink href="/ModuleJual/TransJual" class="btn btn-primary btn-lg">&nbsp;Back&nbsp;</NavLink>&emsp;
     <NavLink class="btn btn-success btn-lg" onclick="window.print()">&nbsp; Cetak &nbsp;</NavLink>
-    &emsp;<NavLink @onclick="() => OpenPrint(Id)" class="btn btn-primary btn-lg">&nbsp;Surat Jalan&nbsp;</NavLink>&emsp;
+    &emsp;<NavLink @onclick="() => OpenPrint(Id)" class="btn btn-primary btn-lg">&nbsp;Nota&nbsp;</NavLink>&emsp;
 </div>
 
 <div id="page-wrap">
+    <div class="kepala">
+        <span class="judul"><u>CV BMA TEKNIK</u></span><br />
+        <span class="alamat">Pucang Sewu VII No. 1B, Surabaya</span>
+    </div>
 
-    <textarea id="header">@Title</textarea>
 
-    <div id="identity">
+
+    @*<div class="tengah">
+            <span class="judul2"><u>@Title</u></span>
+        </div>*@
+    @*<div id="header">
+        @Title
+    </div>*@
+    <textarea id="header" aria-label="Title">@Title</textarea>
+
+    <div >
 
         <textarea id="address">
-CV BMA TEKNIK
-Pucang Sewu VII No. 1B
-Surabaya 60283
-Phone: (031) 99022963, HP/WA: 0812-4999-1793
-Email: cvbmateknik@gmail.com
+@TransAll.NamaCust
+@TransAll.AlamatKirim
+
         </textarea>
 
         @*<div style="clear:both"></div>*@
@@ -47,8 +57,8 @@ Email: cvbmateknik@gmail.com
                 <td>@TransAll.Tanggal.ToShortDateString()</td>
             </tr>
             <tr>
-                <td class="meta-head">Bank/Kas</td>
-                <td><div class="due">@TransAll.Customer</div></td>
+                <td class="meta-head">Customer</td>
+                <td>@TransAll.Customer</td>
             </tr>
 
         </table>
@@ -58,12 +68,11 @@ Email: cvbmateknik@gmail.com
     <table id="items">
 
         <tr>
-            <th>Nama Barang</th>
-            <th>Stn</th>
+            <th>Keterangan</th>
             <th>Qty</th>
-            <th>Harga</th>
-            <th>Disc</th>
-            <th>Jumlah</th>
+            <th>Stn</th>
+
+
 
         </tr>
 
@@ -72,11 +81,10 @@ Email: cvbmateknik@gmail.com
             <tr class="item-row">
 
                 <td class="description">@item.NamaItem</td>
+                <td class="source">@item.Qty.ToString("N")</td>
                 <td class="no">@(item.Satuan)</td>
-                <td class="source">@item.Qty</td>
-                <td class="source">@item.Harga.ToString("N")</td>
-                <td class="source">@item.Discount.ToString("N")</td>
-                <td class="jumlah">@item.Jumlah.ToString("N")</td>
+
+
 
             </tr>
         }
@@ -89,32 +97,32 @@ Email: cvbmateknik@gmail.com
                     <td class="description"><textarea></textarea></td>
                     <td class="no"></td>
                     <td class="source"></td>
-                    <td class="no"></td>
-                    <td class="source"></td>
-                    <td class="jumlah"></td>
+
 
                 </tr>
             }
         }
         <tr>
-            <td colspan="5" rowspan="2" class="description"><textarea class="keterangan">@TransAll.Keterangan</textarea></td>
-            <td class="total-line">Saldo</td>
+
+            <td colspan="3" rowspan="2" class="description"><textarea class="keterangan">@TransAll.Keterangan</textarea></td>
 
         </tr>
-        <tr>
-            <td class="total-value">@TransAll.Jumlah.ToString("N")</td>
-        </tr>
+
 
     </table>
-    @*@Fungsi.BilanganToText(TransAll.Jumlah)*@
+    <span class="judul2">Catatan. Barang dikirim dalam keadaan baik &amp; utuh</span>
 
 
-
-    <table id="items">
+    <table id="tandatangan">
         <tr>
-            <th>Pembuat</th>
-            <th>Mengetahui</th>
-            <th>Accounting</th>
+            <th>Penerima</th>
+            <th>Nama Expedisi</th>
+            <th>Gudang</th>
+        </tr>
+        <tr class="item-footer">
+            <td class="penerima">&nbsp;</td>
+            <td class="expedisi"></td>
+            <td class="penerima"></td>
         </tr>
         <tr class="item-footer">
             <td>&nbsp;</td>
@@ -127,16 +135,17 @@ Email: cvbmateknik@gmail.com
             <td></td>
         </tr>
         <tr class="item-footer">
-            <td>&nbsp;</td>
+            <td><textarea aria-label="penerima" style="text-align:center"></textarea></td>
             <td></td>
-            <td></td>
+            <td><textarea aria-label="gudang" style="text-align:center"></textarea></td>
         </tr>
-    </table>
+    </table> 
+
 
 </div>
 
 
-@code { [Parameter] public string Title { get; set; } = "NOTA PENJUALAN";
+@code { [Parameter] public string Title { get; set; } = "SURAT JALAN";
     [Parameter] public int Id { get; set; }
 
     private OeTransHView Transh = new OeTransHView() { OeTransDs = new List<OeTransDView>() };
@@ -179,6 +188,6 @@ Email: cvbmateknik@gmail.com
 
     private void OpenPrint(int xKdBank)
     {
-        navigationmanager.NavigateTo($"/PrintSuratJalan/{xKdBank}");
+        navigationmanager.NavigateTo($"/PrintNotaJual/{xKdBank}");
     }
 }
