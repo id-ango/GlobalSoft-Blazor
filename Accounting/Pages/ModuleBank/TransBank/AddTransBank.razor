@@ -6,11 +6,7 @@
 @inject ICashBankServices service
 @inject NavigationManager navigationmanager
 
-<div class="top-row">
-  
-    <NavLink href="/ModuleBank/TransBank" class="btn btn-primary">Back</NavLink>
-    
-</div>
+
 
 <div class="top-row px-4 " style="z-index:5">
     <h3>Add Transaksi CashBank</h3>
@@ -30,8 +26,8 @@
 
         <div class="form-group">
             <label>
-                Kode Bank :
-                <InputSelect class="form-control" @bind-Value="Transh.KodeBank" style="width:80%; display:inline" @oninput="OnKurs">
+                Kode Bank : <br/>
+                <InputSelect class="form-control" @bind-Value="Transh.KodeBank" style="width:60%; display:inline" @oninput="OnKurs">
                     <option value="">&nbsp;&nbsp;---Select Bank---&nbsp;&nbsp;</option>
                     @foreach (var item in banks)
                     {
@@ -51,13 +47,14 @@
         <div class="form-group">
             <label>
                 Keterangan :
-                <InputTextArea class="form-control" @bind-Value="Transh.Keterangan" style="width:150%" />
+                <InputTextArea class="form-control" @bind-Value="Transh.Keterangan"  />
             </label>
         </div>
 
-
+        <br/>
         <div class="float-md-right">
             <button class="btn-success" type="submit">Simpan</button>
+            <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModuleBank/TransBank", false))">Batal</button>
         </div>
         <br />
         <br />
@@ -114,6 +111,11 @@
     <ModalDialogComponent Title="Alert" Text="Kode Bank Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
 }
 
+<style>
+    label {
+        width: 100%;
+    }
+</style>
 
 @code {
     TransHView Transh = new TransHView() { TransDs = new List<TransDView>() };

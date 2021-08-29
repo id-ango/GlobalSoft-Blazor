@@ -11,7 +11,7 @@
 
 
 <div class="top-row px-4 " style="z-index:5">
-    <h3>Add Source Code</h3>
+    <h3>Add Account Set</h3>
 </div>
 
 <div class="content px-4">
@@ -30,11 +30,11 @@
                 <InputText class="form-control" @bind-Value="bank.Description" />
             </label>
         </div>
-
+        <br/>
         <div class="form-group">
             <label>
                 GL Account 1 :
-                <InputSelect class="form-control" @bind-Value="bank.Acct1" style="width:80%; display:inline">
+                <InputSelect class="form-control" @bind-Value="bank.Acct1" style="width:60%; display:inline">
                     <option value="">&nbsp;&nbsp;---Select GL Account---&nbsp;&nbsp;</option>
                     @foreach (var item in GlAccounts)
                     {
@@ -48,7 +48,7 @@
         <div class="form-group">
             <label>
                 GL Account 2 :
-                <InputSelect class="form-control" @bind-Value="bank.Acct2" style="width:80%; display:inline">
+                <InputSelect class="form-control" @bind-Value="bank.Acct2" style="width: 60%; display: inline">
                     <option value="">&nbsp;&nbsp;---Select GL Account---&nbsp;&nbsp;</option>
                     @foreach (var item in GlAccounts)
                     {
@@ -62,7 +62,7 @@
         <div class="form-group">
             <label>
                 GL Account 3 :
-                <InputSelect class="form-control" @bind-Value="bank.Acct3" style="width:80%; display:inline">
+                <InputSelect class="form-control" @bind-Value="bank.Acct3" style="width: 60%; display: inline">
                     <option value="">&nbsp;&nbsp;---Select GL Account---&nbsp;&nbsp;</option>
                     @foreach (var item in GlAccounts)
                     {
@@ -76,7 +76,7 @@
         <div class="form-group">
             <label>
                 GL Account 4 :
-                <InputSelect class="form-control" @bind-Value="bank.Acct4" style="width:80%; display:inline">
+                <InputSelect class="form-control" @bind-Value="bank.Acct4" style="width: 60%; display:inline">
                     <option value="">&nbsp;&nbsp;---Select GL Account---&nbsp;&nbsp;</option>
                     @foreach (var item in GlAccounts)
                     {
@@ -89,8 +89,8 @@
         </div>
         <div class="form-group">
             <label>
-                GL Account 5:
-                <InputSelect class="form-control" @bind-Value="bank.Acct5" style="width:80%; display:inline">
+                GL Account 5 :
+                <InputSelect class="form-control" @bind-Value="bank.Acct5" style="width: 60%; display: inline">
                     <option value="">&nbsp;&nbsp;---Select GL Account---&nbsp;&nbsp;</option>
                     @foreach (var item in GlAccounts)
                     {
@@ -104,7 +104,7 @@
         <div class="form-group">
             <label>
                 GL Account 6 :
-                <InputSelect class="form-control" @bind-Value="bank.Acct6" style="width:80%; display:inline">
+                <InputSelect class="form-control" @bind-Value="bank.Acct6" style="width: 60%; display: inline">
                     <option value="">&nbsp;&nbsp;---Select GL Account---&nbsp;&nbsp;</option>
                     @foreach (var item in GlAccounts)
                     {
@@ -116,8 +116,10 @@
             </label>
         </div>
 
+        <br/>
         <div class="float-md-right">
             <button class="btn-success" type="submit">Simpan</button>
+            <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModulePiutang/SetupAcctSet", false))">Batal</button>
         </div>
 
     </EditForm>
@@ -143,7 +145,7 @@
             <td>@cbBank.GlNama</td>
 
             <td>
-               
+
                 <button @onclick="() => BtnChoose(cbBank.GlAcct,i)" class="btn btn-success">Choose</button>
 
             </td>
@@ -153,102 +155,108 @@
 
 }
 
-                @code {
-                    ArAcctView bank = new ArAcctView();
-                    public string Testing { get; set; }
-                    private bool DialogOpen { get; set; }
-                    private List<GlAccount> GlAccounts;
-                    public bool SearchOpen { get; set; }
-                    public int i = 1;
-                    protected override void OnInitialized()
-                    {
-                        base.OnInitialized();
-                        bank.AcctSet = "";
-                        LoadGlAccounts();
-                    }
+<style>
+    label {
+        width: 100%;
+    }
+</style>
 
-                    private void cekKode()
-                    {
-                        Testing = bank.AcctSet;
-                        DialogOpen = service.CekAcctSet(Testing);
-                        if (DialogOpen)
-                        {
-                            bank.AcctSet = "";
-                        }
-                        StateHasChanged();
-                    }
+@code {
+    ArAcctView bank = new ArAcctView();
+    public string Testing { get; set; }
+    private bool DialogOpen { get; set; }
+    private List<GlAccount> GlAccounts;
+    public bool SearchOpen { get; set; }
+    public int i = 1;
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        bank.AcctSet = "";
+        LoadGlAccounts();
+    }
 
-                    private void OnDialogClose(bool accepted)
-                    {
+    private void cekKode()
+    {
+        Testing = bank.AcctSet;
+        DialogOpen = service.CekAcctSet(Testing);
+        if (DialogOpen)
+        {
+            bank.AcctSet = "";
+        }
+        StateHasChanged();
+    }
 
-                        DialogOpen = false;
-                        StateHasChanged();
+    private void OnDialogClose(bool accepted)
+    {
 
-                    }
+        DialogOpen = false;
+        StateHasChanged();
 
-
-
-                    private void HandleValidSubmit()
-                    {
-                        var newEdit = service.AddAkunSet(bank);
-                        if (newEdit)
-                        {
+    }
 
 
-                        }
 
-                        navigationmanager.NavigateTo("/ModulePiutang/SetupAcctSet", false);
+    private void HandleValidSubmit()
+    {
+        var newEdit = service.AddAkunSet(bank);
+        if (newEdit)
+        {
 
-                    }
 
-                    void LoadGlAccounts()
-                    {
-                        GlAccounts = serviceGl.GetGlAccount();
-                    }
+        }
 
-                    private void openSearch(int i)
-                    {
-                        SearchOpen = !SearchOpen;
-                        this.i = i;
+        navigationmanager.NavigateTo("/ModulePiutang/SetupAcctSet", false);
 
-                    }
-                    private void BtnChoose(string textSearch, int i)
-                    {
-                        if (!string.IsNullOrEmpty(textSearch))
-                        {
-                            switch (i)
-                            {
-                                case 1:
-                                    bank.Acct1 = textSearch;
-                                    break;
-                                case 2:
-                                    bank.Acct2 = textSearch;
-                                    break;
-                                case 3:
-                                    bank.Acct3 = textSearch;
-                                    break;
-                                case 4:
-                                    bank.Acct4 = textSearch;
-                                    break;
-                                case 5:
-                                    bank.Acct5 = textSearch;
-                                    break;
-                                case 6:
-                                    bank.Acct6 = textSearch;
-                                    break;
-                            }
+    }
 
-                        }
+    void LoadGlAccounts()
+    {
+        GlAccounts = serviceGl.GetGlAccount();
+    }
 
-                        SearchOpen = false;
-                        StateHasChanged();
-                    }
+    private void openSearch(int i)
+    {
+        SearchOpen = !SearchOpen;
+        this.i = i;
 
-                    private void OnSearchClose(bool accepted)
-                    {
+    }
+    private void BtnChoose(string textSearch, int i)
+    {
+        if (!string.IsNullOrEmpty(textSearch))
+        {
+            switch (i)
+            {
+                case 1:
+                    bank.Acct1 = textSearch;
+                    break;
+                case 2:
+                    bank.Acct2 = textSearch;
+                    break;
+                case 3:
+                    bank.Acct3 = textSearch;
+                    break;
+                case 4:
+                    bank.Acct4 = textSearch;
+                    break;
+                case 5:
+                    bank.Acct5 = textSearch;
+                    break;
+                case 6:
+                    bank.Acct6 = textSearch;
+                    break;
+            }
 
-                        SearchOpen = false;
-                        StateHasChanged();
+        }
 
-                    }
+        SearchOpen = false;
+        StateHasChanged();
+    }
+
+    private void OnSearchClose(bool accepted)
+    {
+
+        SearchOpen = false;
+        StateHasChanged();
+
+    }
 }

@@ -15,11 +15,6 @@
 @inject IInventoryServices serviceIC
 @inject NavigationManager navigationmanager
 
-<div class="top-row">
-
-    <NavLink href="/ModuleJual/TransJual" class="btn btn-primary">Back</NavLink>
-
-</div>
 
 <div class="top-row px-4 " style="z-index:5">
     <h3>Add Transaksi Jual</h3>
@@ -34,8 +29,8 @@
 
         <div class="form-group">
             <label>
-                Supplier :
-                <InputSelect class="form-control" @bind-Value="Transh.Customer" style="width:80%; display:inline">
+                Customer :
+                <InputSelect class="form-control" @bind-Value="Transh.Customer" style="width:60%; display:inline">
                     <option value="">&nbsp;&nbsp;---Select Customer---&nbsp;&nbsp;</option>
                     @foreach (var item in supplier)
                     {
@@ -43,7 +38,7 @@
                     }
 
                 </InputSelect>
-
+                <button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>
             </label>
         </div>
         <div class="form-group">
@@ -55,7 +50,7 @@
         <div class="form-group">
             <label>
                 Keterangan :
-                <InputTextArea class="form-control" @bind-Value="Transh.Keterangan" style="width:150%" />
+                <InputTextArea class="form-control" @bind-Value="Transh.Keterangan" />
             </label>
         </div>
 
@@ -65,7 +60,7 @@
                     <td>
                         <div class="row">
                             <div class=" col-sm  form-message">
-                                <span>Saldo   : @Transh.TtlJumlah.ToString("N")</span>
+                                <span style="font-size:medium"><b>Saldo   : @Transh.TtlJumlah.ToString("N")</b></span>
                             </div>
 
                         </div>
@@ -92,7 +87,7 @@
                     <td>
                         <div class="form-group">
                             <label>
-                                Ongkos :
+                                Ongkos Kirim :
                                 <InputNumber class="form-control" @bind-Value="Transh.Ongkos" />
                             </label>
                         </div>
@@ -102,7 +97,7 @@
                     <td>
                         <div class="row">
                             <div class=" col-sm  form-message">
-                                <span>Jumlah   : @Transh.Jumlah.ToString("N")</span>
+                                <span style="font-size:medium"><b>Jumlah   : @Transh.Jumlah.ToString("N")</b></span>
                             </div>
 
                         </div>
@@ -113,9 +108,10 @@
 
 
         </div>
-
+        <br/>
         <div class="float-md-right">
-            <button class="btn-success" type="submit">Simpan</button>
+            <button class="btn-success " type="submit">Simpan</button>
+            <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModuleJual/TransJual", false))">Batal</button>
         </div>
         <br />
         <br />
@@ -172,6 +168,36 @@
     <ModalDialogComponent Title="Alert" Text="Kode Bank Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
 }
 
+@if (SearchOpen)
+{
+
+    <ModalSearchComponent OnClose="OnSearchClose" Items="supplier" Context="cbBank" GetFilterableText="@(item =>$"{item.Customer} {item.NamaCust} {item.Alamat} {item.Kota}")">
+        <TableHeader>
+            <th scope="col">Customer</th>
+            <th scope="col">Name</th>
+
+            <th></th>
+        </TableHeader>
+        <RowTemplate>
+            <td>@cbBank.Customer</td>
+            <td>@cbBank.NamaCust</td>
+
+            <td>
+                <button @onclick="() => BtnChoose(cbBank.Customer)" class="btn btn-success">Choose</button>
+
+            </td>
+        </RowTemplate>
+    </ModalSearchComponent>
+
+
+}
+
+<style>
+    label {
+        width: 100%;
+    }
+</style>
+
 
 @code {
     OeTransHView Transh = new OeTransHView() { OeTransDs = new List<OeTransDView>() };
@@ -193,8 +219,10 @@
     public bool IsVisible { get; set; }
     public bool IsKurs { get; set; }
     public bool IsEdit { get; set; }
+    public bool SearchOpen { get; set; }
 
     protected override void OnInitialized()
+
     {
         base.OnInitialized();
         Transh.Tanggal = DateTime.Now;
@@ -226,14 +254,14 @@
     void Loadsupplier()
     {
 
-        supplier = serviceAR.GetCustomer() ;
+        supplier = serviceAR.GetCustomer();
 
     }
 
     private void HandleValidSubmit()
     {
 
-        var newEdit = service.AddTransH(Transh,true);
+        var newEdit = service.AddTransH(Transh, true);
         if (newEdit != null)
         {
             var id = newEdit.OeTransHId.ToString().Trim();
@@ -314,4 +342,22 @@
         Transh.Ppn = persen;
     }
 
+    private void BtnChoose(string textSearch)
+    {
+        if (!string.IsNullOrEmpty(textSearch))
+        {
+            Transh.Customer = textSearch;
+        }
+
+        SearchOpen = false;
+        StateHasChanged();
+    }
+
+    private void OnSearchClose(bool accepted)
+    {
+
+        SearchOpen = false;
+        StateHasChanged();
+
+    }
 }

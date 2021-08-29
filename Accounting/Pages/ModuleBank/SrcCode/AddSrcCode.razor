@@ -29,11 +29,12 @@
                 <InputText class="form-control" @bind-Value="bank.NamaSrc" />
             </label>
         </div>
+        <br/>
 
         <div class="form-group">
             <label>
                 GL Account :
-                <InputSelect class="form-control" @bind-Value="bank.GlAcct" style="width:80%; display:inline">
+                <InputSelect class="form-control" @bind-Value="bank.GlAcct" style="width:60%; display:inline">
                     <option value="">&nbsp;&nbsp;---Select GL Account---&nbsp;&nbsp;</option>
                     @foreach (var item in GlAccounts)
                     {
@@ -44,9 +45,10 @@
                 <button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>
             </label>
         </div>
-
+        <br/>
         <div class="float-md-right">
             <button class="btn-success" type="submit">Simpan</button>
+            <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModuleBank/SetupSrcCode", false))">Batal</button>
         </div>
 
     </EditForm>
@@ -80,6 +82,13 @@
 
 
 }
+
+<style>
+    label {
+        width: 100%;
+    }
+</style>
+
 
 @code {
     SrcCodeView bank = new SrcCodeView();

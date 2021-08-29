@@ -46,9 +46,10 @@
 
             </label>
         </div>
-
+        <br/>
         <div class="float-md-right">
             <button class="btn-success" type="submit">Simpan</button>
+            <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModuleLedger/SetupAkunGl", false))">Batal</button>
         </div>
 
     </EditForm>
@@ -59,6 +60,11 @@
     <ModalDialogComponent Title="Alert" Text="Kode Bank Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
 }
 
+<style>
+    label {
+        width: 100%;
+    }
+</style>
 
 @code {
 
