@@ -1,7 +1,9 @@
 ﻿@page "/ModuleBank/TransBank"
 @using eSoft.CashBank.Model
 @using eSoft.CashBank.Services
+@using BlazorFluentUI
 
+@*@attribute [Authorize(Roles ="admin, superuser")]*@
 
 @inject ICashBankServices cashBank
 @implements IDisposable
@@ -17,35 +19,53 @@
 </div>
 
 <br />
-<br />
+@StatusOption
+
+<EditForm Model="bank">
+    <PrimaryButton @onclick="() => OpenRincian()" Text=@(RincianTransaksi ? "Hide Transaksi" : "Display Transaksi") />
+
+    <InputRadioGroup @bind-Value="StatusOption" >
+        @foreach (var status in (option[])Enum.GetValues(typeof(option)))
+        {
+            <InputRadio Value="status"  />
+            @status 
+    <span>&nbsp;&nbsp;</span>
+        }
+
+    </InputRadioGroup>
+</EditForm>
+
+@if (RincianTransaksi)
+{
 
 
-<div class="container">
-    <DataGridVerticalComponent Items="TransHeader" Context="transaksi" GetFilterableText="@(item =>$"{item.KodeBank} {item.DocNo} {item.Keterangan}")">
-        <TableHeader>
-            <th scope="col">Bank</th>
-            <th scope="col">No Bukti</th>
-            <th scope="col">Tanggal</th>
-            <th scope="col">Keterangan</th>
-            <th scope="col">Saldo</th>
-            <th></th>
-        </TableHeader>
-        <RowTemplate>
-            <td>@transaksi.KodeBank</td>
-            <td>@transaksi.DocNo</td>
-            <td>@transaksi.Tanggal.ToShortDateString()</td>
-            <td>@transaksi.Keterangan</td>
-            <td>@transaksi.Saldo.ToString("N")</td>
-            <td>
-                <button @onclick="() => OpenRubah(transaksi.CbTransHId)" class="btn btn-success">Edit</button>
-                <button @onclick="() => OpenDeleteDialog(transaksi)" class="btn btn-danger">Delete</button>
-                <button @onclick="() => OpenPrint(transaksi.CbTransHId)" class="btn btn-danger">Print</button>
-            </td>
-        </RowTemplate>
-    </DataGridVerticalComponent>
+    <div class="container">
+        <DataGridVerticalComponent Items="TransHeader" Context="transaksi" GetFilterableText="@(item =>$"{item.KodeBank} {item.DocNo} {item.Keterangan}")">
+            <TableHeader>
+                <th scope="col">Bank</th>
+                <th scope="col">No Bukti</th>
+                <th scope="col">Tanggal</th>
+                <th scope="col">Keterangan</th>
+                <th scope="col">Saldo</th>
+                <th></th>
+            </TableHeader>
+            <RowTemplate>
+                <td>@transaksi.KodeBank</td>
+                <td>@transaksi.DocNo</td>
+                <td>@transaksi.Tanggal.ToShortDateString()</td>
+                <td>@transaksi.Keterangan</td>
+                <td>@transaksi.Saldo.ToString("N")</td>
+                <td>
+                    <button @onclick="() => OpenRubah(transaksi.CbTransHId)" class="btn btn-success">Edit</button>
+                    <button @onclick="() => OpenDeleteDialog(transaksi)" class="btn btn-danger">Delete</button>
+                    <button @onclick="() => OpenPrint(transaksi.CbTransHId)" class="btn btn-danger">Print</button>
+                </td>
+            </RowTemplate>
+        </DataGridVerticalComponent>
 
 
-</div>
+    </div>
+}
 
 @if (DeleteDialogOpen)
 {
@@ -65,19 +85,31 @@
     private List<CbTransD> TransDetail;
     private CbTransH _bankToDelete;
 
+    public enum option { All = 1, Three_Month = 2 };
+    public option StatusOption { get; set; } = option.All;
+
+    CbTransH bank = new CbTransH();
+
     public bool DeleteDialogOpen { get; set; }
     public bool NullDialogOpen { get; set; }
+    public bool RincianTransaksi { get; set; }
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        LoadGet();
+        //  LoadGet();
 
     }
 
     private void LoadGet()
     {
         TransHeader = cashBank.GetTransH();
+        TransDetail = cashBank.GetTransD();
+    }
+
+    private void Load3Get()
+    {
+        TransHeader = cashBank.Get3TransH();
         TransDetail = cashBank.GetTransD();
     }
 
@@ -96,6 +128,18 @@
         StateHasChanged();
 
     }
+
+    private void OpenRincian()
+    {
+        RincianTransaksi = !RincianTransaksi;
+       
+        if (StatusOption == option.All)
+            LoadGet();
+        else
+            Load3Get();
+    }
+
+    
 
     private void OnDeleteNullClose(bool accepted)
     {

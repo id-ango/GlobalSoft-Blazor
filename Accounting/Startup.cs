@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,7 @@ using eSoft.Order.Services;
 
 using Microsoft.EntityFrameworkCore;
 using BlazorFluentUI;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Accounting
 {
@@ -53,6 +55,7 @@ namespace Accounting
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+          //  services.AddDefaultIdentity<IdentityUser, IdentityRole>();    /* tambahan authorise */
             services.AddDbContext<DbContextBank>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection"), b=>b.MigrationsAssembly("Accounting")));
@@ -120,8 +123,12 @@ namespace Accounting
 
             app.UseRouting();
 
+            app.UseAuthentication();  /* tambahan authorise */
+            app.UseAuthorization();   /* tambahan authorise */
+
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();   /* tambahan authorise */
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
