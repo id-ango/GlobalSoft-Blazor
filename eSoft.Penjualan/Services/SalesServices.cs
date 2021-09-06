@@ -30,6 +30,17 @@ namespace eSoft.Penjualan.Services
             _contextIc = contextPersediaan;
         }
 
+        #region laporanpenjualan
+
+        private void Laporan1(DateTime tgl1, DateTime tgl2)
+        {
+            List<OeTransH> transH = new List<OeTransH>();
+
+            transH = _context.OeTransHs.Include(p =>p.OeTransDs).Where(x => x.Tanggal >= tgl1 && x.Tanggal <= tgl2).ToList();
+        }
+
+        #endregion
+
         #region getclass
 
         private ArCust GetCustomerId(string id)
