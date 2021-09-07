@@ -32,12 +32,24 @@ namespace eSoft.Penjualan.Services
 
         #region laporanpenjualan
 
-        private void Laporan1(DateTime tgl1, DateTime tgl2)
+        public List<OeTransH> Laporan1(DateTime tgl1, DateTime tgl2)
         {
             List<OeTransH> transH = new List<OeTransH>();
+        
+            transH = _context.OeTransHs.Where(x => x.Tanggal >= tgl1 && x.Tanggal <= tgl2).ToList();
 
-            transH = _context.OeTransHs.Include(p =>p.OeTransDs).Where(x => x.Tanggal >= tgl1 && x.Tanggal <= tgl2).ToList();
+            return transH;
         }
+
+        public List<OeTransD> Detail1(int xKdHeader)
+        {
+            List<OeTransD> transD = new List<OeTransD>();
+
+            transD = _context.OeTransDs.Where(x => x.OeTransHId == xKdHeader).ToList();
+
+            return transD;
+        }
+
 
         #endregion
 

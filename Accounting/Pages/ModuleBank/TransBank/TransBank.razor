@@ -17,9 +17,7 @@
 <div class="container">
     <NavLink href="/ModuleBank/AddTransBank" class="btn btn-primary">Add</NavLink>
 </div>
-
 <br />
-@StatusOption
 
 <EditForm Model="bank">
     <PrimaryButton @onclick="() => OpenRincian()" Text=@(RincianTransaksi ? "Hide Transaksi" : "Display Transaksi") />

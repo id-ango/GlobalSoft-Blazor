@@ -16,25 +16,96 @@
 @inject NavigationManager navigationmanager
 
 <h3>LaporanPenjualan</h3>
+<div class="row">
+    <div class="col-4">
+        <EditForm Model="transh">
+            <div class="form-group">
+                <label>
+                    Dari Tanggal :
+                    <InputDate class="form-control" @bind-Value="Tanggal1" />
+                </label>
+            </div>
+            <div class="form-group">
+                <label>
+                    Sd Tanggal :
+                    <InputDate class="form-control" @bind-Value="Tanggal2" />
+                </label>
+            </div>
 
-<EditForm Model="transh">
-    <div class="form-group">
-        <label>
-            Dari Tanggal :
-            <InputDate class="form-control" @bind-Value="Tanggal1" />
-        </label>
+        </EditForm>
     </div>
-    <div class="form-group">
-        <label>
-            Sd Tanggal :
-            <InputDate class="form-control" @bind-Value="Tanggal2" />
-        </label>
+    <div class="col-4">
+        <br />
+        <button class="btn btn-primary" @onclick="@(() => proses1())">Display Penjualan</button>
+        <br />
     </div>
-</EditForm>
-<br/>
+</div>
 
-<button class="btn btn-primary">Display Penjualan</button>
 
+
+<div class="container">
+    <DataGridVerticalComponent Items="TransHeader" Context="transaksi" GetFilterableText="@(item =>$"{item.NoLpb} {item.NamaCust} {item.Keterangan}")">
+        <TableHeader>
+
+            <th scope="col">No Bukti</th>
+            <th scope="col">Customer</th>
+            <th scope="col">Tanggal</th>
+            <th scope="col">Keterangan</th>
+            <th scope="col">Jumlah</th>
+            <th scope="col">PPN</th>
+            <th scope="col">Ongkir</th>
+            <th></th>
+        </TableHeader>
+        <RowTemplate>
+
+            <td>@transaksi.NoLpb</td>
+            <td>@transaksi.NamaCust</td>
+            <td>@transaksi.Tanggal.ToShortDateString()</td>
+            <td>@transaksi.Keterangan</td>
+            <td>@transaksi.Jumlah.ToString("N")</td>
+            <td>@transaksi.Ppn.ToString("N")</td>
+            <td>@transaksi.Ongkos.ToString("N")</td>
+
+            <td>
+                <button @onclick="() => OpenDetail(transaksi.OeTransHId)" class="btn btn-success">Edit</button>
+               
+                @*<button @onclick="() => OpenPrint(transaksi.OeTransHId)" class="btn btn-danger">Print</button>*@
+            </td>
+        </RowTemplate>
+    </DataGridVerticalComponent>
+
+
+</div>
+@if (SearchOpen)
+{
+
+    <ModalSearchComponent OnClose="OnSearchClose" Items="TransDetail" Context="transaksi2" GetFilterableText="@(item =>$"{item.ItemCode} {item.NamaItem} ")">
+        <TableHeader>
+            <th scope="col">Item</th>
+            <th scope="col">Nama Item</th>
+            <th scope="col">Satuan</th>
+            <th scope="col">Qty</th>
+            <th scope="col">Harga</th>
+            <th scope="col">Diskon</th>
+            <th scope="col">Jumlah</th>
+            <th scope="col">Lokasi</th>
+
+            <th></th>
+        </TableHeader>
+        <RowTemplate>
+            <td>@transaksi2.ItemCode</td>
+            <td>@transaksi2.NamaItem</td>
+            <td>@transaksi2.Satuan</td>
+            <td>@transaksi2.Qty.ToString("#,##0.##")</td>
+            <td>@transaksi2.Harga.ToString("#,##0.##")</td>
+            <td>@transaksi2.Discount.ToString("#,##0.##")</td>
+            <td>@transaksi2.Jumlah.ToString("#,##0.##")</td>
+            <td>@transaksi2.Lokasi</td>
+        </RowTemplate>
+    </ModalSearchComponent>
+
+
+}
 
 @code {
 
@@ -43,9 +114,11 @@
     private OeTransH _bankToDelete;
 
     OeTransH transh = new OeTransH();
+    List<OeTransH> transaksi = new List<OeTransH>();
 
     public bool DeleteDialogOpen { get; set; }
     public bool NullDialogOpen { get; set; }
+    public bool SearchOpen { get; set; }
 
     public DateTime Tanggal1 { get; set; }
     public DateTime Tanggal2 { get; set; }
@@ -55,8 +128,34 @@
         base.OnInitialized();
         Tanggal1 = DateTime.Now;
         Tanggal2 = DateTime.Now;
+        proses1();
 
     }
 
+    private void OnSearchClose(bool accepted)
+    {
+
+        SearchOpen = false;
+        StateHasChanged();
+
+    }
+
+    private void proses1()
+    {
+        TransHeader = service.Laporan1(Tanggal1, Tanggal2);
+    }
+
+    private void OpenDetail(int xKdBank)
+    {
+
+        TransDetail = service.Detail1(xKdBank);
+        SearchOpen = !SearchOpen;
+        //  navigationmanager.NavigateTo($"/ModuleJual/EditTransJual/{xKdBank}");
+    }
+
+    private void OpenPrint(int xKdBank)
+    {
+        navigationmanager.NavigateTo($"/PrintSuratJalan/{xKdBank}");
+    }
 
 }

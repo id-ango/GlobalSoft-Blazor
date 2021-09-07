@@ -24,6 +24,8 @@ namespace eSoft.Penjualan.Services
         OeTransH AddTransH(OeTransHView trans,bool pajak);
         Task<bool> DelTransH(int id);
         Task<bool> EditTransH(OeTransHView trans);
+        List<OeTransH> Laporan1(DateTime tgl1, DateTime tgl2);
+        List<OeTransD> Detail1(int xKdHeader);
     }
 }
 
