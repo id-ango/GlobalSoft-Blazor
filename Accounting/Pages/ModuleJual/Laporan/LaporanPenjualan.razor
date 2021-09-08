@@ -34,6 +34,8 @@
 
         </EditForm>
     </div>
+    @nJumlah
+
     <div class="col-4">
         <br />
         <button class="btn btn-primary" @onclick="@(() => proses1())">Display Penjualan</button>
@@ -62,9 +64,9 @@
             <td>@transaksi.NamaCust</td>
             <td>@transaksi.Tanggal.ToShortDateString()</td>
             <td>@transaksi.Keterangan</td>
-            <td>@transaksi.Jumlah.ToString("N")</td>
-            <td>@transaksi.Ppn.ToString("N")</td>
-            <td>@transaksi.Ongkos.ToString("N")</td>
+            <td style="text-align:right">@transaksi.Jumlah.ToString("N")</td>
+            <td style="text-align:right">@transaksi.Ppn.ToString("N")</td>
+            <td style="text-align:right">@transaksi.Ongkos.ToString("N")</td>
 
             <td>
                 <button @onclick="() => OpenDetail(transaksi.OeTransHId)" class="btn btn-success">Edit</button>
@@ -79,7 +81,7 @@
 @if (SearchOpen)
 {
 
-    <ModalSearchComponent OnClose="OnSearchClose" Items="TransDetail" Context="transaksi2" GetFilterableText="@(item =>$"{item.ItemCode} {item.NamaItem} ")">
+    <ModalDetailJualComponent OnClose="OnSearchClose" Items="TransDetail" Context="transaksi2"  GetFilterableText="@(item =>$"{item.ItemCode} {item.NamaItem} ")">
         <TableHeader>
             <th scope="col">Item</th>
             <th scope="col">Nama Item</th>
@@ -96,13 +98,13 @@
             <td>@transaksi2.ItemCode</td>
             <td>@transaksi2.NamaItem</td>
             <td>@transaksi2.Satuan</td>
-            <td>@transaksi2.Qty.ToString("#,##0.##")</td>
-            <td>@transaksi2.Harga.ToString("#,##0.##")</td>
-            <td>@transaksi2.Discount.ToString("#,##0.##")</td>
-            <td>@transaksi2.Jumlah.ToString("#,##0.##")</td>
+            <td style="text-align:right">@transaksi2.Qty.ToString("N")</td>
+            <td style="text-align:right">@transaksi2.Harga.ToString("N")</td>
+            <td style="text-align:right">@transaksi2.Discount.ToString("N")</td>
+            <td style="text-align:right">@transaksi2.Jumlah.ToString("N")</td>
             <td>@transaksi2.Lokasi</td>
         </RowTemplate>
-    </ModalSearchComponent>
+    </ModalDetailJualComponent>
 
 
 }
@@ -111,7 +113,10 @@
 
     private List<OeTransH> TransHeader;
     private List<OeTransD> TransDetail;
-    private OeTransH _bankToDelete;
+    private string nCount { get; set; }
+    private string nOngkir { get; set; }
+    private string nJumlah { get; set; }
+    private string nPPn { get; set; }
 
     OeTransH transh = new OeTransH();
     List<OeTransH> transaksi = new List<OeTransH>();
@@ -143,6 +148,7 @@
     private void proses1()
     {
         TransHeader = service.Laporan1(Tanggal1, Tanggal2);
+        nJumlah = TransHeader.Sum(x => x.Jumlah).ToString("N");
     }
 
     private void OpenDetail(int xKdBank)
