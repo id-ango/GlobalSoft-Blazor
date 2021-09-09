@@ -34,8 +34,7 @@
 
         </EditForm>
     </div>
-    @nJumlah
-
+  
     <div class="col-4">
         <br />
         <button class="btn btn-primary" @onclick="@(() => proses1())">Display Penjualan</button>
@@ -46,39 +45,11 @@
 
 
 <div class="container">
-    <DataGridVerticalComponent Items="TransHeader" Context="transaksi" GetFilterableText="@(item =>$"{item.NoLpb} {item.NamaCust} {item.Keterangan}")">
-        <TableHeader>
-
-            <th scope="col">No Bukti</th>
-            <th scope="col">Customer</th>
-            <th scope="col">Tanggal</th>
-            <th scope="col">Keterangan</th>
-            <th scope="col">Jumlah</th>
-            <th scope="col">PPN</th>
-            <th scope="col">Ongkir</th>
-            <th></th>
-        </TableHeader>
-        <RowTemplate>
-
-            <td>@transaksi.NoLpb</td>
-            <td>@transaksi.NamaCust</td>
-            <td>@transaksi.Tanggal.ToShortDateString()</td>
-            <td>@transaksi.Keterangan</td>
-            <td style="text-align:right">@transaksi.Jumlah.ToString("N")</td>
-            <td style="text-align:right">@transaksi.Ppn.ToString("N")</td>
-            <td style="text-align:right">@transaksi.Ongkos.ToString("N")</td>
-
-            <td>
-                <button @onclick="() => OpenDetail(transaksi.OeTransHId)" class="btn btn-success">Edit</button>
-               
-                @*<button @onclick="() => OpenPrint(transaksi.OeTransHId)" class="btn btn-danger">Print</button>*@
-            </td>
-        </RowTemplate>
-    </DataGridVerticalComponent>
-
+ 
+    <DataGridPenjualanComponent Items="TransHeader" OnDetail="OpenDetail" ></DataGridPenjualanComponent>
 
 </div>
-@if (SearchOpen)
+@if (DetailOpen)
 {
 
     <ModalDetailJualComponent OnClose="OnSearchClose" Items="TransDetail" Context="transaksi2"  GetFilterableText="@(item =>$"{item.ItemCode} {item.NamaItem} ")">
@@ -111,22 +82,24 @@
 
 @code {
 
-    private List<OeTransH> TransHeader;
-    private List<OeTransD> TransDetail;
+    public List<OeTransH> TransHeader;
+    public List<OeTransD> TransDetail;
     private string nCount { get; set; }
     private string nOngkir { get; set; }
     private string nJumlah { get; set; }
     private string nPPn { get; set; }
 
-    OeTransH transh = new OeTransH();
+    public OeTransH transh = new OeTransH();
     List<OeTransH> transaksi = new List<OeTransH>();
 
     public bool DeleteDialogOpen { get; set; }
     public bool NullDialogOpen { get; set; }
-    public bool SearchOpen { get; set; }
+    public bool DetailOpen { get; set; }
 
     public DateTime Tanggal1 { get; set; }
     public DateTime Tanggal2 { get; set; }
+
+
 
     protected override void OnInitialized()
     {
@@ -137,10 +110,12 @@
 
     }
 
+
+
     private void OnSearchClose(bool accepted)
     {
 
-        SearchOpen = false;
+        DetailOpen = false;
         StateHasChanged();
 
     }
@@ -148,20 +123,21 @@
     private void proses1()
     {
         TransHeader = service.Laporan1(Tanggal1, Tanggal2);
-        nJumlah = TransHeader.Sum(x => x.Jumlah).ToString("N");
+      //  nJumlah = TransHeader.Sum(x => x.Jumlah).ToString("N");
     }
 
-    private void OpenDetail(int xKdBank)
+    private void OpenDetail(OeTransH xKdBank)
     {
 
-        TransDetail = service.Detail1(xKdBank);
-        SearchOpen = !SearchOpen;
+        TransDetail = service.Detail1(xKdBank.OeTransHId);
+        DetailOpen = !DetailOpen;
         //  navigationmanager.NavigateTo($"/ModuleJual/EditTransJual/{xKdBank}");
+        StateHasChanged();
     }
 
-    private void OpenPrint(int xKdBank)
-    {
-        navigationmanager.NavigateTo($"/PrintSuratJalan/{xKdBank}");
-    }
+    //private void OpenPrint(int xKdBank)
+    //{
+    //    navigationmanager.NavigateTo($"/PrintSuratJalan/{xKdBank}");
+    //}
 
 }
