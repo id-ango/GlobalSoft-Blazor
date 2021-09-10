@@ -70,7 +70,8 @@
 
     private string nJumlah { get; set; }
 
-    private List<OeTransH> result;
+    private List<OeTransH> result = new List<OeTransH>();
+    private List<OeTransH> result2 = new List<OeTransH>();
 
     private string searchText;
 
@@ -83,32 +84,40 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        result = Items;
+
+    }
+    
+    protected override void OnAfterRender (bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        result2 = Items;
         searchFind();
         StateHasChanged();
     }
 
     private void searchFind()
     {
-        result = Items;
+        result2 = Items;
 
         if (!string.IsNullOrEmpty(searchText))
         {
 
 
             //   result = result.Where(x => x.NamaCust || x.AlamatKirim).ToList();
-            result = (from t in Items
+            result2 = (from t in result2
                       where
   ( (t.NamaCust?.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ?? false) ||
     (t.Keterangan?.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ?? false ) ||
     (t.NoLpb?.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ?? false))
                       select t).ToList();
 
-           
+
 
         }
-        //if (result != null)
-        //    Items = result;
+        if (result2.Count != 0)
+            result = result2;
+        else
+            result = Items;
 
         nJumlah = result.Sum(x => x.Jumlah).ToString("N");
     }

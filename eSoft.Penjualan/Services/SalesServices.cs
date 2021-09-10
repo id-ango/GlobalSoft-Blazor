@@ -36,7 +36,7 @@ namespace eSoft.Penjualan.Services
         {
             List<OeTransH> transH = new List<OeTransH>();
         
-            transH = _context.OeTransHs.Where(x => x.Tanggal >= tgl1 && x.Tanggal <= tgl2).ToList();
+            transH = _context.OeTransHs.Where(x => x.Tanggal >= tgl1 && x.Tanggal <= tgl2).OrderByDescending(t => t.Tanggal).ToList();
 
             return transH;
         }

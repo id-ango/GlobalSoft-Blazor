@@ -123,7 +123,8 @@
     private void proses1()
     {
         TransHeader = service.Laporan1(Tanggal1, Tanggal2);
-      //  nJumlah = TransHeader.Sum(x => x.Jumlah).ToString("N");
+        //  nJumlah = TransHeader.Sum(x => x.Jumlah).ToString("N");
+       // StateHasChanged();
     }
 
     private void OpenDetail(OeTransH xKdBank)
