@@ -23,7 +23,7 @@
                                 <div class="form-group">
                                     <label>
                                         Item
-                                        <InputSelect class="form-control" @bind-Value="Detail.ItemCode" style="width:50%; display:inline" @oninput="OnChangeItem">
+                                        <InputSelect class="form-control" @bind-Value="Detail.ItemCode" style="width:75%; display:inline" @oninput="OnChangeItem">
                                             <option value="">&nbsp;&nbsp;---Select Item Code---&nbsp;&nbsp;</option>
                                             @foreach (var item in SrcCode)
                                             {
@@ -35,7 +35,9 @@
                                     </label>
                                 </div>
                             </td>
-                            <td>
+                            </tr>
+                        <tr>
+                            <td colspan="2">
                                 <div class="form-group">
                                     <label>
                                         Nama Item

@@ -1,4 +1,4 @@
-﻿@page "/ModuleBeli/AddTransBeli"
+﻿@page "/ModuleBeli/AddTransReturBeli"
 
 @using eSoft.Hutang.Model
 @using eSoft.Hutang.View
@@ -18,7 +18,7 @@
 
 
 <div class="top-row px-4 " style="z-index:5">
-    <h3>Add Transaksi Beli</h3>
+    <h3>Add Transaksi Retur Beli</h3>
 </div>
 
 
@@ -51,7 +51,7 @@
         <div class="form-group">
             <label>
                 Keterangan :
-                <InputTextArea class="form-control" @bind-Value="Transh.Keterangan"  />
+                <InputTextArea class="form-control" @bind-Value="Transh.Keterangan" />
             </label>
         </div>
 
@@ -262,7 +262,7 @@
     private void HandleValidSubmit()
     {
 
-        var newEdit = service.AddTransH(Transh);
+        var newEdit = service.AddTransHRetur(Transh);
         if (newEdit != null)
         {
             var id = newEdit.IrTransHId.ToString().Trim();

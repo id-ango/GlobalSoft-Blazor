@@ -22,5 +22,6 @@ namespace eSoft.Pembelian.Services
         IrTransH AddTransH(IrTransHView trans);
         Task<bool> DelTransH(int id);
         Task<bool> EditTransH(IrTransHView trans);
+        IrTransH AddTransHRetur(IrTransHView trans);
     }
 }

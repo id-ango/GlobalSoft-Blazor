@@ -34,7 +34,7 @@
         <div class="form-group">
             <label>
                 Supplier :
-                <InputSelect class="form-control" @bind-Value="Transh.Supplier" style="width:80%; display:inline">
+                <InputSelect class="form-control" @bind-Value="Transh.Supplier" style="width:60%; display:inline">
                     <option value="">&nbsp;&nbsp;---Select Supplier---&nbsp;&nbsp;</option>
                     @foreach (var item in supplier)
                     {
@@ -42,6 +42,7 @@
                     }
 
                 </InputSelect>
+                <button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>
 
             </label>
         </div>
@@ -54,7 +55,7 @@
         <div class="form-group">
             <label>
                 Keterangan :
-                <InputTextArea class="form-control" @bind-Value="Transh.Keterangan" style="width:150%" />
+                <InputTextArea class="form-control" @bind-Value="Transh.Keterangan"  />
             </label>
         </div>
 
@@ -116,6 +117,8 @@
 
         <div class="float-md-right">
             <button class="btn-success" type="submit">Simpan</button>
+            <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModuleBeli/TransBeli", false))">Batal</button>
+
         </div>
         <br />
         <br />
@@ -169,6 +172,37 @@
     <ModalDialogComponent Title="Alert" Text="Hutang sdh ada Pembayaran" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
 }
 
+@if (SearchOpen)
+{
+
+    <ModalSearchComponent OnClose="OnSearchClose" Items="supplier" Context="cbBank" GetFilterableText="@(item =>$"{item.Supplier} {item.NamaSup} {item.Alamat} {item.Kota}")">
+        <TableHeader>
+            <th scope="col">Customer</th>
+            <th scope="col">Name</th>
+            <th scope="col">Alamat</th>
+
+            <th></th>
+        </TableHeader>
+        <RowTemplate>
+            <td>@cbBank.Supplier</td>
+            <td>@cbBank.NamaSup</td>
+            <td>@cbBank.Alamat</td>
+            <td>
+                <button @onclick="() => BtnChoose(cbBank.Supplier)" class="btn btn-success">Choose</button>
+
+            </td>
+        </RowTemplate>
+    </ModalSearchComponent>
+
+
+}
+
+<style>
+    label {
+        width: 100%;
+    }
+</style>
+
 
 @code {
 
@@ -197,6 +231,7 @@
     public bool IsVisible { get; set; }
     public bool IsKurs { get; set; }
     public bool IsEdit { get; set; }
+    public bool SearchOpen { get; set; }
 
     protected override void OnInitialized()
     {
@@ -368,7 +403,24 @@
     #endregion
 
 
+    private void BtnChoose(string textSearch)
+    {
+        if (!string.IsNullOrEmpty(textSearch))
+        {
+            Transh.Supplier = textSearch;
+        }
 
+        SearchOpen = false;
+        StateHasChanged();
+    }
+
+    private void OnSearchClose(bool accepted)
+    {
+
+        SearchOpen = false;
+        StateHasChanged();
+
+    }
 
 
 }
