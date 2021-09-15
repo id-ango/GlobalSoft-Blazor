@@ -30,7 +30,7 @@
         <div class="form-group">
             <label>
                 Customer :
-                <InputSelect class="form-control" @bind-Value="Transh.Customer" style="width:60%; display:inline">
+                <InputSelect class="form-control" @bind-Value="Transh.Customer" style="width:60%; display:inline" @oninput="OnChangeItem">
                     <option value="">&nbsp;&nbsp;---Select Customer---&nbsp;&nbsp;</option>
                     @foreach (var item in supplier)
                     {
@@ -45,6 +45,12 @@
             <label>
                 Tanggal :
                 <InputDate class="form-control" @bind-Value="Transh.Tanggal" />
+            </label>
+        </div>
+        <div class="form-group">
+            <label>
+                Alamat Kirim :
+                <InputTextArea class="form-control" @bind-Value="Transh.AlamatKirim" />
             </label>
         </div>
         <div class="form-group">
@@ -108,7 +114,7 @@
 
 
         </div>
-        <br/>
+        <br />
         <div class="float-md-right">
             <button class="btn-success " type="submit">Simpan</button>
             <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModuleJual/TransJual", false))">Batal</button>
@@ -175,13 +181,17 @@
         <TableHeader>
             <th scope="col">Customer</th>
             <th scope="col">Name</th>
-
+            <th scope="col">Telpon</th>
+            <th scope="col">Alamat</th>
+            <th scope="col">Kota</th>
             <th></th>
         </TableHeader>
         <RowTemplate>
             <td>@cbBank.Customer</td>
             <td>@cbBank.NamaCust</td>
-
+            <td>@cbBank.Telpon</td>
+            <td>@cbBank.Alamat</td>
+            <td>@cbBank.Kota</td>
             <td>
                 <button @onclick="() => BtnChoose(cbBank.Customer)" class="btn btn-success">Choose</button>
 
@@ -347,10 +357,31 @@
         if (!string.IsNullOrEmpty(textSearch))
         {
             Transh.Customer = textSearch;
+            Transh.AlamatKirim = (string.IsNullOrEmpty(serviceAR.GetCustomerCode(textSearch).AlmtKrm) ?
+                                         "" : serviceAR.GetCustomerCode(textSearch).AlmtKrm)
+                                  + "\r\n" +
+                                  (string.IsNullOrEmpty(serviceAR.GetCustomerCode(textSearch).KotaKrm) ?
+                                         "" : serviceAR.GetCustomerCode(textSearch).KotaKrm);
+
+
         }
 
         SearchOpen = false;
         StateHasChanged();
+    }
+    public void OnChangeItem(ChangeEventArgs args)
+    {
+
+        var itemcode = (from e in supplier where e.Customer == args.Value.ToString() select e).FirstOrDefault();
+       
+        Transh.AlamatKirim = (string.IsNullOrEmpty(serviceAR.GetCustomerCode(itemcode.Customer).AlmtKrm) ?
+                                     "" : serviceAR.GetCustomerCode(itemcode.Customer).AlmtKrm)
+                              + "\r\n" +
+                              (string.IsNullOrEmpty(serviceAR.GetCustomerCode(itemcode.Customer).KotaKrm) ?
+                                     "" : serviceAR.GetCustomerCode(itemcode.Customer).KotaKrm);
+
+       
+
     }
 
     private void OnSearchClose(bool accepted)

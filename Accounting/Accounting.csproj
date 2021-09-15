@@ -58,8 +58,6 @@
     <Folder Include="Pages\ModuleBank\CashBank\" />
     <Folder Include="Pages\ModuleBank\SrcCode\" />
     <Folder Include="Pages\ModuleOrder\ReturOrderBeli\" />
-    <Folder Include="Pages\ModuleBeli\ReturBeli\" />
-    <Folder Include="Pages\ModuleJual\ReturJual\" />
     <Folder Include="Pages\ModuleLedger\Account\" />
   </ItemGroup>
 

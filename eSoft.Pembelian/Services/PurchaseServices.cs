@@ -65,6 +65,10 @@ namespace eSoft.Pembelian.Services
                 foreach (var item in IrTrans)
                 {
                     item.NamaSup = _contextAp.ApSuppls.Where(x => x.Supplier == item.Supplier).FirstOrDefault().NamaLengkap;
+                   // item.Jumlah = (item.Kode == "82" ? item.Jumlah : -1 * item.Jumlah);
+                   // item.TtlJumlah = (item.Kode == "82" ? item.TtlJumlah : -1 * item.TtlJumlah);
+                  //  item.Ongkos = (item.Kode == "82" ? item.Ongkos : -1 * item.Ongkos);
+                   // item.Ppn = (item.Kode == "82" ? item.Ppn : -1 * item.Ppn);
                 }
 
             }
