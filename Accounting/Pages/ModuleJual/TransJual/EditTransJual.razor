@@ -388,7 +388,7 @@
                                   + "\r\n" +
                                   (string.IsNullOrEmpty(serviceAR.GetCustomerCode(textSearch).KotaKrm) ?
                                          "" : serviceAR.GetCustomerCode(textSearch).KotaKrm);
-
+            Transh.NamaCust = serviceAR.GetCustomerCode(textSearch).NamaLengkap;
 
         }
 
@@ -407,7 +407,7 @@
                               (string.IsNullOrEmpty(serviceAR.GetCustomerCode(itemcode.Customer).KotaKrm) ?
                                      "" : serviceAR.GetCustomerCode(itemcode.Customer).KotaKrm);
 
-
+        Transh.NamaCust = serviceAR.GetCustomerCode(textSearch).NamaLengkap;
 
     }
 

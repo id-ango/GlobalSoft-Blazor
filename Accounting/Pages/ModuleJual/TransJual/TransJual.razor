@@ -14,6 +14,8 @@
 
 <div class="container">
     <NavLink href="/ModuleJual/AddTransJual" class="btn btn-primary">Add</NavLink>
+    <NavLink href="/ModuleJual/AddTransReturJual" class="btn btn-primary">Retur</NavLink>
+
 </div>
 
 <br />
@@ -28,6 +30,7 @@
             <th scope="col">Customer</th>
             <th scope="col">Tanggal</th>
             <th scope="col">Keterangan</th>
+            <th scope="col">Total</th>
             <th scope="col">Jumlah</th>
             <th scope="col">PPN</th>
             <th scope="col">Ongkir</th>
@@ -39,6 +42,7 @@
             <td>@transaksi.NamaCust</td>
             <td>@transaksi.Tanggal.ToShortDateString()</td>
             <td>@transaksi.Keterangan</td>
+            <td>@transaksi.TtlJumlah.ToString("N")</td>
             <td>@transaksi.Jumlah.ToString("N")</td>
             <td>@transaksi.Ppn.ToString("N")</td>
             <td>@transaksi.Ongkos.ToString("N")</td>

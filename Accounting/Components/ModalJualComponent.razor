@@ -130,12 +130,14 @@
             <th scope="col">Code</th>
             <th scope="col">Name</th>
             <th scope="col">Satuan</th>
+            <th scope="col">Qty</th>
             <th></th>
         </TableHeader>
         <RowTemplate>
             <td>@cbBank.ItemCode</td>
             <td>@cbBank.NamaItem</td>
             <td>@cbBank.Satuan</td>
+            <td>@cbBank.Qty</td>
             <td>
                 <button @onclick="() => BtnChoose(cbBank.ItemCode)" class="btn btn-success">Choose</button>
 

@@ -34,7 +34,7 @@
                     <option value="">&nbsp;&nbsp;---Select Customer---&nbsp;&nbsp;</option>
                     @foreach (var item in supplier)
                     {
-                        <option value="@item.Customer">[@item.Customer]&nbsp; @item.NamaCust</option>
+                    <option value="@item.Customer">[@item.Customer]&nbsp; @item.NamaCust</option>
                     }
 
                 </InputSelect>
@@ -165,35 +165,35 @@
 
 @if (IsVisible)
 {
-    <ModalJualComponent SrcCode="srccode" OnClose="OnVisibleClose" OnDetail="OnDetailTrans" isEdit="IsEdit" DetailRubah="Transd" Location="lokasi"></ModalJualComponent>
+<ModalJualComponent SrcCode="srccode" OnClose="OnVisibleClose" OnDetail="OnDetailTrans" isEdit="IsEdit" DetailRubah="Transd" Location="lokasi"></ModalJualComponent>
 }
 
 
 @if (DialogOpen)
 {
-    <ModalDialogComponent Title="Alert" Text="Kode Bank Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
+<ModalDialogComponent Title="Alert" Text="Kode Bank Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
 }
 
 @if (SearchOpen)
 {
 
-    <ModalSearchComponent OnClose="OnSearchClose" Items="supplier" Context="cbBank" GetFilterableText="@(item =>$"{item.Customer} {item.NamaCust} {item.Alamat} {item.Kota}")">
-        <TableHeader>
-            <th scope="col">Customer</th>
-            <th scope="col">Name</th>
+<ModalSearchComponent OnClose="OnSearchClose" Items="supplier" Context="cbBank" GetFilterableText="@(item =>$"{item.Customer} {item.NamaCust} {item.Alamat} {item.Kota}")">
+    <TableHeader>
+        <th scope="col">Customer</th>
+        <th scope="col">Name</th>
 
-            <th></th>
-        </TableHeader>
-        <RowTemplate>
-            <td>@cbBank.Customer</td>
-            <td>@cbBank.NamaCust</td>
+        <th></th>
+    </TableHeader>
+    <RowTemplate>
+        <td>@cbBank.Customer</td>
+        <td>@cbBank.NamaCust</td>
 
-            <td>
-                <button @onclick="() => BtnChoose(cbBank.Customer)" class="btn btn-success">Choose</button>
+        <td>
+            <button @onclick="() => BtnChoose(cbBank.Customer)" class="btn btn-success">Choose</button>
 
-            </td>
-        </RowTemplate>
-    </ModalSearchComponent>
+        </td>
+    </RowTemplate>
+</ModalSearchComponent>
 
 
 }
@@ -358,7 +358,7 @@
                                   + "\r\n" +
                                   (string.IsNullOrEmpty(serviceAR.GetCustomerCode(textSearch).KotaKrm) ?
                                          "" : serviceAR.GetCustomerCode(textSearch).KotaKrm);
-
+Transh.NamaCust = serviceAR.GetCustomerCode(textSearch).NamaLengkap;
 
         }
 
@@ -376,7 +376,7 @@
                               (string.IsNullOrEmpty(serviceAR.GetCustomerCode(itemcode.Customer).KotaKrm) ?
                                      "" : serviceAR.GetCustomerCode(itemcode.Customer).KotaKrm);
 
-
+Transh.NamaCust = serviceAR.GetCustomerCode(textSearch).NamaLengkap;
 
     }
 
