@@ -332,6 +332,7 @@
         Transh.Tanggal = TransAll.Tanggal;
         Transh.NamaCust = TransAll.NamaCust;
         Transh.Customer = TransAll.Customer;
+        Transh.Pajak = TransAll.Pajak;
         Transh.Ongkos = TransAll.Ongkos;
         Transh.Ppn = TransAll.Ppn;
         Transh.PpnPersen = TransAll.PpnPersen;
@@ -354,6 +355,8 @@
                 Kode = item.Kode,
                 NoLpb = item.NoLpb,
                 Tanggal = item.Tanggal,
+                Cost = item.Cost,
+                HrgCost = item.HrgCost,
                 JumDpp = item.JumDpp,
                 Lokasi = item.Lokasi
             });
@@ -407,7 +410,7 @@
                               (string.IsNullOrEmpty(serviceAR.GetCustomerCode(itemcode.Customer).KotaKrm) ?
                                      "" : serviceAR.GetCustomerCode(itemcode.Customer).KotaKrm);
 
-        Transh.NamaCust = serviceAR.GetCustomerCode(textSearch).NamaLengkap;
+        Transh.NamaCust = serviceAR.GetCustomerCode(itemcode.Customer).NamaLengkap;
 
     }
 

@@ -101,7 +101,7 @@ namespace eSoft.Penjualan.Services
                                NoLpb = e.NoLpb,
                                Customer = e.Customer,
                                NamaCust =e.NamaCust,
-
+                               AlamatKirim = e.AlamatKirim,
                                Tanggal = e.Tanggal,
                                Keterangan = e.Keterangan,
 
