@@ -210,6 +210,8 @@
             Detail.NamaItem = itemcode.NamaItem;
             Detail.Satuan = itemcode.Satuan;
             Detail.Harga = itemcode.HrgJual;
+            Detail.HrgCost = itemcode.HrgNetto;
+
         }
 
         SearchOpen = false;
@@ -232,6 +234,7 @@
         Detail.NamaItem = itemcode.NamaItem;
         Detail.Satuan = itemcode.Satuan;
         Detail.Harga = itemcode.HrgJual;
+        Detail.HrgCost = itemcode.HrgNetto;
         //if (Detail.Lokasi == null)
         //{
         //    Transd.Lokasi = Transh.Lokasi;
@@ -249,6 +252,6 @@
         Detail.Discount = Discount;
     }
 
-   
+
 
 }

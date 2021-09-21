@@ -243,7 +243,7 @@ namespace eSoft.Penjualan.Services
                         NoLpb = transH.NoLpb,
                         Tanggal = trans.Tanggal,
                         HrgCost = item.HrgCost,
-                        Cost = item.Cost,
+                        Cost = item.HrgCost*item.Qty,
                         JumDpp = mQty5
                     });
 
@@ -285,7 +285,7 @@ namespace eSoft.Penjualan.Services
                         if (cekItem.CostMethod == (int)costMethod.Moving_Avg)  // jika moving avarage
                         {
 
-                            cekItem.Cost -= item.Cost;
+                            cekItem.Cost -= (item.HrgCost * item.Qty);
                         }
 
                         //if (cekItem.Qty != 0)
@@ -548,7 +548,7 @@ namespace eSoft.Penjualan.Services
                                     NoLpb = transH.NoLpb,
                                     Tanggal = trans.Tanggal,
                                     HrgCost = item.HrgCost,
-                                    Cost = item.Cost,
+                                    Cost = item.HrgCost * item.Qty,
                                     JumDpp = mQty5
                                 });
 
@@ -584,7 +584,7 @@ namespace eSoft.Penjualan.Services
                                     if (cekItem.CostMethod == (int)costMethod.Moving_Avg)  // jika moving avarage
                                     {
 
-                                        cekItem.Cost -= item.Cost;
+                                        cekItem.Cost -= (item.HrgCost * item.Qty);
                                     }
 
                                     //if (cekItem.Qty != 0)
