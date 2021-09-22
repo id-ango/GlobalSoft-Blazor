@@ -554,13 +554,14 @@ namespace eSoft.Pembelian.Services
                             }
 
                         }
+                        var supplier = GetSupplierId(transH.Supplier);
 
                         ApHutang hutang = new ApHutang
                         {
                             Kode = "IR",
                             Dokumen = transH.NoLpb,
                             Tanggal = transH.Tanggal,
-                            DueDate = transH.Tanggal,
+                            DueDate = transH.Tanggal.AddDays(supplier.Termin),
                             Supplier = transH.Supplier,
                             Keterangan = transH.Keterangan,
                             Jumlah = (cKode == "82" ? transH.Jumlah : -1 * transH.Jumlah),
@@ -570,7 +571,7 @@ namespace eSoft.Pembelian.Services
                         };
 
 
-                        var supplier = GetSupplierId(transH.Supplier);
+                       
                         if (cKode == "82")
                             supplier.Hutang += transH.Jumlah;
                         else

@@ -56,6 +56,7 @@ namespace eSoft.Hutang.Services
                 {
                     Supplier = suppliers.Supplier.ToUpper(),
                     NamaSup = suppliers.NamaSup,
+                    Termin = suppliers.Termin,
                     Alamat = suppliers.Alamat,
                     Kota = suppliers.Kota,
                     Telpon = suppliers.Telpon,
@@ -85,6 +86,7 @@ namespace eSoft.Hutang.Services
                 if (ExistingSupplier != null)
                 {
                     ExistingSupplier.NamaSup = suppliers.NamaSup;
+                    ExistingSupplier.Termin = suppliers.Termin;
                     ExistingSupplier.Alamat = suppliers.Alamat;
                     ExistingSupplier.Kota = suppliers.Kota;
                     ExistingSupplier.Telpon = suppliers.Telpon;

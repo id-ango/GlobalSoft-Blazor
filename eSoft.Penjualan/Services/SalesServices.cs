@@ -427,6 +427,9 @@ namespace eSoft.Penjualan.Services
         public async Task<bool> EditTransH(OeTransHView trans)
         {
             decimal mQty5 = 0;
+            string cKode = "94";
+
+            cKode = trans.Kode;
 
             var cekFirst = _contextAr.ArPiutngs.Where(x => x.Dokumen == trans.NoLpb && x.Bayar == 0).FirstOrDefault();
 
@@ -439,6 +442,8 @@ namespace eSoft.Penjualan.Services
 
                     if (ExistingTrans != null)
                     {
+                        cKode = ExistingTrans.Kode;
+
                         foreach (var item in ExistingTrans.OeTransDs)
                         {
                             if (item.Qty != 0)
@@ -456,25 +461,35 @@ namespace eSoft.Penjualan.Services
                                             NamaItem = cekItem.NamaItem,
                                             Satuan = cekItem.Satuan,
                                             Lokasi = item.Lokasi,
-                                            Qty =  item.Qty
+                                            Qty = (ExistingTrans.Kode == "95" ? -1 * item.Qty : item.Qty)
                                         };
                                         _contextIc.IcAltItems.Add(Produk);
 
                                     }
                                     else
                                     {
-                                        cekLokasi1.Qty += item.Qty;
+                                        if (ExistingTrans.Kode == "95")
+                                            cekLokasi1.Qty -= item.Qty;
+                                        else
+                                            cekLokasi1.Qty += item.Qty;
+
                                         _contextIc.IcAltItems.Update(cekLokasi1);
                                     }
                                     if (cekItem.JnsBrng == (int)jnsBrng.Stock)   // jika stock
                                     {
-                                        cekItem.Qty += item.Qty;
+                                        if (ExistingTrans.Kode == "95")
+                                            cekItem.Qty -= item.Qty;
+                                        else
+                                            cekItem.Qty += item.Qty;
                                     }
 
                                     if (cekItem.CostMethod == (int)costMethod.Moving_Avg)  // jika moving avarage
                                     {
+                                        if (ExistingTrans.Kode == "95")
+                                            cekItem.Cost += item.Cost;
+                                        else
+                                            cekItem.Cost += item.Cost;
 
-                                        cekItem.Cost += item.Cost;
                                     }
 
                                     //if (cekItem.Qty != 0)
@@ -494,7 +509,11 @@ namespace eSoft.Penjualan.Services
                         }
 
                         var existingCustomer = GetCustomerId(ExistingTrans.Customer);
-                        existingCustomer.Piutang -= ExistingTrans.Jumlah;
+                        if (ExistingTrans.Kode == "95")
+                            existingCustomer.Piutang -= ExistingTrans.Jumlah;
+                        else
+                            existingCustomer.Piutang -= ExistingTrans.Jumlah;
+
 
                         _contextAr.ArCusts.Update(existingCustomer);
                         _contextAr.ArPiutngs.Remove(cekFirst);
@@ -517,7 +536,7 @@ namespace eSoft.Penjualan.Services
                             DPayment = trans.DPayment,
                             Tagihan = trans.Tagihan,
                             TotalQty = trans.TotalQty,
-                            Kode = "94",
+                            Kode = cKode,
                             Cek = "1",
                             Pajak = trans.Pajak,
 
@@ -544,7 +563,7 @@ namespace eSoft.Penjualan.Services
                                     Persen = item.Persen,
                                     Discount = item.Discount,
                                     Jumlah = item.Jumlah,
-                                    Kode = "94",
+                                    Kode = cKode,
                                     NoLpb = transH.NoLpb,
                                     Tanggal = trans.Tanggal,
                                     HrgCost = item.HrgCost,
@@ -565,26 +584,37 @@ namespace eSoft.Penjualan.Services
                                             NamaItem = cekItem.NamaItem,
                                             Satuan = cekItem.Satuan,
                                             Lokasi = item.Lokasi,
-                                            Qty = -1*item.Qty
+                                            Qty = (cKode == "95" ? item.Qty : -1 * item.Qty)
                                         };
                                         _contextIc.IcAltItems.Add(Produk);
 
                                     }
                                     else
                                     {
-                                        cekLokasi1.Qty -= item.Qty;
+                                        if (cKode == "95")
+                                            cekLokasi1.Qty += item.Qty;
+                                        else
+                                            cekLokasi1.Qty -= item.Qty;
+
                                         _contextIc.IcAltItems.Update(cekLokasi1);
                                     }
 
                                     if (cekItem.JnsBrng == (int)jnsBrng.Stock)   // jika stock
                                     {
-                                        cekItem.Qty -= item.Qty;
+                                        if (cKode == "95")
+                                            cekItem.Qty += item.Qty;
+                                        else
+                                            cekItem.Qty -= item.Qty;
                                     }
 
                                     if (cekItem.CostMethod == (int)costMethod.Moving_Avg)  // jika moving avarage
                                     {
+                                        if (cKode == "95")
+                                            cekItem.Cost += (item.HrgCost * item.Qty);
+                                        else
+                                            cekItem.Cost -= (item.HrgCost * item.Qty);
 
-                                        cekItem.Cost -= (item.HrgCost * item.Qty);
+                                       
                                     }
 
                                     //if (cekItem.Qty != 0)
@@ -604,7 +634,7 @@ namespace eSoft.Penjualan.Services
                         }
                         var Customer = GetCustomerId(transH.Customer);
 
-                        ArPiutng hutang = new ArPiutng
+                        ArPiutng piutang = new ArPiutng
                         {
                             Kode = "OE",
                             Dokumen = transH.NoLpb,
@@ -612,19 +642,21 @@ namespace eSoft.Penjualan.Services
                             DueDate = transH.Tanggal.AddDays(Customer.Termin),
                             Customer = transH.Customer,
                             Keterangan = transH.Keterangan,
-                            Jumlah = transH.Jumlah,
-                            Sisa = transH.Jumlah,
-                            SldSisa = transH.Jumlah,
+                            Jumlah = (cKode == "94" ? transH.Jumlah : -1 * transH.Jumlah),
+                            Sisa = (cKode == "94" ? transH.Jumlah : -1 * transH.Jumlah),
+                            SldSisa = (cKode == "94" ? transH.Jumlah : -1 * transH.Jumlah),
                             KodeTran = transH.Kode
                         };
 
 
-                       
-                        Customer.Piutang += transH.Jumlah;
+                        if (cKode == "94")
+                            Customer.Piutang += transH.Jumlah;
+                        else
+                            Customer.Piutang -= transH.Jumlah;
 
                         _context.OeTransHs.Add(transH);
                         _contextAr.ArCusts.Update(Customer);
-                        _contextAr.ArPiutngs.Add(hutang);
+                        _contextAr.ArPiutngs.Add(piutang);
 
 
                         await _contextAr.SaveChangesAsync();
@@ -784,7 +816,7 @@ namespace eSoft.Penjualan.Services
                         NoLpb = transH.NoLpb,
                         Tanggal = trans.Tanggal,
                         HrgCost = item.HrgCost,
-                        Cost = item.Cost,
+                        Cost = item.HrgCost * item.Qty,
                         JumDpp = mQty5
                     });
 
@@ -826,7 +858,7 @@ namespace eSoft.Penjualan.Services
                         if (cekItem.CostMethod == (int)costMethod.Moving_Avg)  // jika moving avarage
                         {
 
-                            cekItem.Cost += item.Cost;
+                            cekItem.Cost += item.HrgCost * item.Qty;
                         }
 
                         //if (cekItem.Qty != 0)
@@ -845,12 +877,14 @@ namespace eSoft.Penjualan.Services
                 _context.OeTransHs.Add(transH);
             }
 
+            var Customer = GetCustomerId(transH.Customer);
+
             ArPiutng piutang = new ArPiutng
             {
                 Kode = "OE",
                 Dokumen = transH.NoLpb,
                 Tanggal = transH.Tanggal,
-                DueDate = transH.Tanggal,
+                DueDate = transH.Tanggal.AddDays(Customer.Termin),
                 Customer = transH.Customer,
                 Keterangan = transH.Keterangan,
                 Jumlah = -1 * transH.Jumlah,
@@ -860,7 +894,7 @@ namespace eSoft.Penjualan.Services
             };
             _contextAr.ArPiutngs.Add(piutang);
 
-            var Customer = GetCustomerId(transH.Customer);
+           
             Customer.Piutang -= transH.Jumlah;
 
             _contextAr.ArCusts.Update(Customer);

@@ -56,6 +56,7 @@ namespace eSoft.Piutang.Services
                 {
                     Customer = customers.Customer.ToUpper(),
                     NamaCust = customers.NamaCust,
+                    Termin = customers.Termin,
                     Alamat = customers.Alamat,
                     Kota = customers.Kota,
                     Telpon = customers.Telpon,
@@ -93,6 +94,7 @@ namespace eSoft.Piutang.Services
                     ExistingCustomer.Alamat = customers.Alamat;
                     ExistingCustomer.Kota = customers.Kota;
                     ExistingCustomer.Telpon = customers.Telpon;
+                    ExistingCustomer.Termin = customers.Termin;
                     ExistingCustomer.NamaLengkap = customers.NamaLengkap;
                     ExistingCustomer.AcctSet = customers.AcctSet;
                     ExistingCustomer.AcctPjk = customers.AcctPjk;
