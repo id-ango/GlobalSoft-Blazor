@@ -19,80 +19,69 @@
         <DataAnnotationsValidator />
         <ValidationSummary />
 
+
+
+        <div class="form-group">
+            <label>
+                Tanggal :
+                <InputDate class="form-control" @bind-Value="Transh.Tanggal" style="width:60%"  />
+            </label>
+        </div>
         
-        <table>
-            <tr>
-                <td>
-                    <div class="form-group">
-                        <label>
-                            Tanggal :
-                            <InputDate class="form-control" @bind-Value="Transh.Tanggal" />
-                        </label>
-                    </div>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <label>
-                            Customer :
-                            <InputSelect class="form-control" @bind-Value="Transh.Customer" style="width:80%; display:inline" @oninput="OnChangeCustomer">
-                                <option value="">&nbsp;&nbsp;---Select Customer---&nbsp;&nbsp;</option>
-                                @foreach (var item in customers)
-                                {
-                                    <option value="@item.Customer">[@item.Customer]&nbsp; @item.NamaCust</option>
-                                }
+        <br/>
 
-                            </InputSelect>
-                            <button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>
-                        </label>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-               
-                <td>
-                    <div class="form-group">
-                        <label>
-                            Kode Bank :
-                            <InputSelect class="form-control" @bind-Value="Transh.KdBank" style="width:80%; display:inline" @oninput="OnKurs">
-                                <option value="">&nbsp;&nbsp;---Select Bank---&nbsp;&nbsp;</option>
-                                @foreach (var item in banks)
-                                {
-                                    <option value="@item.KodeBank">[@item.KodeBank]&nbsp; @item.NmBank</option>
-                                }
+        <div class="form-group">
+            <label>
+                Customer :
+                <InputSelect class="form-control" @bind-Value="Transh.Customer" style="width:60%; display:inline" @oninput="OnChangeCustomer">
+                    <option value="">&nbsp;&nbsp;---Select Customer---&nbsp;&nbsp;</option>
+                    @foreach (var item in customers)
+                    {
+                        <option value="@item.Customer">[@item.Customer]&nbsp; @item.NamaCust</option>
+                    }
 
-                            </InputSelect>
-                            &nbsp;@kurs
-                        </label>
-                    </div>
-                </td>
-                <td>
+                </InputSelect>
+                <button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>
+            </label>
+        </div>
+        <br/>
 
-                    <div class="form-group">
-                        <label>
-                            Jumlah Bayar :
-                            <InputNumber class="form-control" @bind-Value="Transh.JumBayar" style="width:150%" />
-                        </label>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    
-                        <label>
-                            Keterangan :
-                            <InputTextArea class="form-control" @bind-Value="Transh.Keterangan" style="width:250%" />
-                        </label>
-                  
-                </td>
-            </tr>
-        </table>
-       
-       
-        
+        <div class="form-group">
+            <label>
+                Kode Bank :
+                <InputSelect class="form-control" @bind-Value="Transh.KdBank" style="width:60%; display:inline" @oninput="OnKurs">
+                    <option value="">&nbsp;&nbsp;---Select Bank---&nbsp;&nbsp;</option>
+                    @foreach (var item in banks)
+                    {
+                        <option value="@item.KodeBank">[@item.KodeBank]&nbsp; @item.NmBank</option>
+                    }
+
+                </InputSelect>
+                &nbsp;@kurs
+            </label>
+        </div>
+        <br/>
+        <div class="form-group">
+            <label>
+                Jumlah Bayar :
+                <InputNumber class="form-control" @bind-Value="Transh.JumBayar" />
+            </label>
+        </div>
+
+
+        <div class="form-group">
+            <label>
+                Keterangan :
+                <InputTextArea class="form-control" @bind-Value="Transh.Keterangan"  />
+            </label>
+
+        </div>
+
 
 
         <div class="float-md-right">
             <button class="btn-success" type="submit">Simpan</button>
+            <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModulePiutang/TransArCa", false))">Batal</button>
         </div>
         <br />
         <br />
