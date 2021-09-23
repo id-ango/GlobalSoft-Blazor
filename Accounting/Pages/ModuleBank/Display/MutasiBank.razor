@@ -47,6 +47,7 @@
         </div>
        
 
+        <br/>
 
         <div class="float-md-right">
             @*<button class="btn-success" type="submit">Mutasi</button>*@
@@ -59,29 +60,26 @@
 </div>
 
 <br />
-<br />
+
 
 
 <div class="container">
     <DataGridVerticalComponent Items="RekKoran" Context="cbBank" GetFilterableText="@(item => $"{item.Keterangan} {item.DocNo} ")">
         <TableHeader>
-            <th scope="col">Doc #</th>
-            <th scope="col">Tanggal</th>
-            <th scope="col">Keterangan</th>
-            <th scope="col">Mutasi</th>
-            <th scope="col">Saldo</th>
-            <th></th>
+            <th scope="col" style="width:15%">Doc #</th>
+            <th scope="col" style="width: 15%">Tanggal</th>
+            <th scope="col" style="width: 40%">Keterangan</th>
+            <th scope="col" style="width: 15%">Mutasi</th>
+            <th scope="col" style="width: 15%">Saldo</th>
+           
         </TableHeader>
         <RowTemplate>
-            <td>@cbBank.DocNo</td>
-            <td>@cbBank.Tanggal.ToShortDateString()</td>
-            <td>@cbBank.Keterangan</td>
-            <td style="text-align:right">@cbBank.Saldo.ToString("N")</td>
-            <td style="text-align:right">@cbBank.Balance.ToString("N")</td>
-            <td>
-                @*<button @onclick="() => BtnChoose(cbBank.GlAcct)" class="btn btn-success">Choose</button>*@
-
-            </td>
+            <td style="width:15%">@cbBank.DocNo</td>
+            <td style="width:15%">@cbBank.Tanggal.ToShortDateString()</td>
+            <td style="width:40%">@cbBank.Keterangan</td>
+            <td style="text-align: right; width: 15%">@cbBank.Saldo.ToString("N")</td>
+            <td style="text-align: right; width: 15%">@cbBank.Balance.ToString("N")</td>
+           
         </RowTemplate>
     </DataGridVerticalComponent>
 

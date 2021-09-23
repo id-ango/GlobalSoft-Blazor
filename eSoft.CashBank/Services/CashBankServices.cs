@@ -725,7 +725,7 @@ namespace eSoft.CashBank.Services
 
         public string GetNumber(string kodeno)
         {
-            string kodeurut = kodeno + " -";
+            string kodeurut = kodeno + "-";
             string thnbln = DateTime.Now.ToString("yyMM");
             string xbukti = kodeurut + thnbln.Substring(0, 2) + '2' + thnbln.Substring(2, 2) + '-';
             var maxvalue = "";

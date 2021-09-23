@@ -33,7 +33,7 @@
         <div class="form-group">
             <label>
                 Customer :
-                <InputSelect class="form-control" @bind-Value="Transh.Customer" style="width:80%; display:inline">
+                <InputSelect class="form-control" @bind-Value="Transh.Customer" style="width:60%; display:inline">
                     <option value="">&nbsp;&nbsp;---Select Customer---&nbsp;&nbsp;</option>
                     @foreach (var item in banks)
                     {
@@ -47,13 +47,14 @@
         <div class="form-group">
             <label>
                 Keterangan :
-                <InputTextArea class="form-control" @bind-Value="Transh.Keterangan" style="width:150%" />
+                <InputTextArea class="form-control" @bind-Value="Transh.Keterangan"  />
             </label>
         </div>
 
 
         <div class="float-md-right">
             <button class="btn-success" type="submit">Simpan</button>
+            <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModulePiutang/TransPiutang", false))">Batal</button>
         </div>
         <br />
         <br />
