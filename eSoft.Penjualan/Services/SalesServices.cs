@@ -412,12 +412,12 @@ namespace eSoft.Penjualan.Services
                                 }
                                 else
                                 {
-                                    if (cKode == "95")
-                                        cekItem.Cost -= (cekItem.StdPrice * cekItem.Qty);
-                                    else
-                                        cekItem.Cost += (cekItem.StdPrice * cekItem.Qty);
+                                    //if (cKode == "95")
+                                    //    cekItem.Cost -= (cekItem.StdPrice * cekItem.Qty);
+                                    //else
+                                    //    cekItem.Cost += (cekItem.StdPrice * cekItem.Qty);
 
-                                //    cekItem.Cost += (cekItem.StdPrice * cekItem.Qty);
+                                    cekItem.Cost = (cekItem.StdPrice * cekItem.Qty);
                                 }
 
                                 //if (cekItem.Qty != 0)
@@ -526,10 +526,11 @@ namespace eSoft.Penjualan.Services
                                     }
                                     else
                                     {
-                                        if (ExistingTrans.Kode == "95")
-                                            cekItem.Cost -= cekItem.Qty * cekItem.StdPrice;
-                                        else
-                                            cekItem.Cost += cekItem.Qty * cekItem.StdPrice;
+                                        //if (ExistingTrans.Kode == "95")
+                                        //    cekItem.Cost -= cekItem.Qty * cekItem.StdPrice;
+                                        //else
+                                        //    cekItem.Cost += cekItem.Qty * cekItem.StdPrice;
+                                        cekItem.Cost = cekItem.Qty * cekItem.StdPrice;
                                     }
 
                                     //if (cekItem.Qty != 0)
@@ -658,10 +659,11 @@ namespace eSoft.Penjualan.Services
                                     }
                                     else
                                     {
-                                        if (ExistingTrans.Kode == "95")
-                                            cekItem.Cost += cekItem.Qty * cekItem.StdPrice;
-                                        else
-                                            cekItem.Cost -= cekItem.Qty * cekItem.StdPrice;
+                                        //if (ExistingTrans.Kode == "95")
+                                        //    cekItem.Cost += cekItem.Qty * cekItem.StdPrice;
+                                        //else
+                                        //    cekItem.Cost -= cekItem.Qty * cekItem.StdPrice;
+                                        cekItem.Cost = cekItem.Qty * cekItem.StdPrice;
                                     }
 
                                     //if (cekItem.Qty != 0)
