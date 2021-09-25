@@ -199,6 +199,11 @@ namespace eSoft.Pembelian.Services
 
                             cekItem.Cost += mQty5;
                         }
+                        else
+                        {
+                            cekItem.Cost += item.Qty * cekItem.StdPrice;
+                        }
+
 
                         if (cekItem.Qty != 0)
                         {
@@ -314,6 +319,14 @@ namespace eSoft.Pembelian.Services
                                     else
                                         cekItem.Cost += item.JumDpp;
                                 }
+                                else
+                                {
+                                    if (cKode == "82")
+                                        cekItem.Cost -= item.Qty*cekItem.StdPrice;
+                                    else
+                                        cekItem.Cost += item.Qty * cekItem.StdPrice;
+                                }
+
                                 if (cekItem.Qty != 0)
                                 {
                                     cekItem.HrgNetto = cekItem.Cost / cekItem.Qty;
@@ -418,6 +431,13 @@ namespace eSoft.Pembelian.Services
                                             cekItem.Cost -= item.JumDpp;
                                         else
                                             cekItem.Cost += item.JumDpp;
+                                    }
+                                    else
+                                    {
+                                        if (ExistingTrans.Kode == "82")
+                                            cekItem.Cost -= item.Qty*cekItem.StdPrice;
+                                        else
+                                            cekItem.Cost += item.Qty*cekItem.StdPrice;
                                     }
 
                                     if (cekItem.Qty != 0)
@@ -537,6 +557,13 @@ namespace eSoft.Pembelian.Services
                                             cekItem.Cost += mQty5;
                                         else
                                             cekItem.Cost -= mQty5;
+                                    }
+                                    else
+                                    {
+                                        if (ExistingTrans.Kode == "82")
+                                            cekItem.Cost -= item.Qty * cekItem.StdPrice;
+                                        else
+                                            cekItem.Cost += item.Qty * cekItem.StdPrice;
                                     }
 
                                     if (cekItem.Qty != 0)

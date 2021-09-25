@@ -287,6 +287,10 @@ namespace eSoft.Penjualan.Services
 
                             cekItem.Cost -= (item.HrgCost * item.Qty);
                         }
+                        else
+                        {
+                            cekItem.Cost -= (cekItem.StdPrice * cekItem.Qty);
+                        }
 
                         //if (cekItem.Qty != 0)
                         //{
@@ -342,12 +346,16 @@ namespace eSoft.Penjualan.Services
 
         public async Task<bool> DelTransH(int id)
         {
+            string cKode = "94";
+
             try
             {
                 var ExistingTrans = _context.OeTransHs.Where(x => x.OeTransHId == id).FirstOrDefault();
 
                 if (ExistingTrans != null)
                 {
+                    cKode = ExistingTrans.Kode;
+
                     foreach (var item in ExistingTrans.OeTransDs)
                     {
                         if (item.Qty != 0)
@@ -365,28 +373,53 @@ namespace eSoft.Penjualan.Services
                                         NamaItem = cekItem.NamaItem,
                                         Satuan = cekItem.Satuan,
                                         Lokasi = item.Lokasi,
-                                        Qty = item.Qty
+                                        Qty = (cKode == "95" ? -1 * item.Qty : item.Qty)
+                                        
                                     };
                                     _contextIc.IcAltItems.Add(Produk);
 
                                 }
                                 else
                                 {
-                                    cekLokasi1.Qty += item.Qty;
+                                    if (cKode == "95")
+                                        cekLokasi1.Qty -= item.Qty;
+                                    else
+                                        cekLokasi1.Qty += item.Qty;
+
+                                  //  cekLokasi1.Qty += item.Qty;
                                     _contextIc.IcAltItems.Update(cekLokasi1);
                                 }
                                 //   cekItem.Qty -= item.Qty;
                                 //   cekItem.Cost -= item.JumDpp;
                                 if (cekItem.JnsBrng == (int)jnsBrng.Stock)   // jika stock
                                 {
-                                    cekItem.Qty += item.Qty;
+                                    if (cKode == "95")
+                                        cekItem.Qty -= item.Qty;
+                                    else
+                                        cekItem.Qty += item.Qty;
+
+
+                                //    cekItem.Qty += item.Qty;
                                 }
 
                                 if (cekItem.CostMethod == (int)costMethod.Moving_Avg)  // jika moving avarage
                                 {
-
-                                    cekItem.Cost += item.Cost;
+                                    if(cKode == "95")
+                                        cekItem.Cost -= item.Cost;
+                                    else
+                                        cekItem.Cost += item.Cost;
+                                  
                                 }
+                                else
+                                {
+                                    if (cKode == "95")
+                                        cekItem.Cost -= (cekItem.StdPrice * cekItem.Qty);
+                                    else
+                                        cekItem.Cost += (cekItem.StdPrice * cekItem.Qty);
+
+                                //    cekItem.Cost += (cekItem.StdPrice * cekItem.Qty);
+                                }
+
                                 //if (cekItem.Qty != 0)
                                 //{
                                 //    cekItem.HrgNetto = cekItem.Cost / cekItem.Qty;
@@ -486,10 +519,17 @@ namespace eSoft.Penjualan.Services
                                     if (cekItem.CostMethod == (int)costMethod.Moving_Avg)  // jika moving avarage
                                     {
                                         if (ExistingTrans.Kode == "95")
-                                            cekItem.Cost += item.Cost;
+                                            cekItem.Cost -= item.Cost;
                                         else
                                             cekItem.Cost += item.Cost;
 
+                                    }
+                                    else
+                                    {
+                                        if (ExistingTrans.Kode == "95")
+                                            cekItem.Cost -= cekItem.Qty * cekItem.StdPrice;
+                                        else
+                                            cekItem.Cost += cekItem.Qty * cekItem.StdPrice;
                                     }
 
                                     //if (cekItem.Qty != 0)
@@ -509,10 +549,10 @@ namespace eSoft.Penjualan.Services
                         }
 
                         var existingCustomer = GetCustomerId(ExistingTrans.Customer);
-                        if (ExistingTrans.Kode == "95")
+                        if (ExistingTrans.Kode == "94")
                             existingCustomer.Piutang -= ExistingTrans.Jumlah;
                         else
-                            existingCustomer.Piutang -= ExistingTrans.Jumlah;
+                            existingCustomer.Piutang += ExistingTrans.Jumlah;
 
 
                         _contextAr.ArCusts.Update(existingCustomer);
@@ -615,6 +655,13 @@ namespace eSoft.Penjualan.Services
                                             cekItem.Cost -= (item.HrgCost * item.Qty);
 
                                        
+                                    }
+                                    else
+                                    {
+                                        if (ExistingTrans.Kode == "95")
+                                            cekItem.Cost += cekItem.Qty * cekItem.StdPrice;
+                                        else
+                                            cekItem.Cost -= cekItem.Qty * cekItem.StdPrice;
                                     }
 
                                     //if (cekItem.Qty != 0)
