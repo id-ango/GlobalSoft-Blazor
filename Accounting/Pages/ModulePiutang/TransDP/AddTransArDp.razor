@@ -20,72 +20,58 @@
         <ValidationSummary />
 
 
-        <table>
-            <tr>
-                <td>
-                    <div class="form-group">
-                        <label>
-                            Tanggal :
-                            <InputDate class="form-control" @bind-Value="Transh.Tanggal" />
-                        </label>
-                    </div>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <label>
-                            Customer :
-                            <InputSelect class="form-control" @bind-Value="Transh.Customer" style="width:80%; display:inline" @oninput="OnChangeCustomer">
-                                <option value="">&nbsp;&nbsp;---Select Customer---&nbsp;&nbsp;</option>
-                                @foreach (var item in customers)
-                                {
-                                    <option value="@item.Customer">[@item.Customer]&nbsp; @item.NamaCust</option>
-                                }
 
-                            </InputSelect>
-                            <button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>
-                        </label>
-                    </div>
-                </td>
-            </tr>
-            <tr>
+        <div class="form-group">
+            <label>
+                Tanggal :
+                <InputDate class="form-control" @bind-Value="Transh.Tanggal" style="width:60%" />
+            </label>
+        </div>
+        <br />
+        <div class="form-group">
+            <label>
+                Customer :
+                <InputSelect class="form-control" @bind-Value="Transh.Customer" style="width:60%; display:inline" @oninput="OnChangeCustomer">
+                    <option value="">&nbsp;&nbsp;---Select Customer---&nbsp;&nbsp;</option>
+                    @foreach (var item in customers)
+                    {
+                        <option value="@item.Customer">[@item.Customer]&nbsp; @item.NamaCust</option>
+                    }
 
-                <td>
-                    <div class="form-group">
-                        <label>
-                            Kode Bank :
-                            <InputSelect class="form-control" @bind-Value="Transh.KdBank" style="width:80%; display:inline" @oninput="OnKurs">
-                                <option value="">&nbsp;&nbsp;---Select Bank---&nbsp;&nbsp;</option>
-                                @foreach (var item in banks)
-                                {
-                                    <option value="@item.KodeBank">[@item.KodeBank]&nbsp; @item.NmBank</option>
-                                }
+                </InputSelect>
+                <button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>
+            </label>
+        </div>
+        <br />
 
-                            </InputSelect>
-                            &nbsp;@kurs
-                        </label>
-                    </div>
-                </td>
-                <td>
+        <div class="form-group">
+            <label>
+                Kode Bank :
+                <InputSelect class="form-control" @bind-Value="Transh.KdBank" style="width:60%; display:inline" @oninput="OnKurs">
+                    <option value="">&nbsp;&nbsp;---Select Bank---&nbsp;&nbsp;</option>
+                    @foreach (var item in banks)
+                    {
+                        <option value="@item.KodeBank">[@item.KodeBank]&nbsp; @item.NmBank</option>
+                    }
 
-                    <div class="form-group">
-                        <label>
-                            Jumlah Bayar :
-                            <InputNumber class="form-control" @bind-Value="Transh.JumBayar" style="width:150%" />
-                        </label>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
+                </InputSelect>
+                &nbsp;@kurs
+            </label>
+        </div>
+        <br />
+        <div class="form-group">
+            <label>
+                Jumlah Bayar :
+                <InputNumber class="form-control" @bind-Value="Transh.JumBayar" />
+            </label>
+        </div>
 
-                    <label>
-                        Keterangan :
-                        <InputTextArea class="form-control" @bind-Value="Transh.Keterangan" style="width:250%" />
-                    </label>
 
-                </td>
-            </tr>
-        </table>
+        <label>
+            Keterangan :
+            <InputTextArea class="form-control" @bind-Value="Transh.Keterangan" />
+        </label>
+
 
 
 
@@ -93,6 +79,7 @@
 
         <div class="float-md-right">
             <button class="btn-success" type="submit">Simpan</button>
+            <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModulePiutang/TransArDp", false))">Batal</button>
         </div>
         <br />
         <br />
@@ -100,11 +87,11 @@
         <div class="float-md-left form-message">
             <span>UnApplied   : @Transh.UpdateUnapplied.ToString("#,##0.##")</span>
         </div>
-        <div class="float-md-right form-message">
+        @*<div class="float-md-right form-message">
             <span>Piutang Lunas   : @Transh.JumPiutang.ToString("#,##0.##")</span>
-        </div>
+        </div>*@
 
-        <div class="container">
+        @*<div class="container">
             <div class="details">
 
                 <table class="table table-responsive">
@@ -177,7 +164,7 @@
             </div>
 
 
-        </div>
+        </div>*@
     </EditForm>
 </div>
 
@@ -296,9 +283,9 @@
     {
         //  var itemData = JsonConvert.DeserializeObject<ArCust>(args.ItemData != null ? args.ItemData.ToString() : "");
 
-     //   var transaksi = service.GetPiutangSisa(args.Value.ToString());
+        //   var transaksi = service.GetPiutangSisa(args.Value.ToString());
         Transh.ArTransDs.Clear();
-      
+
 
     }
 
@@ -317,7 +304,7 @@
 
                 //   navigationmanager.NavigateTo($"printbayarpiutang/{id}");
             }
-              //      navigationmanager.NavigateTo($"printbayarpiutang/{id}");
+            //      navigationmanager.NavigateTo($"printbayarpiutang/{id}");
             navigationmanager.NavigateTo("/ModulePiutang/TransArDp", false);
             //add = !add;
             //StateHasChanged();
@@ -335,9 +322,9 @@
         {
             Transh.Customer = textSearch;
 
-         //   var transaksi = service.GetPiutangSisa(Transh.Customer);
+            //   var transaksi = service.GetPiutangSisa(Transh.Customer);
             Transh.ArTransDs.Clear();
-            
+
         }
 
         SearchOpen = false;

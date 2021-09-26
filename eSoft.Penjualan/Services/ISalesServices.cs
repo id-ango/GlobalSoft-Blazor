@@ -22,6 +22,7 @@ namespace eSoft.Penjualan.Services
         List<OeTransH> Get3TransH();
         List<OeTransD> GetTransD();
         OeTransH AddTransH(OeTransHView trans,bool pajak);
+        OeTransH AddTransHRetur(OeTransHView trans, bool pajak);
         Task<bool> DelTransH(int id);
         Task<bool> EditTransH(OeTransHView trans);
         List<OeTransH> Laporan1(DateTime tgl1, DateTime tgl2);
