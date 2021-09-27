@@ -38,6 +38,7 @@
     <div class="col-4">
         <br />
         <button class="btn btn-primary" @onclick="@(() => proses1())">Display Penjualan</button>
+        <button class="btn btn-primary" @onclick="@(() => proses2())">Display Penjualan/Item</button>
         <br />
     </div>
 </div>
@@ -126,7 +127,7 @@
     {
         TransHeader = service.Laporan1(Tanggal1, Tanggal2);
         //  nJumlah = TransHeader.Sum(x => x.Jumlah).ToString("N");
-       // StateHasChanged();
+        // StateHasChanged();
     }
 
     private void OpenDetail(OeTransH xKdBank)
@@ -142,5 +143,11 @@
     //{
     //    navigationmanager.NavigateTo($"/PrintSuratJalan/{xKdBank}");
     //}
+    private void proses2()
+    {
+        TransHeader = service.Laporan1(Tanggal1, Tanggal2);
+        //  nJumlah = TransHeader.Sum(x => x.Jumlah).ToString("N");
+        // StateHasChanged();
+    }
 
 }

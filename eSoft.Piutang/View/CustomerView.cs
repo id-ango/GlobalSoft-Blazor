@@ -55,7 +55,7 @@ namespace eSoft.Piutang.View
         {
             get
             {
-                return NamaCust + " [" + Customer.ToUpper() + "]" + "\r\n" + Alamat ;
+                return NamaCust + " [" + Customer.ToUpper() + "]" ;
             }
         }
     }

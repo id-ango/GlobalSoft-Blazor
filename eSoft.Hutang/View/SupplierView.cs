@@ -56,7 +56,7 @@ namespace eSoft.Hutang.View
         {
             get
             {
-                return NamaSup + " [" + Supplier.ToUpper() + "]" + "\r\n" + Alamat;
+                return NamaSup + " [" + Supplier.ToUpper() + "]" ;
             }
         }
     }
