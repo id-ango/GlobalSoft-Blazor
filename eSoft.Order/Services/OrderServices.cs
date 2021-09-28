@@ -60,7 +60,7 @@ namespace eSoft.Order.Services
            
             try
             {
-                PoTrans = _context.PoTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Kode == "82").ToList();
+                PoTrans = _context.PoTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Kode == "71").ToList();
 
                 foreach (var item in PoTrans)
                 {
@@ -119,7 +119,7 @@ namespace eSoft.Order.Services
                 DPayment = trans.DPayment,
                 Tagihan = trans.Tagihan,
                 TotalQty = trans.TotalQty,
-                Kode = "82",
+                Kode = "71",
                 Cek = "1",
 
                 PoTransDs = new List<PoTransD>()
@@ -149,7 +149,7 @@ namespace eSoft.Order.Services
                         Persen = item.Persen,
                         Discount = item.Discount,
                         Jumlah = item.Jumlah,
-                        Kode = "82",
+                        Kode = "71",
                         NoLpb = transH.NoLpb,
                         Tanggal = trans.Tanggal,
                         JumDpp = mQty5
@@ -159,51 +159,11 @@ namespace eSoft.Order.Services
 
                     if (cekItem != null)
                     {
-                        #region altitem
+                       
 
-                        IcAltItem cekLokasi1 = _contextIc.IcAltItems.Where(x => x.ItemCode == item.ItemCode && x.Lokasi == item.Lokasi).FirstOrDefault();
-                        if (cekLokasi1 == null)
-                        {
-                            IcAltItem Produk = new IcAltItem()
-                            {
-                                ItemCode = cekItem.ItemCode.ToUpper(),
-                                NamaItem = cekItem.NamaItem,
-                                Satuan = cekItem.Satuan,
-                                Lokasi = item.Lokasi,
-                                Qty = item.Qty
-                            };
-                            _contextIc.IcAltItems.Add(Produk);
+                        cekItem.HrgUsd = item.Harga;  // harga beli barang
 
-                        }
-                        else
-                        {
-                            cekLokasi1.Qty += item.Qty;
-                            _contextIc.IcAltItems.Update(cekLokasi1);
-                        }
-
-                        #endregion altitem
-
-                        cekItem.Harga = item.Harga;  // harga beli barang
-
-                        if (cekItem.JnsBrng == (int)jnsBrng.Stock)   // jika stock
-                        {
-                            cekItem.Qty += item.Qty;
-                        }
-
-                        if (cekItem.CostMethod == (int)costMethod.Moving_Avg)  // jika moving avarage
-                        {
-
-                            cekItem.Cost += mQty5;
-                        }
-
-                        if (cekItem.Qty != 0)
-                        {
-                            cekItem.HrgNetto = cekItem.Cost / cekItem.Qty;
-                        }
-                        else
-                        {
-                            cekItem.HrgNetto = cekItem.Harga;
-                        }
+                     
 
                         _contextIc.IcItems.Update(cekItem);
 
@@ -212,28 +172,10 @@ namespace eSoft.Order.Services
                 _context.PoTransHs.Add(transH);
             }
 
-            ApHutang hutang = new ApHutang
-            {
-                Kode = "IR",
-                Dokumen = transH.NoLpb,
-                Tanggal = transH.Tanggal,
-                DueDate = transH.Tanggal,
-                Supplier = transH.Vendor,
-                Keterangan = transH.Keterangan,
-                Jumlah = transH.Jumlah,
-                Sisa = transH.Jumlah,
-                SldSisa = transH.Jumlah,
-                KodeTran = transH.Kode
-            };
-            _contextAp.ApHutangs.Add(hutang);
-
-            var Vendor = GetVendorId(transH.Vendor);
-            Vendor.Hutang += transH.Jumlah;
-
-            _contextAp.ApSuppls.Update(Vendor);
+            
 
             _context.SaveChanges();
-             _contextAp.SaveChanges();
+            
             _contextIc.SaveChanges();
 
             var TempTrans = GetTransDoc(transH.NoLpb);
@@ -255,71 +197,10 @@ namespace eSoft.Order.Services
 
                 if (ExistingTrans != null)
                 {
-                    foreach (var item in ExistingTrans.PoTransDs)
-                    {
-                        if (item.Qty != 0)
-                        {
-
-                            IcItem cekItem = _contextIc.IcItems.Where(x => x.ItemCode == item.ItemCode).FirstOrDefault();
-                            if (cekItem != null)
-                            {
-                                IcAltItem cekLokasi1 = _contextIc.IcAltItems.Where(x => x.ItemCode == item.ItemCode && x.Lokasi == item.Lokasi).FirstOrDefault();
-                                if (cekLokasi1 == null)
-                                {
-                                    IcAltItem Produk = new IcAltItem()
-                                    {
-                                        ItemCode = cekItem.ItemCode.ToUpper(),
-                                        NamaItem = cekItem.NamaItem,
-                                        Satuan = cekItem.Satuan,
-                                        Lokasi = item.Lokasi,
-                                        Qty = -1 * item.Qty
-                                    };
-                                    _contextIc.IcAltItems.Add(Produk);
-
-                                }
-                                else
-                                {
-                                    cekLokasi1.Qty -= item.Qty;
-                                    _contextIc.IcAltItems.Update(cekLokasi1);
-                                }
-                                //   cekItem.Qty -= item.Qty;
-                                //   cekItem.Cost -= item.JumDpp;
-                                if (cekItem.JnsBrng == (int)jnsBrng.Stock)   // jika stock
-                                {
-                                    cekItem.Qty -= item.Qty;
-                                }
-
-                                if (cekItem.CostMethod  == (int)costMethod.Moving_Avg)  // jika moving avarage
-                                {
-
-                                    cekItem.Cost -= item.JumDpp;
-                                }
-                                if (cekItem.Qty != 0)
-                                {
-                                    cekItem.HrgNetto = cekItem.Cost / cekItem.Qty;
-                                }
-                                else
-                                {
-                                    cekItem.HrgNetto = cekItem.Harga;
-                                }
-
-                                _contextIc.IcItems.Update(cekItem);
-
-                            }
-                        }
-
-                    }
-                    var Vendor = GetVendorId(ExistingTrans.Vendor);
-                    var hutang = GetHutang(ExistingTrans.NoLpb);
-
-                    Vendor.Hutang -= ExistingTrans.Jumlah;
-
-                    _contextAp.ApSuppls.Update(Vendor);
-                    _contextAp.ApHutangs.Remove(hutang);
+                   
                     _context.PoTransHs.Remove(ExistingTrans);
                     await _context.SaveChangesAsync();
-                    await _contextAp.SaveChangesAsync();
-                    await _contextIc.SaveChangesAsync();
+                   
                     return true;
                 }
             }
@@ -346,65 +227,7 @@ namespace eSoft.Order.Services
 
                     if (ExistingTrans != null)
                     {
-                        foreach (var item in ExistingTrans.PoTransDs)
-                        {
-                            if (item.Qty != 0)
-                            {
-
-                                IcItem cekItem = _contextIc.IcItems.Where(x => x.ItemCode == item.ItemCode).FirstOrDefault();
-                                if (cekItem != null)
-                                {
-                                    IcAltItem cekLokasi1 = _contextIc.IcAltItems.Where(x => x.ItemCode == item.ItemCode && x.Lokasi == item.Lokasi).FirstOrDefault();
-                                    if (cekLokasi1 == null)
-                                    {
-                                        IcAltItem Produk = new IcAltItem()
-                                        {
-                                            ItemCode = cekItem.ItemCode.ToUpper(),
-                                            NamaItem = cekItem.NamaItem,
-                                            Satuan = cekItem.Satuan,
-                                            Lokasi = item.Lokasi,
-                                            Qty = -1 * item.Qty
-                                        };
-                                        _contextIc.IcAltItems.Add(Produk);
-
-                                    }
-                                    else
-                                    {
-                                        cekLokasi1.Qty -= item.Qty;
-                                        _contextIc.IcAltItems.Update(cekLokasi1);
-                                    }
-                                    if (cekItem.JnsBrng== (int)jnsBrng.Stock)   // jika stock
-                                    {
-                                        cekItem.Qty -= item.Qty;
-                                    }
-
-                                    if (cekItem.CostMethod == (int)costMethod.Moving_Avg)  // jika moving avarage
-                                    {
-
-                                        cekItem.Cost -= item.JumDpp;
-                                    }
-
-                                    if (cekItem.Qty != 0)
-                                    {
-                                        cekItem.HrgNetto = cekItem.Cost / cekItem.Qty;
-                                    }
-                                    else
-                                    {
-                                        cekItem.HrgNetto = cekItem.Harga;
-                                    }
-
-                                    _contextIc.IcItems.Update(cekItem);
-
-                                }
-                            }
-
-                        }
-
-                        var existingVendor = GetVendorId(ExistingTrans.Vendor);
-                        existingVendor.Hutang -= ExistingTrans.Jumlah;
-
-                        _contextAp.ApSuppls.Update(existingVendor);
-                        _contextAp.ApHutangs.Remove(cekFirst);
+                                            
                         _context.PoTransHs.Remove(ExistingTrans);
 
                         /* update nya */
@@ -423,7 +246,7 @@ namespace eSoft.Order.Services
                             DPayment = trans.DPayment,
                             Tagihan = trans.Tagihan,
                             TotalQty = trans.TotalQty,
-                            Kode = "82",
+                            Kode = "71",
                             Cek = "1",
 
                             PoTransDs = new List<PoTransD>()
@@ -449,7 +272,7 @@ namespace eSoft.Order.Services
                                     Persen = item.Persen,
                                     Discount = item.Discount,
                                     Jumlah = item.Jumlah,
-                                    Kode = "82",
+                                    Kode = "71",
                                     NoLpb = transH.NoLpb,
                                     Tanggal = trans.Tanggal,
                                     JumDpp = mQty5
@@ -459,45 +282,7 @@ namespace eSoft.Order.Services
                                 IcItem cekItem = _contextIc.IcItems.Where(x => x.ItemCode == item.ItemCode).FirstOrDefault();
                                 if (cekItem != null)
                                 {
-                                    IcAltItem cekLokasi1 = _contextIc.IcAltItems.Where(x => x.ItemCode == item.ItemCode && x.Lokasi == item.Lokasi).FirstOrDefault();
-                                    if (cekLokasi1 == null)
-                                    {
-                                        IcAltItem Produk = new IcAltItem()
-                                        {
-                                            ItemCode = cekItem.ItemCode.ToUpper(),
-                                            NamaItem = cekItem.NamaItem,
-                                            Satuan = cekItem.Satuan,
-                                            Lokasi = item.Lokasi,
-                                            Qty = item.Qty
-                                        };
-                                        _contextIc.IcAltItems.Add(Produk);
-
-                                    }
-                                    else
-                                    {
-                                        cekLokasi1.Qty += item.Qty;
-                                        _contextIc.IcAltItems.Update(cekLokasi1);
-                                    }
-
-                                    if (cekItem.JnsBrng == (int)jnsBrng.Stock)   // jika stock
-                                    {
-                                        cekItem.Qty += item.Qty;
-                                    }
-
-                                    if (cekItem.CostMethod  == (int)costMethod.Moving_Avg )  // jika moving avarage
-                                    {
-
-                                        cekItem.Cost += mQty5;
-                                    }
-
-                                    if (cekItem.Qty != 0)
-                                    {
-                                        cekItem.HrgNetto = cekItem.Cost / cekItem.Qty;
-                                    }
-                                    else
-                                    {
-                                        cekItem.HrgNetto = cekItem.Harga;
-                                    }
+                                    cekItem.HrgUsd = item.Harga;
 
                                     _contextIc.IcItems.Update(cekItem);
 
@@ -506,30 +291,11 @@ namespace eSoft.Order.Services
 
                         }
 
-                        ApHutang hutang = new ApHutang
-                        {
-                            Kode = "IR",
-                            Dokumen = transH.NoLpb,
-                            Tanggal = transH.Tanggal,
-                            DueDate = transH.Tanggal,
-                            Supplier = transH.Vendor,
-                            Keterangan = transH.Keterangan,
-                            Jumlah = transH.Jumlah,
-                            Sisa = transH.Jumlah,
-                            SldSisa = transH.Jumlah,
-                            KodeTran = transH.Kode
-                        };
-
-
-                        var Vendor = GetVendorId(transH.Vendor);
-                        Vendor.Hutang += transH.Jumlah;
+                        
 
                         _context.PoTransHs.Add(transH);
-                        _contextAp.ApSuppls.Update(Vendor);
-                        _contextAp.ApHutangs.Add(hutang);
-
                         
-                        await _contextAp.SaveChangesAsync();
+
                         await _contextIc.SaveChangesAsync();
                         await _context.SaveChangesAsync();
 
@@ -560,7 +326,7 @@ namespace eSoft.Order.Services
 
         public string GetNumber()
         {
-            string kodeno = "BPB";
+            string kodeno = "P/I";
             string kodeurut = kodeno + '-';
             string thnbln = DateTime.Now.ToString("yyMM");
             string xbukti = kodeurut + thnbln.Substring(0, 2) + '2' + thnbln.Substring(2, 2) + '-';
