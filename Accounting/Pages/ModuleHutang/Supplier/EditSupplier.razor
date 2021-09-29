@@ -6,7 +6,7 @@
 @inject IPayableServices service
 @inject NavigationManager navigationmanager
 
-<h3>Edit CashBank</h3>
+<h3>Edit Supplier</h3>
 
 <EditForm Model="@bank" OnValidSubmit="@HandleValidSubmit">
     <DataAnnotationsValidator />
@@ -14,60 +14,57 @@
 
     <div class="form-group">
         <label>
-            Customer :
+            Supplier :
             <InputText id="codeBank" class="form-control" @bind-Value="bank.Supplier" style="text-transform:uppercase" @onfocusout="cekKode" disabled="disabled" />
         </label>
     </div>
     <div class="form-group">
         <label>
-            Name :
+            Nama :
             <InputText class="form-control" @bind-Value="bank.NamaSup" />
         </label>
     </div>
     <div class="form-group">
-        <table>
-            <tr>
-                <td>
-                    <label>
-                        Address :
-                        <InputTextArea class="form-control" @bind-Value="bank.Alamat" />
-                    </label>
-                </td>
-                <td>
-                    <label>
-                        City :
-                        <InputText class="form-control" @bind-Value="bank.Kota" />
-                    </label>
-                </td>
-            </tr>
 
-        </table>
+        <label>
+            Alamat :
+            <InputTextArea class="form-control" @bind-Value="bank.Alamat" />
+        </label>
+    </div>
+    <br />
+    <div class="form-group">
+
+        <label>
+            Kota :
+            <InputText class="form-control" @bind-Value="bank.Kota" />
+        </label>
+
 
     </div>
-
+    <br />
 
     <div class="form-group">
         <label>
-            Telpon :
+            Telpon/HP :
             <InputText class="form-control" @bind-Value="bank.Telpon" />
         </label>
     </div>
-
+    <br />
     <div class="form-group">
         <label>
-            Kontak :
+            Kontak Person :
             <InputText class="form-control" @bind-Value="bank.Kontak" />
         </label>
     </div>
-
+    <br />
     <div class="form-group">
         <label>
-            GL Account :
-            <InputSelect class="form-control" @bind-Value="bank.AcctSet" style="width:80%; display:inline">
+            Akun Set :
+            <InputSelect class="form-control" @bind-Value="bank.AcctSet" style="width:60%; display:inline">
                 <option value="">&nbsp;&nbsp;---Select GL Account---&nbsp;&nbsp;</option>
                 @foreach (var item in GlAccounts)
                 {
-                    <option value="@item.AcctSet">@item.Description</option>
+                <option value="@item.AcctSet">@item.Description</option>
                 }
             </InputSelect>
             <button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>
@@ -76,13 +73,14 @@
 
     <div class="form-group">
         <label>
-            Kurs :
+            Currency :
             <InputText class="form-control" @bind-Value="bank.Kurs" />
         </label>
     </div>
 
     <div class="float-md-right">
         <button class="btn-success" type="submit">Simpan</button>
+        <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModuleHutang/SetupSupplier", false))">Batal</button>
     </div>
 
 
@@ -90,29 +88,29 @@
 
 @if (DialogOpen)
 {
-    <ModalDialogComponent Title="Alert" Text="Customer Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
+<ModalDialogComponent Title="Alert" Text="Supplier Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
 }
 
 @if (SearchOpen)
 {
 
-    <ModalSearchComponent OnClose="OnSearchClose" Items="GlAccounts" Context="cbBank" GetFilterableText="@(item =>$"{item.AcctSet} {item.Description} ")">
-        <TableHeader>
-            <th scope="col">Code</th>
-            <th scope="col">Description</th>
+<ModalSearchComponent OnClose="OnSearchClose" Items="GlAccounts" Context="cbBank" GetFilterableText="@(item =>$"{item.AcctSet} {item.Description} ")">
+    <TableHeader>
+        <th scope="col">Code</th>
+        <th scope="col">Description</th>
 
-            <th></th>
-        </TableHeader>
-        <RowTemplate>
-            <td>@cbBank.AcctSet</td>
-            <td>@cbBank.Description</td>
+        <th></th>
+    </TableHeader>
+    <RowTemplate>
+        <td>@cbBank.AcctSet</td>
+        <td>@cbBank.Description</td>
 
-            <td>
-                <button @onclick="() => BtnChoose(cbBank.AcctSet)" class="btn btn-success">Choose</button>
+        <td>
+            <button @onclick="() => BtnChoose(cbBank.AcctSet)" class="btn btn-success">Choose</button>
 
-            </td>
-        </RowTemplate>
-    </ModalSearchComponent>
+        </td>
+    </RowTemplate>
+</ModalSearchComponent>
 
 
 }
@@ -148,7 +146,7 @@
         bank.Supplier = Bank.Supplier;
         bank.NamaSup = Bank.NamaSup;
         bank.Alamat = Bank.Alamat;
-        bank.Kota = Bank.Kota;      
+        bank.Kota = Bank.Kota;
         bank.Telpon = Bank.Telpon;
         bank.Kontak = Bank.Kontak;
         bank.AcctSet = Bank.AcctSet;
