@@ -100,7 +100,10 @@ namespace eSoft.Hutang.Services
                 Bukti = GetNumber(),
                 Supplier = trans.Supplier.ToUpper(),
                 Tanggal = trans.Tanggal,
+                Currency = trans.Currency,
                 Keterangan = trans.Keterangan,
+                Kurs = trans.Kurs,
+                Nilai = trans.Nilai,
                 Jumlah = trans.JumBayar,
                 Discount = 0,
                 Unapplied = trans.UpdateUnapplied,
@@ -158,7 +161,7 @@ namespace eSoft.Hutang.Services
                 Kode = "CA",
                 Dokumen = transH.Bukti,
                 Tanggal = transH.Tanggal,
-                Supplier = transH.Supplier,
+                Supplier = transH.Supplier,               
                 Keterangan = transH.Keterangan,
                 KodeTran = "23",
                 Jumlah = -1 * transH.Jumlah,
@@ -167,7 +170,9 @@ namespace eSoft.Hutang.Services
                 Discount = 0,
                 UnApplied = -1 * transH.Unapplied,
                 Sisa = -1 * transH.Unapplied,
-
+                Kurs = transH.Kurs,
+                Currency = transH.Currency,
+                Nilai = transH.Nilai,
                 Dpp = 0,
                 PPn = 0,
                 PPh = 0,
@@ -184,6 +189,8 @@ namespace eSoft.Hutang.Services
             _context.ApHutangs.Add(transaksi);
             _context.SaveChanges();
 
+            var bank = (from e in _contextBank.CbBanks where e.KodeBank == trans.KdBank select e).FirstOrDefault();
+
             var cekBukti = (from e in _contextBank.CbTransHs where e.DocNo == transH.Bukti select e).FirstOrDefault();
 
             if (cekBukti == null)
@@ -196,7 +203,9 @@ namespace eSoft.Hutang.Services
                         KodeBank = trans.KdBank,
                         Tanggal = trans.Tanggal,
                         Keterangan = trans.Keterangan,
-                        Saldo = -1 * trans.JumBayar,
+                        Kurs = bank.Kurs,
+                        Saldo = -1 * (!string.IsNullOrEmpty(bank.Kurs) ? trans.Nilai : trans.JumBayar),
+                        KSaldo = -1 * (!string.IsNullOrEmpty(bank.Kurs) ? trans.JumBayar : trans.Nilai),
 
                         CbTransDs = new List<CbTransD>()
                     };
@@ -210,7 +219,7 @@ namespace eSoft.Hutang.Services
 
                     });
 
-                    var bank = (from e in _contextBank.CbBanks where e.KodeBank == trans.KdBank select e).FirstOrDefault();
+                   
                     bank.Saldo -= trans.JumBayar;
 
                     _contextBank.CbBanks.Update(bank);

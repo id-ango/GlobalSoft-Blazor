@@ -44,6 +44,10 @@ namespace eSoft.Hutang.Model
         public decimal SldDisc { get; set; }
         [Column(TypeName = "decimal(18,4)")]
         public decimal SldUnpl { get; set; }
-
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal Kurs { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal Nilai { get; set; }
+        public string Currency { get; set; }
     }
 }

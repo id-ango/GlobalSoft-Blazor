@@ -42,6 +42,11 @@ namespace eSoft.Hutang.Model
         public bool Pajak { get; set; }
         [Column(TypeName = "decimal(18,4)")]
         public decimal Unapplied { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal Kurs { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal Nilai { get; set; }
+        public string  Currency { get; set; }
         public string AcctSet { get; set; }
         public List<ApTransD> ApTransDs { get; set; }
         public int ApSupplId { get; set; }

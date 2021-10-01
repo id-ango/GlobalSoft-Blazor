@@ -20,72 +20,73 @@
         <ValidationSummary />
 
 
-        <table>
-            <tr>
-                <td>
-                    <div class="form-group">
-                        <label>
-                            Tanggal :
-                            <InputDate class="form-control" @bind-Value="Transh.Tanggal" />
-                        </label>
-                    </div>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <label>
-                            Customer :
-                            <InputSelect class="form-control" @bind-Value="Transh.Supplier" style="width:80%; display:inline" @oninput="OnChangeCustomer">
-                                <option value="">&nbsp;&nbsp;---Select Supplier---&nbsp;&nbsp;</option>
-                                @foreach (var item in customers)
-                                {
-                                    <option value="@item.Supplier">[@item.Supplier]&nbsp; @item.NamaSup</option>
-                                }
 
-                            </InputSelect>
-                            <button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>
-                        </label>
-                    </div>
-                </td>
-            </tr>
-            <tr>
+        <div class="form-group">
+            <label>
+                Tanggal :
+                <InputDate class="form-control" @bind-Value="Transh.Tanggal" style="width:60%" />
+            </label>
+        </div>
+        <br />
+        <div class="form-group">
+            <label>
+                Supplier :
+                <InputSelect class="form-control" @bind-Value="Transh.Supplier" style="width:60%; display:inline" @oninput="OnChangeCustomer">
+                    <option value="">&nbsp;&nbsp;---Select Supplier---&nbsp;&nbsp;</option>
+                    @foreach (var item in customers)
+                    {
+                    <option value="@item.Supplier">[@item.Supplier]&nbsp; @item.NamaSup</option>
+                    }
 
-                <td>
-                    <div class="form-group">
-                        <label>
-                            Kode Bank :
-                            <InputSelect class="form-control" @bind-Value="Transh.KdBank" style="width:80%; display:inline" @oninput="OnKurs">
-                                <option value="">&nbsp;&nbsp;---Select Bank---&nbsp;&nbsp;</option>
-                                @foreach (var item in banks)
-                                {
-                                    <option value="@item.KodeBank">[@item.KodeBank]&nbsp; @item.NmBank</option>
-                                }
+                </InputSelect>
+                <button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>
+                &nbsp;@kursSupplier
+            </label>
+        </div>
+        <br />
+        <div class="form-group">
+            <label>
+                Kode Bank :
+                <InputSelect class="form-control" @bind-Value="Transh.KdBank" style="width:60%; display:inline" @oninput="OnKurs">
+                    <option value="">&nbsp;&nbsp;---Select Bank---&nbsp;&nbsp;</option>
+                    @foreach (var item in banks)
+                    {
+                    <option value="@item.KodeBank">[@item.KodeBank]&nbsp; @item.NmBank</option>
+                    }
 
-                            </InputSelect>
-                            &nbsp;@kurs
-                        </label>
-                    </div>
-                </td>
-                <td>
+                </InputSelect>
+                &nbsp;@kurs
+            </label>
+        </div>
+        <br />
 
-                    <div class="form-group">
-                        <label>
-                            Jumlah Bayar :
-                            <InputNumber class="form-control" @bind-Value="Transh.JumBayar" style="width:150%" />
-                        </label>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
+       
+        <div class="form-group">
+            <label>
+                Kurs :
+                <InputNumber class="form-control" @bind-Value="Transh.Kurs" />
+            </label>
+        </div>
+       
+        <div class="form-group">
+            <label>
+                Jumlah Bayar :
+                <InputNumber class="form-control" @bind-Value="Transh.JumBayar" />
+            </label>
+        </div>
+        <div class="form-group">
+            <label>
+                Nilai Kurs : @Transh.Nilai
+             
+            </label>
+        </div>
 
-                    <label>
-                        Keterangan :
-                        <InputTextArea class="form-control" @bind-Value="Transh.Keterangan" style="width:250%" />
-                    </label>
+        <br />
+        <label>
+            Keterangan :
+            <InputTextArea class="form-control" @bind-Value="Transh.Keterangan" />
+        </label>
 
-                </td>
-            </tr>
-        </table>
 
 
 
@@ -93,6 +94,8 @@
 
         <div class="float-md-right">
             <button class="btn-success" type="submit">Simpan</button>
+            <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModuleHutang/TransApDp", false))">Batal</button>
+
         </div>
         <br />
         <br />
@@ -100,84 +103,7 @@
         <div class="float-md-left form-message">
             <span>UnApplied   : @Transh.UpdateUnapplied.ToString("#,##0.##")</span>
         </div>
-        <div class="float-md-right form-message">
-            <span>Piutang Lunas   : @Transh.JumHutang.ToString("#,##0.##")</span>
-        </div>
 
-        <div class="container">
-            <div class="details">
-
-                <table class="table table-responsive">
-                    <thead>
-                        <tr>
-                            <td>Faktur</td>
-                            <td>Tanggal</td>
-                            <td>Piutang</td>
-                            <td>Bayar</td>
-                            <td>Discount</td>
-                            <td>Sisa</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Transh.ApTransDs != null)
-                        {
-                            @foreach (var detail in Transh.ApTransDs)
-                            {
-                                <tr>
-                                    <td>
-
-                                        <span>@detail.Lpb</span>
-                                    </td>
-                                    <td>
-                                        <span>
-                                            @detail.DueDate?.ToShortDateString()
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span> @detail.Jumlah.ToString("#,##0.##")</span>
-
-                                    </td>
-                                    <td>
-                                        <InputNumber class="form-control" @bind-Value="@detail.Bayar" />
-
-                                    </td>
-                                    <td>
-                                        <InputNumber class="form-control" @bind-Value="@detail.Discount" />
-
-                                    </td>
-                                    <td>
-                                        <span>@detail.UpdateSisa.ToString("#,##0.##")</span>
-
-                                    </td>
-                                </tr>
-                            }
-                        }
-
-
-                        <tr>
-
-                            <td></td>
-                            <td></td>
-                            <td> </td>
-
-                        </tr>
-
-                    </tbody>
-                </table>
-
-
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class=" col-sm  form-message">
-                    <span>Saldo   : @Transh.Jumlah.ToString("N")</span>
-                </div>
-
-            </div>
-
-
-        </div>
     </EditForm>
 </div>
 
@@ -188,31 +114,31 @@
 
 @if (DialogOpen)
 {
-    <ModalDialogComponent Title="Alert" Text="Kode Bank Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
+<ModalDialogComponent Title="Alert" Text="Kode Bank Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
 }
 
 @if (SearchOpen)
 {
 
-    <ModalSearchComponent OnClose="OnSearchClose" Items="customers" Context="cbBank" GetFilterableText="@(item =>$"{item.Supplier} {item.NamaSup} {item.Alamat} ")">
-        <TableHeader>
-            <th scope="col">Supplier</th>
-            <th scope="col">Nama</th>
-            <th scope="col">Alamat</th>
-            <th scope="col">Telpon</th>
-            <th></th>
-        </TableHeader>
-        <RowTemplate>
-            <td>@cbBank.Supplier</td>
-            <td>@cbBank.NamaSup</td>
-            <td>@cbBank.Alamat</td>
-            <td>@cbBank.Telpon</td>
-            <td>
-                <button @onclick="() => BtnChoose(cbBank.Supplier)" class="btn btn-success">Choose</button>
+<ModalSearchComponent OnClose="OnSearchClose" Items="customers" Context="cbBank" GetFilterableText="@(item =>$"{item.Supplier} {item.NamaSup} {item.Alamat} ")">
+    <TableHeader>
+        <th scope="col">Supplier</th>
+        <th scope="col">Nama</th>
+        <th scope="col">Alamat</th>
+        <th scope="col">Telpon</th>
+        <th></th>
+    </TableHeader>
+    <RowTemplate>
+        <td>@cbBank.Supplier</td>
+        <td>@cbBank.NamaSup</td>
+        <td>@cbBank.Alamat</td>
+        <td>@cbBank.Telpon</td>
+        <td>
+            <button @onclick="() => BtnChoose(cbBank.Supplier)" class="btn btn-success">Choose</button>
 
-            </td>
-        </RowTemplate>
-    </ModalSearchComponent>
+        </td>
+    </RowTemplate>
+</ModalSearchComponent>
 
 
 }
@@ -236,6 +162,7 @@
 
     public int customerId { get; set; }
     public string kurs { get; set; } = "";
+    public string kursSupplier { get; set; } = "";
 
 
     public string Testing { get; set; }
@@ -298,11 +225,14 @@
     {
         //  var itemData = JsonConvert.DeserializeObject<ArCust>(args.ItemData != null ? args.ItemData.ToString() : "");
 
-     //   var transaksi = service.GetPiutangSisa(args.Value.ToString());
+        //   var transaksi = service.GetPiutangSisa(args.Value.ToString());
+        kursSupplier = (from e in customers where e.Supplier == args.Value.ToString() select e.Kurs).FirstOrDefault();
+
         Transh.ApTransDs.Clear();
-      
+
 
     }
+
 
 
     private void HandleValidSubmit()
@@ -319,7 +249,7 @@
 
                 //   navigationmanager.NavigateTo($"printbayarpiutang/{id}");
             }
-              //      navigationmanager.NavigateTo($"printbayarpiutang/{id}");
+            //      navigationmanager.NavigateTo($"printbayarpiutang/{id}");
             navigationmanager.NavigateTo("/ModuleHutang/TransApDp", false);
             //add = !add;
             //StateHasChanged();
@@ -337,9 +267,11 @@
         {
             Transh.Supplier = textSearch;
 
-         //   var transaksi = service.GetPiutangSisa(Transh.Customer);
+            kursSupplier = (from e in customers where e.Supplier == textSearch select e.Kurs).FirstOrDefault();
+
+            //   var transaksi = service.GetPiutangSisa(Transh.Customer);
             Transh.ApTransDs.Clear();
-            
+
         }
 
         SearchOpen = false;
