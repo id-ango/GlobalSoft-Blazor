@@ -20,21 +20,18 @@
         <ValidationSummary />
 
         
-        <table>
-            <tr>
-                <td>
+        
                     <div class="form-group">
                         <label>
                             Tanggal :
                             <InputDate class="form-control" @bind-Value="Transh.Tanggal" />
                         </label>
                     </div>
-                </td>
-                <td>
+            <br/>
                     <div class="form-group">
                         <label>
-                            Customer :
-                            <InputSelect class="form-control" @bind-Value="Transh.Supplier" style="width:80%; display:inline" @oninput="OnChangeCustomer">
+                            Supplier :
+                            <InputSelect class="form-control" @bind-Value="Transh.Supplier" style="width:60%; display:inline" @oninput="OnChangeCustomer">
                                 <option value="">&nbsp;&nbsp;---Select Supplier---&nbsp;&nbsp;</option>
                                 @foreach (var item in customers)
                                 {
@@ -45,15 +42,11 @@
                             <button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>
                         </label>
                     </div>
-                </td>
-            </tr>
-            <tr>
-               
-                <td>
+           <br/>
                     <div class="form-group">
                         <label>
                             Kode Bank :
-                            <InputSelect class="form-control" @bind-Value="Transh.KdBank" style="width:80%; display:inline" @oninput="OnKurs">
+                            <InputSelect class="form-control" @bind-Value="Transh.KdBank" style="width:60%; display:inline" @oninput="OnKurs">
                                 <option value="">&nbsp;&nbsp;---Select Bank---&nbsp;&nbsp;</option>
                                 @foreach (var item in banks)
                                 {
@@ -64,36 +57,30 @@
                             &nbsp;@kurs
                         </label>
                     </div>
-                </td>
-                <td>
-
+              <br/>
                     <div class="form-group">
                         <label>
                             Jumlah Bayar :
                             <InputNumber class="form-control" @bind-Value="Transh.JumBayar" style="width:150%" />
                         </label>
                     </div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    
+           
+            <br/>
                         <label>
                             Keterangan :
                             <InputTextArea class="form-control" @bind-Value="Transh.Keterangan" style="width:250%" />
                         </label>
                   
-                </td>
-            </tr>
-        </table>
-       
+          
        
         
 
 
-        <div class="float-md-right">
-            <button class="btn-success" type="submit">Simpan</button>
-        </div>
+                        <div class="float-md-right">
+                            <button class="btn-success" type="submit">Simpan</button>
+                            <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModuleHutang/TransApPy", false))">Batal</button>
+
+                        </div>
         <br />
         <br />
 
@@ -112,7 +99,7 @@
                         <tr>
                             <td>Faktur</td>
                             <td>Tanggal</td>
-                            <td>Piutang</td>
+                            <td>Hutang</td>
                             <td>Bayar</td>
                             <td>Discount</td>
                             <td>Sisa</td>

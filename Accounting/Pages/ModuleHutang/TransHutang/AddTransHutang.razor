@@ -23,10 +23,11 @@
                 <InputDate class="form-control" @bind-Value="Transh.Tanggal" />
             </label>
         </div>
+        <br />
         <div class="form-group">
             <label>
-                Customer :
-                <InputSelect class="form-control" @bind-Value="Transh.Supplier" style="width:60%; display:inline">
+                Supplier :
+                <InputSelect class="form-control" @bind-Value="Transh.Supplier" style="width:60%; display:inline" @oninput="OnChangeCustomer">
                     <option value="">&nbsp;&nbsp;---Select Supplier---&nbsp;&nbsp;</option>
                     @foreach (var item in banks)
                     {
@@ -35,16 +36,30 @@
 
                 </InputSelect>
                 <button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>
+                &nbsp;@kursSupplier
             </label>
         </div>
+        <br />
+
+        @if (!string.IsNullOrEmpty(this.kursSupplier))
+        {
+            <div class="form-group">
+                <label>
+                    Kurs :
+                    <InputNumber class="form-control" @bind-Value="Transh.Kurs" />
+                </label>
+            </div>
+            <br />
+        }
+
         <div class="form-group">
             <label>
                 Keterangan :
-                <InputTextArea class="form-control" @bind-Value="Transh.Keterangan"  />
+                <InputTextArea class="form-control" @bind-Value="Transh.Keterangan" />
             </label>
         </div>
 
-
+        <br />
         <div class="float-md-right">
             <button class="btn-success" type="submit">Simpan</button>
             <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModuleHutang/TransHutang", false))">Batal</button>
@@ -59,7 +74,9 @@
         <div class=" col-sm  form-message">
             <span>Saldo   : @Transh.Jumlah.ToString("N")</span>
         </div>
-
+        <div class="col-sm form-message">
+            <span> Balance : @Transh.JumNilai.ToString("N")</span>
+        </div>
     </div>
 
 
@@ -138,6 +155,8 @@
     private ApTransDView Transd = new ApTransDView();
     private ApTransDView TransK = new ApTransDView();
 
+    public string kursSupplier { get; set; } = "";
+
     public string kurs { get; set; } = "";
 
     public string Testing { get; set; }
@@ -184,7 +203,7 @@
         {
             var id = newEdit.ApTransHId.ToString().Trim();
             //  navigationmanager.NavigateTo("/PrintBuktiBayar/{id", false);
-              navigationmanager.NavigateTo("/ModuleHutang/TransHutang", false);
+            navigationmanager.NavigateTo("/ModuleHutang/TransHutang", false);
             //  navigationmanager.NavigateTo($"/PrintBuktiBayar/{id}");
         }
 
@@ -253,10 +272,21 @@
         if (!string.IsNullOrEmpty(textSearch))
         {
             Transh.Supplier = textSearch;
+            kursSupplier = (from e in banks where e.Supplier == textSearch select e.Kurs).FirstOrDefault();
         }
 
         SearchOpen = false;
         StateHasChanged();
+    }
+
+    public void OnChangeCustomer(ChangeEventArgs args)
+    {
+        //  var itemData = JsonConvert.DeserializeObject<ArCust>(args.ItemData != null ? args.ItemData.ToString() : "");
+
+        //   var transaksi = service.GetPiutangSisa(args.Value.ToString());
+        kursSupplier = (from e in banks where e.Supplier == args.Value.ToString() select e.Kurs).FirstOrDefault();
+
+
     }
 
     private void OnSearchClose(bool accepted)

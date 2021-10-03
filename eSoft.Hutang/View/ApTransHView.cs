@@ -58,6 +58,13 @@ namespace eSoft.Hutang.View
                 return Kurs * JumBayar;
             }
         }
+        public decimal JumNilai
+        {
+            get
+            {
+                return Kurs * Jumlah;
+            }
+        }
         public string Currency { get; set; }
         public string AcctSet { get; set; }
         public List<ApTransDView> ApTransDs { get; set; }
