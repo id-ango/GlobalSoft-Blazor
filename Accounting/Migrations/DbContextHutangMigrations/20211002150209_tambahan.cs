@@ -6,16 +6,22 @@ namespace Accounting.Migrations.DbContextHutangMigrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<string>(
+                name: "Currency",
+                table: "ApHutangs",
+                type: "nvarchar(max)",
+                nullable: true);
+
             migrationBuilder.AddColumn<decimal>(
                 name: "Kurs",
-                table: "ApTransHs",
+                table: "ApHutangs",
                 type: "decimal(18,4)",
                 nullable: false,
                 defaultValue: 0m);
 
             migrationBuilder.AddColumn<decimal>(
                 name: "Nilai",
-                table: "ApTransHs",
+                table: "ApHutangs",
                 type: "decimal(18,4)",
                 nullable: false,
                 defaultValue: 0m);
@@ -24,12 +30,16 @@ namespace Accounting.Migrations.DbContextHutangMigrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
+                name: "Currency",
+                table: "ApHutangs");
+
+            migrationBuilder.DropColumn(
                 name: "Kurs",
-                table: "ApTransHs");
+                table: "ApHutangs");
 
             migrationBuilder.DropColumn(
                 name: "Nilai",
-                table: "ApTransHs");
+                table: "ApHutangs");
         }
     }
 }

@@ -171,7 +171,7 @@ namespace eSoft.Hutang.Services
                 UnApplied = -1 * transH.Unapplied,
                 Sisa = -1 * transH.Unapplied,
                 Kurs = transH.Kurs,
-                Currency = transH.Currency,
+                Currency = trans.Currency,
                 Nilai = transH.Nilai,
                 Dpp = 0,
                 PPn = 0,
@@ -204,8 +204,8 @@ namespace eSoft.Hutang.Services
                         Tanggal = trans.Tanggal,
                         Keterangan = trans.Keterangan,
                         Kurs = bank.Kurs,
-                        Saldo = -1 * (!string.IsNullOrEmpty(bank.Kurs) ? trans.Nilai : trans.JumBayar),
-                        KSaldo = -1 * (!string.IsNullOrEmpty(bank.Kurs) ? trans.JumBayar : trans.Nilai),
+                        Saldo = -1 * (trans.Kurs != 0 ? trans.Nilai : trans.JumBayar),
+                        KSaldo = -1 * (trans.Kurs != 0 ? trans.JumBayar : 0),
 
                         CbTransDs = new List<CbTransD>()
                     };
@@ -214,13 +214,17 @@ namespace eSoft.Hutang.Services
                     {
                         SrcCode = KdSrc,
                         Keterangan = "Pembayaran Uang Muka " + trans.Supplier.ToUpper(),
-                        Bayar = trans.JumBayar,
-                        Jumlah = -1 * trans.JumBayar
-
+                        KBayar = (trans.Kurs != 0 ? trans.JumBayar : 0),
+                        Bayar = (trans.Kurs != 0 ? trans.Nilai : trans.JumBayar),
+                        KJumlah = -1 * (trans.Kurs != 0 ? trans.JumBayar : 0),
+                         Jumlah = -1 * (trans.Kurs != 0 ? trans.Nilai : trans.JumBayar),
+                         KValue = trans.Kurs,                      
+                        Kurs = bank.Kurs
                     });
 
                    
-                    bank.Saldo -= trans.JumBayar;
+                    bank.KSaldo -= (trans.Kurs != 0 ? trans.JumBayar : 0);
+                    bank.Saldo -= (trans.Kurs != 0 ? trans.Nilai : trans.JumBayar);
 
                     _contextBank.CbBanks.Update(bank);
                     _contextBank.CbTransHs.Add(transBank);

@@ -240,6 +240,7 @@
         if (Transh.UpdateUnapplied != 0)
         {
             Transh.ApSupplId = this.customerId;
+          //  Transh.Currency = this.kursSupplier;
             var newEdit = service.AddTransH(Transh);
             // var id = newEdit.ArTransHId.ToString().Trim();
 

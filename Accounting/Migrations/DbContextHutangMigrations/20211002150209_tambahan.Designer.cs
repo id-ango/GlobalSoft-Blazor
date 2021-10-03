@@ -10,8 +10,8 @@ using eSoft.Hutang.Data;
 namespace Accounting.Migrations.DbContextHutangMigrations
 {
     [DbContext(typeof(DbContextHutang))]
-    [Migration("20211001074045_tambahan2")]
-    partial class tambahan2
+    [Migration("20211002150209_tambahan")]
+    partial class tambahan
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -88,6 +88,9 @@ namespace Accounting.Migrations.DbContextHutangMigrations
                     b.Property<decimal>("Bayar")
                         .HasColumnType("decimal(18,4)");
 
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Discount")
                         .HasColumnType("decimal(18,4)");
 
@@ -112,8 +115,14 @@ namespace Accounting.Migrations.DbContextHutangMigrations
                     b.Property<string>("KodeTran")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("Kurs")
+                        .HasColumnType("decimal(18,4)");
+
                     b.Property<string>("LPB")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Nilai")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal>("PPh")
                         .HasColumnType("decimal(18,4)");
