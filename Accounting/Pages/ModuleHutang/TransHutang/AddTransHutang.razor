@@ -70,16 +70,30 @@
     </EditForm>
 </div>
 <div class="container">
-    <div class="row">
-        <div class=" col-sm  form-message">
-            <span>Saldo   : @Transh.Jumlah.ToString("N")</span>
+    @if (!string.IsNullOrEmpty(this.kursSupplier))
+    {
+        <div class="row">
+            <div class=" col-sm  form-message">
+                <span>Saldo   : @Transh.JumNilai.ToString("N")</span>
+            </div>
+            <div class="col-sm form-message">
+                <span> Balance : @Transh.Jumlah.ToString("N")</span>
+            </div>
         </div>
-        <div class="col-sm form-message">
-            <span> Balance : @Transh.JumNilai.ToString("N")</span>
+
+    }
+    else
+    {
+        <div class="row">
+            <div class=" col-sm  form-message">
+                <span>Saldo   : @Transh.Jumlah.ToString("N")</span>
+            </div>
+            <div class="col-sm form-message">
+                <span> Balance : @Transh.JumNilai.ToString("N")</span>
+            </div>
         </div>
-    </div>
 
-
+    }
 </div>
 <div class="container">
     <DetailGridComponent Items="Transh.ApTransDs" Context="transaksi">
