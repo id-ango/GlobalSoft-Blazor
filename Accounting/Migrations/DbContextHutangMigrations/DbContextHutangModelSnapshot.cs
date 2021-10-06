@@ -16,7 +16,7 @@ namespace Accounting.Migrations.DbContextHutangMigrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.9")
+                .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("eSoft.Hutang.Model.ApAcct", b =>
@@ -86,9 +86,6 @@ namespace Accounting.Migrations.DbContextHutangMigrations
                     b.Property<decimal>("Bayar")
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<string>("Currency")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<decimal>("Discount")
                         .HasColumnType("decimal(18,4)");
 
@@ -113,14 +110,8 @@ namespace Accounting.Migrations.DbContextHutangMigrations
                     b.Property<string>("KodeTran")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Kurs")
-                        .HasColumnType("decimal(18,4)");
-
                     b.Property<string>("LPB")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Nilai")
-                        .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal>("PPh")
                         .HasColumnType("decimal(18,4)");
@@ -319,9 +310,6 @@ namespace Accounting.Migrations.DbContextHutangMigrations
                     b.Property<string>("Bukti")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Currency")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<decimal>("Discount")
                         .HasColumnType("decimal(18,4)");
 
@@ -350,16 +338,10 @@ namespace Accounting.Migrations.DbContextHutangMigrations
                         .HasMaxLength(2)
                         .HasColumnType("nvarchar(2)");
 
-                    b.Property<decimal>("Kurs")
-                        .HasColumnType("decimal(18,4)");
-
                     b.Property<string>("NamaSup")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Netto")
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<decimal>("Nilai")
                         .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("NoFaktur")
