@@ -53,6 +53,7 @@ namespace eSoft.Hutang.View
         [Column(TypeName = "decimal(18,4)")]
         public decimal Nilai
         {
+           
             get
             {
                 return Kurs * JumBayar;
@@ -60,6 +61,7 @@ namespace eSoft.Hutang.View
         }
         public decimal JumNilai
         {
+           
             get
             {
                 return Kurs * Jumlah;

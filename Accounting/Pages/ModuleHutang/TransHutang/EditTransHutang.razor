@@ -23,17 +23,18 @@
                 <InputText class="form-control" @bind-Value="Transh.Bukti" style="text-transform:uppercase" disabled="disabled" />
             </label>
         </div>
-
+        <br />
         <div class="form-group">
             <label>
                 Tanggal :
                 <InputDate class="form-control" @bind-Value="Transh.Tanggal" />
             </label>
         </div>
+        <br />
         <div class="form-group">
             <label>
                 Supplier :
-                <InputSelect class="form-control" @bind-Value="Transh.Supplier" style="width:60%; display:inline">
+                <InputSelect class="form-control" @bind-Value="Transh.Supplier" style="width:60%; display:inline" @oninput="OnChangeCustomer">
                     <option value="">&nbsp;&nbsp;---Select Supplier---&nbsp;&nbsp;</option>
                     @foreach (var item in banks)
                     {
@@ -42,16 +43,29 @@
 
                 </InputSelect>
                 <button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>
+                &nbsp;@kursSupplier
             </label>
         </div>
+        <br />
+        @if (!string.IsNullOrEmpty(this.kursSupplier))
+        {
+            <div class="form-group">
+                <label>
+                    Kurs :
+                    <InputNumber class="form-control" @bind-Value="Transh.Kurs" />
+                </label>
+            </div>
+            <br />
+        }
+
         <div class="form-group">
             <label>
                 Keterangan :
-                <InputTextArea class="form-control" @bind-Value="Transh.Keterangan"  />
+                <InputTextArea class="form-control" @bind-Value="Transh.Keterangan" />
             </label>
         </div>
 
-
+        <br />
         <div class="float-md-right">
             <button class="btn-success" type="submit">Simpan</button>
             <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModuleHutang/TransHutang", false))">Batal</button>
@@ -63,9 +77,30 @@
 </div>
 <div class="container">
     <div class="row">
-        <div class=" col-sm  form-message">
-            <span>Saldo   : @Transh.Jumlah.ToString("N")</span>
-        </div>
+        @if (!string.IsNullOrEmpty(this.kursSupplier))
+        {
+            <div class="row">
+                <div class=" col-sm  form-message">
+                    <span>Saldo   : @Transh.JumNilai.ToString("N")</span>
+                </div>
+                <div class="col-sm form-message">
+                    <span> Balance : @Transh.Jumlah.ToString("N")</span>
+                </div>
+            </div>
+
+        }
+        else
+        {
+            <div class="row">
+                <div class=" col-sm  form-message">
+                    <span>Saldo   : @Transh.Jumlah.ToString("N")</span>
+                </div>
+                <div class="col-sm form-message">
+                    <span> Balance : @Transh.JumNilai.ToString("N")</span>
+                </div>
+            </div>
+
+        }
 
     </div>
 </div>
@@ -151,7 +186,7 @@
     private ApTransDView TransK = new ApTransDView();
 
     public string kurs { get; set; } = "";
-
+    public string kursSupplier { get; set; } = "";
     public string Testing { get; set; }
     private bool DialogOpen { get; set; }
     public bool IsVisible { get; set; }
@@ -258,7 +293,8 @@
         Transh.Tanggal = TransAll.Tanggal;
 
         Transh.Supplier = TransAll.Supplier;
-
+        kursSupplier = (from e in banks where e.Supplier == TransAll.Supplier select e.Kurs).FirstOrDefault();
+        Transh.Kurs = TransAll.Kurs;
         Transh.Keterangan = TransAll.Keterangan;
         foreach (var item in TransAll.ApTransDs)
         {
@@ -297,10 +333,21 @@
         if (!string.IsNullOrEmpty(textSearch))
         {
             Transh.Supplier = textSearch;
+            kursSupplier = (from e in banks where e.Supplier == textSearch select e.Kurs).FirstOrDefault();
         }
 
         SearchOpen = false;
         StateHasChanged();
+    }
+
+    public void OnChangeCustomer(ChangeEventArgs args)
+    {
+        //  var itemData = JsonConvert.DeserializeObject<ArCust>(args.ItemData != null ? args.ItemData.ToString() : "");
+
+        //   var transaksi = service.GetPiutangSisa(args.Value.ToString());
+        kursSupplier = (from e in banks where e.Supplier == args.Value.ToString() select e.Kurs).FirstOrDefault();
+
+
     }
 
     private void OnSearchClose(bool accepted)
