@@ -19,68 +19,79 @@
         <DataAnnotationsValidator />
         <ValidationSummary />
 
-        
-        
-                    <div class="form-group">
-                        <label>
-                            Tanggal :
-                            <InputDate class="form-control" @bind-Value="Transh.Tanggal" />
-                        </label>
-                    </div>
-            <br/>
-                    <div class="form-group">
-                        <label>
-                            Supplier :
-                            <InputSelect class="form-control" @bind-Value="Transh.Supplier" style="width:60%; display:inline" @oninput="OnChangeCustomer">
-                                <option value="">&nbsp;&nbsp;---Select Supplier---&nbsp;&nbsp;</option>
-                                @foreach (var item in customers)
-                                {
-                                    <option value="@item.Supplier">[@item.Supplier]&nbsp; @item.NamaSup</option>
-                                }
-
-                            </InputSelect>
-                            <button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>
-                        </label>
-                    </div>
-           <br/>
-                    <div class="form-group">
-                        <label>
-                            Kode Bank :
-                            <InputSelect class="form-control" @bind-Value="Transh.KdBank" style="width:60%; display:inline" @oninput="OnKurs">
-                                <option value="">&nbsp;&nbsp;---Select Bank---&nbsp;&nbsp;</option>
-                                @foreach (var item in banks)
-                                {
-                                    <option value="@item.KodeBank">[@item.KodeBank]&nbsp; @item.NmBank</option>
-                                }
-
-                            </InputSelect>
-                            &nbsp;@kurs
-                        </label>
-                    </div>
-              <br/>
-                    <div class="form-group">
-                        <label>
-                            Jumlah Bayar :
-                            <InputNumber class="form-control" @bind-Value="Transh.JumBayar" style="width:150%" />
-                        </label>
-                    </div>
-           
-            <br/>
-                        <label>
-                            Keterangan :
-                            <InputTextArea class="form-control" @bind-Value="Transh.Keterangan" style="width:250%" />
-                        </label>
-                  
-          
-       
-        
 
 
-                        <div class="float-md-right">
-                            <button class="btn-success" type="submit">Simpan</button>
-                            <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModuleHutang/TransApPy", false))">Batal</button>
+        <div class="form-group">
+            <label>
+                Tanggal :
+                <InputDate class="form-control" @bind-Value="Transh.Tanggal" />
+            </label>
+        </div>
+        <br />
+        <div class="form-group">
+            <label>
+                Supplier :
+                <InputSelect class="form-control" @bind-Value="Transh.Supplier" style="width:60%; display:inline" @oninput="OnChangeCustomer">
+                    <option value="">&nbsp;&nbsp;---Select Supplier---&nbsp;&nbsp;</option>
+                    @foreach (var item in customers)
+                    {
+                        <option value="@item.Supplier">[@item.Supplier]&nbsp; @item.NamaSup</option>
+                    }
 
-                        </div>
+                </InputSelect>
+                <button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>
+                &nbsp;@kursSupplier
+            </label>
+        </div>
+        <br />
+        <div class="form-group">
+            <label>
+                Kode Bank :
+                <InputSelect class="form-control" @bind-Value="Transh.KdBank" style="width:60%; display:inline" @oninput="OnKurs">
+                    <option value="">&nbsp;&nbsp;---Select Bank---&nbsp;&nbsp;</option>
+                    @foreach (var item in banks)
+                    {
+                        <option value="@item.KodeBank">[@item.KodeBank]&nbsp; @item.NmBank</option>
+                    }
+
+                </InputSelect>
+                &nbsp;@kurs
+            </label>
+        </div>
+        <br />
+        @if (!string.IsNullOrEmpty(this.kursSupplier))
+        {
+            <div class="form-group">
+                <label>
+                    Kurs :
+                    <InputNumber class="form-control" @bind-Value="Transh.Kurs" />
+                </label>
+            </div>
+            <br />
+        }
+        <div class="form-group">
+            <label>
+                Jumlah Bayar :
+                <InputNumber class="form-control" @bind-Value="Transh.JumBayar" />
+            </label>
+        </div>
+
+        <br />
+        <label>
+            Keterangan :
+            <InputTextArea class="form-control" @bind-Value="Transh.Keterangan" />
+        </label>
+
+
+
+
+
+
+        <div class="float-md-right">
+            <button class="btn-success" type="submit">Simpan</button>
+            <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModuleHutang/TransApPy", false))">Batal</button>
+
+        </div>
         <br />
         <br />
 
@@ -223,7 +234,7 @@
 
     public int customerId { get; set; }
     public string kurs { get; set; } = "";
-
+    public string kursSupplier { get; set; } = "";
 
     public string Testing { get; set; }
     private bool DialogOpen { get; set; }
@@ -284,6 +295,7 @@
     public void OnChangeCustomer(ChangeEventArgs args)
     {
         //  var itemData = JsonConvert.DeserializeObject<ArCust>(args.ItemData != null ? args.ItemData.ToString() : "");
+        kursSupplier = (from e in customers where e.Supplier == args.Value.ToString() select e.Kurs).FirstOrDefault();
 
         var transaksi = service.GetHutangSisa(args.Value.ToString());
         Transh.ApTransDs.Clear();
@@ -311,6 +323,7 @@
         if (Transh.UpdateUnapplied == 0)
         {
             Transh.ApSupplId = this.customerId;
+          //  Transh.Currency = this.kursSupplier;
             var newEdit = service.AddTransH(Transh);
             // var id = newEdit.ArTransHId.ToString().Trim();
 
@@ -337,7 +350,7 @@
         if (!string.IsNullOrEmpty(textSearch))
         {
             Transh.Supplier = textSearch;
-
+            kursSupplier = (from e in customers where e.Supplier == textSearch select e.Kurs).FirstOrDefault();
             var transaksi = service.GetHutangSisa(Transh.Supplier);
             Transh.ApTransDs.Clear();
             if (transaksi != null)

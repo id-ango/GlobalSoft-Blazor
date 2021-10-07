@@ -35,7 +35,7 @@
                     <option value="">&nbsp;&nbsp;---Select Supplier---&nbsp;&nbsp;</option>
                     @foreach (var item in customers)
                     {
-                    <option value="@item.Supplier">[@item.Supplier]&nbsp; @item.NamaSup</option>
+                        <option value="@item.Supplier">[@item.Supplier]&nbsp; @item.NamaSup</option>
                     }
 
                 </InputSelect>
@@ -51,7 +51,7 @@
                     <option value="">&nbsp;&nbsp;---Select Bank---&nbsp;&nbsp;</option>
                     @foreach (var item in banks)
                     {
-                    <option value="@item.KodeBank">[@item.KodeBank]&nbsp; @item.NmBank</option>
+                        <option value="@item.KodeBank">[@item.KodeBank]&nbsp; @item.NmBank</option>
                     }
 
                 </InputSelect>
@@ -60,14 +60,18 @@
         </div>
         <br />
 
-       
-        <div class="form-group">
-            <label>
-                Kurs :
-                <InputNumber class="form-control" @bind-Value="Transh.Kurs" />
-            </label>
-        </div>
-       
+        @if (!string.IsNullOrEmpty(this.kursSupplier))
+        {
+            <div class="form-group">
+                <label>
+                    Kurs :
+                    <InputNumber class="form-control" @bind-Value="Transh.Kurs" />
+                </label>
+            </div>
+            <br />
+        }
+        
+
         <div class="form-group">
             <label>
                 Jumlah Bayar :
@@ -77,7 +81,7 @@
         <div class="form-group">
             <label>
                 Nilai Kurs : @Transh.Nilai
-               
+
             </label>
         </div>
 

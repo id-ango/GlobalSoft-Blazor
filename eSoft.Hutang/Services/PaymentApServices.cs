@@ -92,6 +92,9 @@ namespace eSoft.Hutang.Services
                 Supplier = trans.Supplier.ToUpper(),
                 Tanggal = trans.Tanggal,
                 Keterangan = trans.Keterangan,
+                Currency = trans.Currency,
+                Kurs = trans.Kurs,
+                Nilai = trans.Nilai,
                 Jumlah = trans.JumBayar,
                 Discount = trans.JumDiskon,
                 Unapplied = trans.UpdateUnapplied,
@@ -140,11 +143,11 @@ namespace eSoft.Hutang.Services
                         s.Sisa -= item.Bayar + item.Discount;
                         if (s.Bayar + s.Discount != 0)
                         {
-                          //  _context.IrTransHs.Where(x => x.NoLpb == item.Lpb).FirstOrDefault().Cek = "3";
+                            //  _context.IrTransHs.Where(x => x.NoLpb == item.Lpb).FirstOrDefault().Cek = "3";
                         }
                         else
                         {
-                         //   _context.IrTransHs.Where(x => x.NoLpb == item.Lpb).FirstOrDefault().Cek = "1";
+                            //   _context.IrTransHs.Where(x => x.NoLpb == item.Lpb).FirstOrDefault().Cek = "1";
                         }
                     });
 
@@ -169,7 +172,9 @@ namespace eSoft.Hutang.Services
                 Discount = 0,
                 UnApplied = -1 * trans.UpdateUnapplied,
                 Sisa = -1 * trans.UpdateUnapplied,
-
+                Kurs = transH.Kurs,
+                Currency = trans.Currency,
+                Nilai = transH.Nilai,
                 Dpp = 0,
                 PPn = 0,
                 PPh = 0,
@@ -185,7 +190,7 @@ namespace eSoft.Hutang.Services
             _context.SaveChanges();
 
 
-
+            var bank = (from e in _contextBank.CbBanks where e.KodeBank == trans.KdBank select e).FirstOrDefault();
             var cekBukti = (from e in _contextBank.CbTransHs where e.DocNo == transH.Bukti select e).FirstOrDefault();
 
             if (cekBukti == null)
@@ -196,25 +201,41 @@ namespace eSoft.Hutang.Services
                     {
                         DocNo = transH.Bukti,
                         KodeBank = trans.KdBank,
+                        Kurs = bank.Kurs,
                         Tanggal = trans.Tanggal,
                         Keterangan = trans.Keterangan,
-                        Saldo = -1 * trans.JumBayar,
-
+                        // Saldo = -1 * trans.JumBayar,
+                        Saldo = -1 * (trans.Kurs != 0 ? trans.Nilai : trans.JumBayar),
+                        KSaldo = -1 * (trans.Kurs != 0 ? trans.JumBayar : 0),
                         CbTransDs = new List<CbTransD>()
                     };
+              
+
                     foreach (var item in trans.ApTransDs)
                     {
-                        transBank.CbTransDs.Add(new CbTransD()
+                        if (item.Bayar != 0)
                         {
-                            SrcCode = KdSrc,
-                            Keterangan = "Pembayaran Hutang" + trans.Supplier.ToUpper() + "," + Supplier.NamaSup,
-                            Bayar = item.Bayar,
-                            Jumlah = -1 * item.Bayar,
 
-                        });
+                            transBank.CbTransDs.Add(new CbTransD()
+                            {
+                                SrcCode = KdSrc,
+                                Keterangan = "Pembayaran Hutang" + trans.Supplier.ToUpper() + "," + Supplier.NamaSup,
+                             //   Bayar = item.Bayar,
+                             //   Jumlah = -1 * item.Bayar,
+                                KBayar = (trans.Kurs != 0 ? trans.JumBayar : 0),
+                                Bayar = (trans.Kurs != 0 ? trans.Nilai : trans.JumBayar),
+                                KJumlah = -1 * (trans.Kurs != 0 ? trans.JumBayar : 0),
+                                Jumlah = -1 * (trans.Kurs != 0 ? trans.Nilai : trans.JumBayar),
+                                KValue = trans.Kurs,
+                                Kurs = bank.Kurs
+                            });
+
+                        }
                     }
-                    var bank = (from e in _contextBank.CbBanks where e.KodeBank == trans.KdBank select e).FirstOrDefault();
-                    bank.Saldo -= trans.JumBayar;
+                
+                  //  bank.Saldo -= trans.JumBayar;
+                    bank.KSaldo -= (trans.Kurs != 0 ? trans.JumBayar : 0);
+                    bank.Saldo -= (trans.Kurs != 0 ? trans.Nilai : trans.JumBayar);
 
                     _contextBank.CbBanks.Update(bank);
                     _contextBank.CbTransHs.Add(transBank);
@@ -256,11 +277,11 @@ namespace eSoft.Hutang.Services
 
                         if (s.Bayar + s.Discount != 0)
                         {
-                          //  _context.IrTransHs.Where(x => x.NoLpb == item.Lpb).FirstOrDefault().Cek = "3";
+                            //  _context.IrTransHs.Where(x => x.NoLpb == item.Lpb).FirstOrDefault().Cek = "3";
                         }
                         else
                         {
-                          //  _context.IrTransHs.Where(x => x.NoLpb == item.Lpb).FirstOrDefault().Cek = "1";
+                            //  _context.IrTransHs.Where(x => x.NoLpb == item.Lpb).FirstOrDefault().Cek = "1";
                         }
                     });
                     }
