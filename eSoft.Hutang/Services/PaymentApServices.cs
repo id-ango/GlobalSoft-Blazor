@@ -220,12 +220,17 @@ namespace eSoft.Hutang.Services
                             {
                                 SrcCode = KdSrc,
                                 Keterangan = "Pembayaran Hutang" + trans.Supplier.ToUpper() + "," + Supplier.NamaSup,
-                             //   Bayar = item.Bayar,
-                             //   Jumlah = -1 * item.Bayar,
-                                KBayar = (trans.Kurs != 0 ? trans.JumBayar : 0),
-                                Bayar = (trans.Kurs != 0 ? trans.Nilai : trans.JumBayar),
-                                KJumlah = -1 * (trans.Kurs != 0 ? trans.JumBayar : 0),
-                                Jumlah = -1 * (trans.Kurs != 0 ? trans.Nilai : trans.JumBayar),
+                                //   Bayar = item.Bayar,
+                                //   Jumlah = -1 * item.Bayar,
+                         //      KJumlah = -1 * (trans.Kurs != 0 ? trans.JumBayar : 0),
+                           //     Jumlah = -1 * (trans.Kurs != 0 ? trans.Nilai : trans.JumBayar),
+
+                                KTerima = (item.Bayar < 0 ? (trans.Kurs != 0 ? -1*item.Bayar : 0) : 0),                             
+                                Terima = (item.Bayar < 0 ? (trans.Kurs != 0 ? -1*(item.Bayar * trans.Kurs) : -1*item.Bayar) : 0),
+                                KBayar = (item.Bayar > 0 ? (trans.Kurs != 0 ? item.Bayar : 0) : 0),
+                                Bayar = (item.Bayar > 0 ? (trans.Kurs != 0 ? item.Bayar * trans.Kurs : item.Bayar):0),                            
+                                KJumlah = (item.Bayar>0 ? (-1 * (trans.Kurs != 0 ? item.Bayar : 0)) : (trans.Kurs != 0 ? item.Bayar : 0)),
+                                Jumlah = (item.Bayar>0 ? (-1 * (trans.Kurs != 0 ? item.Bayar * trans.Kurs : item.Bayar)) : (trans.Kurs != 0 ? item.Bayar * trans.Kurs : item.Bayar)),
                                 KValue = trans.Kurs,
                                 Kurs = bank.Kurs
                             });
