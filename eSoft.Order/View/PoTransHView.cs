@@ -21,9 +21,9 @@ namespace eSoft.Order.View
         public string Lokasi { get; set; }
         public DateTime Tanggal { get; set; }
         public DateTime JthTempo { get; set; }
-        public string Kurs { get; set; }
+        public string Currency { get; set; }
         [Column(TypeName = "decimal(18,4)")]
-        public decimal Currency { get; set; }
+        public decimal Kurs { get; set; }
         [Column(TypeName = "decimal(18,2)")]
         public decimal TtlJumlah
         {
@@ -84,6 +84,17 @@ namespace eSoft.Order.View
                 return Jumlah - DPayment;
             }
         }
+
+        public decimal Nilai
+        {
+
+            get
+            {
+                return Kurs * Jumlah;
+            }
+        }
+       
+
         [Required]
         public string Vendor { get; set; }
         public string NamaVendor { get; set; }

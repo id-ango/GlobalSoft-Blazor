@@ -17,13 +17,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eSoft.Order.Services
 {
-    public class OrderServices : IOrderServices
+    public class OrderPurchaseServices : IOrderPurchaseServices
     {
         private readonly DbContextOrder _context;
         private readonly DbContextHutang _contextAp;
         private readonly DbContextPersediaan _contextIc;
 
-        public OrderServices(DbContextOrder context,DbContextHutang contextHutang,DbContextPersediaan contextPersediaan)
+        public OrderPurchaseServices(DbContextOrder context,DbContextHutang contextHutang,DbContextPersediaan contextPersediaan)
         {
             _context = context;
             _contextAp = contextHutang;
@@ -61,11 +61,12 @@ namespace eSoft.Order.Services
             try
             {
                 PoTrans = _context.PoTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Kode == "71").ToList();
+              //  PoTrans = (from e in _context.PoTransHs orderby e.Tanggal where e.Kode == "71" select e).ToList();
 
-                foreach (var item in PoTrans)
-                {
-                    item.NamaVendor = _contextAp.ApSuppls.Where(x => x.Supplier == item.Vendor).FirstOrDefault().NamaLengkap;
-                }
+                //foreach (var item in PoTrans)
+                //{
+                //    item.NamaVendor = _contextAp.ApSuppls.Where(x => x.Supplier == item.Vendor).FirstOrDefault().NamaLengkap;
+                //}
 
             }
             catch (Exception)
@@ -108,7 +109,7 @@ namespace eSoft.Order.Services
                 NoLpb = GetNumber(),
                 Vendor = trans.Vendor.ToUpper(),
                 NamaVendor = trans.NamaVendor,
-                
+                NoPrj = trans.NoPrj,
                 Tanggal = trans.Tanggal,
                 Keterangan = trans.Keterangan,
                 Jumlah = trans.Jumlah,

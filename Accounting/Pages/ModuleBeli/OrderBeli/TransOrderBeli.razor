@@ -3,17 +3,17 @@
 @using eSoft.Order.Services
 
 
-@inject IOrderServices service
+@inject IOrderPurchaseServices service
 @implements IDisposable
 @inject NavigationManager navigationmanager
 
 <div class="container-fluid">
-    <h1>Transaksi Order Pembelian</h1>
+    <h1>Transaksi Order Import</h1>
 </div>
 
 
 <div class="container-fluid">
-    <NavLink href="/ModuleBeli/AddTransOrderBeli" class="btn btn-primary">Order Beli</NavLink> &nbsp;&nbsp;
+    <NavLink href="/ModuleBeli/AddTransOrderBeli" class="btn btn-primary">Order Import</NavLink> &nbsp;&nbsp;
     
 </div>
 
@@ -27,7 +27,7 @@
 
             <th scope="col" style="width:15%">No Bukti</th>
             <th scope="col" style="width:20%">Supplier</th>
-
+            <th scope="col" style="width:5%">Currency</th>
             <th scope="col" style="width:20%">Keterangan</th>
             <th scope="col" style="width:10%">Total</th>
             <th scope="col" style="width:20%">Jumlah/PPn/Ongkir</th>
@@ -42,7 +42,7 @@
                 <span class="badge bg-primary">@transaksi.Tanggal.ToShortDateString()</span>
             </td>
             <td style="width:20%">@transaksi.NamaVendor</td>
-
+            <td style="width:20%">@transaksi.Currency</td>
             <td style="width:20%">@transaksi.Keterangan</td>
             <td style="width:10%">@transaksi.TtlJumlah.ToString("N")</td>
             <td style="width:20%">
@@ -159,7 +159,7 @@
 
     private void OpenRubah(int xKdBank)
     {
-        navigationmanager.NavigateTo($"/ModuleBeli/EditTransBeli/{xKdBank}");
+        navigationmanager.NavigateTo($"/ModuleBeli/EditTransOrderBeli/{xKdBank}");
     }
 
     private void OpenPrint(int xKdBank)

@@ -20,9 +20,9 @@ namespace eSoft.Order.Model
         public string NamaItem { get; set; }
         public string Satuan { get; set; }
         public string Lokasi { get; set; }
-        public string Kurs { get; set; }
+        public string Currency { get; set; }
         [Column(TypeName = "decimal(18,4)")]
-        public decimal Currency { get; set; }
+        public decimal Kurs { get; set; }
         [Column(TypeName = "decimal(18,4)")]
         public decimal Harga { get; set; }
         [Column(TypeName = "decimal(18,4)")]

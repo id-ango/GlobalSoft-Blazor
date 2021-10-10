@@ -18,9 +18,9 @@ namespace eSoft.Order.Model
         public string NoSJ { get; set; }
         public string NoPrj { get; set; }
         public string Lokasi { get; set; }
-        public string Kurs { get; set; }
+        public string Currency { get; set; }
         [Column(TypeName = "decimal(18,4)")]
-        public decimal Currency { get; set; }
+        public decimal Kurs { get; set; }
         public DateTime Tanggal { get; set; }
         public DateTime JthTempo { get; set; }
         [Column(TypeName = "decimal(18,4)")]
@@ -41,6 +41,8 @@ namespace eSoft.Order.Model
         public decimal TotalQty { get; set; }
         [Column(TypeName = "decimal(18,4)")]
         public decimal QtyTerima { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal Nilai { get; set; }
         public string Vendor { get; set; }
         public string NamaVendor { get; set; }
         public string Keterangan { get; set; }

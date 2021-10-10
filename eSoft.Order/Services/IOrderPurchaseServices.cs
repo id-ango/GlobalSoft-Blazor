@@ -13,7 +13,7 @@ using eSoft.Persediaan.Model;
 
 namespace eSoft.Order.Services
 {
-    public interface IOrderServices
+    public interface IOrderPurchaseServices
     {
         PoTransH GetPoTrans(int id);
         List<PoTransH> GetTransH();

@@ -102,6 +102,7 @@ namespace Accounting
             services.AddTransient<IIcAdjustServices, IcAdjustServices>();
             services.AddTransient<IPurchaseServices, PurchaseServices>();
             services.AddTransient<ISalesServices, SalesServices>();
+            services.AddTransient<IOrderPurchaseServices, OrderPurchaseServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
