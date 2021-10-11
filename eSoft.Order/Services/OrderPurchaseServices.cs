@@ -217,14 +217,15 @@ namespace eSoft.Order.Services
         {
             decimal mQty5 = 0;
 
-            var cekFirst = _contextAp.ApHutangs.Where(x => x.Dokumen == trans.NoLpb && x.Bayar == 0).FirstOrDefault();
+         //   var cekFirst = _contextAp.ApHutangs.Where(x => x.Dokumen == trans.NoLpb && x.Bayar == 0).FirstOrDefault();
 
-            if (cekFirst != null)
+            if (true)
             {
                 try
                 {
 
                     var ExistingTrans = _context.PoTransHs.Where(x => x.PoTransHId == trans.PoTransHId).FirstOrDefault();
+                //    var ExistingTrans = _context.PoTransHs.Include(x => x.PoTransDs).Where(x => x.PoTransHId == trans.PoTransHId).FirstOrDefault();
 
                     if (ExistingTrans != null)
                     {
@@ -236,7 +237,9 @@ namespace eSoft.Order.Services
                         {
                             NoLpb = trans.NoLpb,
                             Vendor = trans.Vendor.ToUpper(),
-                            NamaVendor = trans.NamaVendor,                           
+                            
+                            NamaVendor = trans.NamaVendor,
+                            NoPrj = trans.NoPrj,
                             Tanggal = trans.Tanggal,
                             Keterangan = trans.Keterangan,
                             Jumlah = trans.Jumlah,
