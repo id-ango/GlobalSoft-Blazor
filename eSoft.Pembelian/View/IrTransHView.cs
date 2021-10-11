@@ -88,6 +88,18 @@ namespace eSoft.Pembelian.View
         public string Cek { get; set; }
         public bool Pajak { get; set; }
         public string Status { get; set; }
+        public decimal Kurs { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal Nilai
+        {
+
+            get
+            {
+                return Kurs * Jumlah;
+            }
+        }
+        
+        public string Currency { get; set; }
         public List<IrTransDView> IrTransDs { get; set; }
 
     }

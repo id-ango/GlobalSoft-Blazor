@@ -44,6 +44,11 @@ namespace eSoft.Pembelian.Model
         public string Cek { get; set; }
         public bool Pajak { get; set; }
         public string Status { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal Kurs { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal Nilai { get; set; }
+        public string Currency { get; set; }
         public List<IrTransD> IrTransDs { get; set; }
 
     }

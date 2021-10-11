@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eSoft.Pembelian.Data;
 
 namespace Accounting.Migrations.DbContextBeliMigrations
 {
     [DbContext(typeof(DbContextBeli))]
-    partial class DbContextBeliModelSnapshot : ModelSnapshot
+    [Migration("20211011084621_kursbelitambah")]
+    partial class kursbelitambah
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
