@@ -22,6 +22,7 @@ namespace eSoft.Pembelian.Services
         private readonly DbContextBeli _context;
         private readonly DbContextHutang _contextAp;
         private readonly DbContextPersediaan _contextIc;
+      
 
         public PurchaseServices(DbContextBeli context, DbContextHutang contextHutang, DbContextPersediaan contextPersediaan)
         {
@@ -112,7 +113,8 @@ namespace eSoft.Pembelian.Services
                 NoLpb = GetNumber(),
                 Supplier = trans.Supplier.ToUpper(),
                 NamaSup = trans.NamaSup,
-
+                Kurs = trans.Kurs,
+                Nilai = trans.Nilai,
                 Tanggal = trans.Tanggal,
                 Keterangan = trans.Keterangan,
                 Jumlah = trans.Jumlah,
@@ -135,11 +137,27 @@ namespace eSoft.Pembelian.Services
                 {
                     if (transH.TotalQty != 0)
                     {
-                        mQty5 = (item.Jumlah - item.Discount) - (item.Qty / transH.TotalQty * transH.Ppn) + (item.Qty / transH.TotalQty * transH.Ongkos);
+                        if(trans.Kurs != 0)
+                        {
+                            mQty5 = trans.Kurs * ((item.Jumlah - item.Discount) - (item.Qty / transH.TotalQty * transH.Ppn) + (item.Qty / transH.TotalQty * transH.Ongkos));
+                        }
+                        else
+                        {
+                            mQty5 = (item.Jumlah - item.Discount) - (item.Qty / transH.TotalQty * transH.Ppn) + (item.Qty / transH.TotalQty * transH.Ongkos);
+                        }
+                       
                     }
                     else
                     {
-                        mQty5 = (item.Jumlah - item.Discount);
+                        if(trans.Kurs != 0)
+                        {
+                            mQty5 = trans.Kurs * (item.Jumlah - item.Discount);
+                        }
+                        else
+                        {
+                            mQty5 = (item.Jumlah - item.Discount);
+                        }
+                     
                     }
 
                     transH.IrTransDs.Add(new IrTransD()
@@ -186,8 +204,15 @@ namespace eSoft.Pembelian.Services
                         }
 
                         #endregion altitem
-
-                        cekItem.Harga = item.Harga;  // harga beli barang
+                        if(trans.Kurs != 0)
+                        {
+                            cekItem.Harga = trans.Kurs * item.Harga;
+                        }
+                        else
+                        {
+                            cekItem.Harga = item.Harga;  // harga beli barang
+                        }
+                       
 
                         if (cekItem.JnsBrng == (int)jnsBrng.Stock)   // jika stock
                         {
@@ -196,8 +221,8 @@ namespace eSoft.Pembelian.Services
 
                         if (cekItem.CostMethod == (int)costMethod.Moving_Avg)  // jika moving avarage
                         {
-
-                            cekItem.Cost += mQty5;
+                            
+                                cekItem.Cost += mQty5;
                         }
                         else
                         {
@@ -232,6 +257,9 @@ namespace eSoft.Pembelian.Services
                 Jumlah = transH.Jumlah,
                 Sisa = transH.Jumlah,
                 SldSisa = transH.Jumlah,
+                Kurs = transH.Kurs,
+                Currency = trans.Currency,
+                Nilai = transH.Nilai,
                 KodeTran = transH.Kode
             };
             _contextAp.ApHutangs.Add(hutang);

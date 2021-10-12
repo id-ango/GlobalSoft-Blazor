@@ -38,17 +38,18 @@
                 <InputDate class="form-control" @bind-Value="Transh.Tanggal" />
             </label>
         </div>
+        <br />
         <div class="form-group">
             <label>
                 P/I Import :
                 <InputSelect class="form-control" @bind-Value="Transh.NoPrj" style="width:60%; display:inline" @oninput="OnPI">
                     <option value="">&nbsp;&nbsp;---Select P/I---&nbsp;&nbsp;</option>
-                    
-                        @foreach (var item in banks)
-                        {
-                            <option value="@item.NoLpb">[@item.NoPrj] &nbsp; @item.NamaVendor</option>
-                        }
-                  </InputSelect>
+
+                    @foreach (var item in banks)
+                    {
+                        <option value="@item.NoLpb">[@item.NoPrj] &nbsp; @item.NamaVendor</option>
+                    }
+                </InputSelect>
                 @*&nbsp;@kurs*@
             </label>
         </div>
@@ -57,11 +58,11 @@
         <div class="form-group">
             <label>
                 Supplier :
-                <InputText class="form-control" @bind-Value="Transh.Supplier" disabled="disabled" />
+                <InputText class="form-control" @bind-Value="Transh.Supplier" disabled="disabled" style="width:40%; display:inline" />
                 @Transh.NamaSup
             </label>
         </div>
-
+        <br />
         <div class="form-group">
             <label>
                 Kurs :
@@ -125,7 +126,14 @@
 
                         </div>
                     </td>
-                    <td></td>
+                    <td>
+                        <div class="row">
+                            <div class=" col-sm  form-message">
+                                <span>Balance   : @Transh.Nilai.ToString("N")</span>
+                            </div>
+
+                        </div>
+                    </td>
                 </tr>
             </table>
 
@@ -168,14 +176,14 @@
                 <td>@transaksi.UpdateJumlah.ToString("#,##0.##")</td>
                 <td>@transaksi.Lokasi</td>
                 <td>
-                    <button @onclick="(() => Rubah(transaksi))" class="btn btn-success">Edit</button>
-                    <button @onclick="(() => Hapus(transaksi))" class="btn btn-danger">Delete</button>
+                    @*<button @onclick="(() => Rubah(transaksi))" class="btn btn-success">Edit</button>
+                    <button @onclick="(() => Hapus(transaksi))" class="btn btn-danger">Delete</button>*@
                 </td>
             </RowTemplate>
         </DetailGridComponent>
 
 
-        <Button Class="btn btn-info" @onclick="@OnAddLine">Add Line</Button>
+        @*<Button Class="btn btn-info" @onclick="@OnAddLine">Add Line</Button>*@
     </div>
 
 </div>
@@ -292,6 +300,8 @@
         var newEdit = service.AddTransH(Transh);
         if (newEdit != null)
         {
+            serviceOrder.SaveOrderAktif(Transh.NoPrj);
+
             var id = newEdit.IrTransHId.ToString().Trim();
             //  navigationmanager.NavigateTo("/PrintBuktiBayar/{id", false);
             navigationmanager.NavigateTo("/ModuleBeli/TransBeli", false);
@@ -389,7 +399,9 @@
     public void OnPI(ChangeEventArgs args)
     {
         transaksi = serviceOrder.GetOrderAktif(args.Value.ToString());
-
+        Transh.Supplier = transaksi.Vendor;
+        Transh.NamaSup = transaksi.NamaVendor;
+      
         Transh.IrTransDs.Clear();
         if (transaksi != null)
         {
@@ -400,6 +412,7 @@
                     ItemCode = item.ItemCode,
                     NamaItem = item.NamaItem,
                     Qty = item.Qty,
+                    Satuan = item.Satuan,
                     Harga = item.Harga,
                     Discount =item.Discount,
                     Lokasi = item.Lokasi,
