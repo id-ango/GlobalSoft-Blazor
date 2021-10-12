@@ -17,8 +17,10 @@ namespace eSoft.Order.Services
     {
         PoTransH GetPoTrans(int id);
         List<PoTransH> GetTransH();
+        List<PoTransH> GetTransHAktif();
         List<PoTransH> Get3TransH();
         List<PoTransD> GetTransD();
+        PoTransH GetOrderAktif(string customer);
         PoTransH AddTransH(PoTransHView trans);
         Task<bool> DelTransH(int id);
         Task<bool> EditTransH(PoTransHView trans);

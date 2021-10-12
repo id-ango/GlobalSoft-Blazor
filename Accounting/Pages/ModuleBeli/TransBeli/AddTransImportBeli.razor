@@ -32,21 +32,6 @@
         <DataAnnotationsValidator />
         <ValidationSummary />
 
-
-        <div class="form-group">
-            <label>
-                Supplier :
-                <InputSelect class="form-control" @bind-Value="Transh.Supplier" style="width:60%; display:inline">
-                    <option value="">&nbsp;&nbsp;---Select Supplier---&nbsp;&nbsp;</option>
-                    @foreach (var item in supplier)
-                    {
-                        <option value="@item.Supplier">[@item.Supplier]&nbsp; @item.NamaSup</option>
-                    }
-
-                </InputSelect>
-                <button class="btn btn-primary" type="button" @onclick="@(()=> SearchOpen = !SearchOpen)">Cari</button>
-            </label>
-        </div>
         <div class="form-group">
             <label>
                 Tanggal :
@@ -55,30 +40,36 @@
         </div>
         <div class="form-group">
             <label>
+                P/I Import :
+                <InputSelect class="form-control" @bind-Value="Transh.NoPrj" style="width:60%; display:inline" @oninput="OnPI">
+                    <option value="">&nbsp;&nbsp;---Select P/I---&nbsp;&nbsp;</option>
+                    
+                        @foreach (var item in banks)
+                        {
+                            <option value="@item.NoLpb">[@item.NoPrj] &nbsp; @item.NamaVendor</option>
+                        }
+                  </InputSelect>
+                @*&nbsp;@kurs*@
+            </label>
+        </div>
+        <br />
+
+        <div class="form-group">
+            <label>
+                Supplier :
+                <InputText class="form-control" @bind-Value="Transh.Supplier" disabled="disabled" />
+                @Transh.NamaSup
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label>
                 Kurs :
                 <InputNumber class="form-control" @bind-Value="Transh.Kurs" />
             </label>
         </div>
         <br />
-        <div class="form-group">
-            <label>
-                P/I Import :
-                <InputSelect class="form-control" @bind-Value="Transh.NoPrj" style="width:60%; display:inline" @oninput="OnKurs">
-                    <option value="">&nbsp;&nbsp;---Select P/I---&nbsp;&nbsp;</option>
-                    @if (listPI != null)
-                    {
-                        @foreach (var item in listPI)
-                        {
-                            <option value="@item.NoLpb">@item.NoPrj</option>
-                        }
-                    }
 
-
-                </InputSelect>
-                @*&nbsp;@kurs*@
-            </label>
-        </div>
-        <br />
         <div class="form-group">
             <label>
                 Keterangan :
@@ -233,17 +224,20 @@
 
 
 @code {
-    IrTransHView Transh = new IrTransHView() { IrTransDs = new List<IrTransDView>() };
+        IrTransHView Transh = new IrTransHView() { IrTransDs = new List<IrTransDView>() };
     private List<ApSuppl> supplier;
     private List<IcItem> srccode;
     private List<IcLokasi> lokasi;
     private List<PoTransH> banks;
-    private List<PoTransH> listPI;
+    private List<PoTransH> Listbanks;
+
+
     private IrTransDView Transd = new IrTransDView();
     private IrTransDView TransK = new IrTransDView();
 
     private string enabled { get; set; }
 
+    public PoTransH transaksi { get; set; }
     public int SupplierId { get; set; }
     public string namaItem { get; set; }
     public string namasupplier { get; set; }
@@ -262,7 +256,7 @@
         Transh.Tanggal = DateTime.Now;
 
         Loadsupplier();
-        LoadSrcCode();
+
         Loadlokasi();
     }
 
@@ -288,7 +282,7 @@
     void Loadsupplier()
     {
 
-        supplier = serviceAP.GetSupplier();
+        banks = serviceOrder.GetTransHAktif();
 
     }
 
@@ -323,12 +317,7 @@
 
 
 
-    void LoadSrcCode()
-    {
 
-        srccode = serviceIC.GetIcItem();
-
-    }
 
     void Loadlokasi()
     {
@@ -381,6 +370,7 @@
         if (!string.IsNullOrEmpty(textSearch))
         {
             Transh.Supplier = textSearch;
+
         }
 
         SearchOpen = false;
@@ -395,27 +385,28 @@
 
     }
 
-    public void OnChangeCustomer(ChangeEventArgs args)
-    {
-        //  var itemData = JsonConvert.DeserializeObject<ArCust>(args.ItemData != null ? args.ItemData.ToString() : "");
-        listPI = (from e in banks where e.Vendor == args.Value.ToString() && e.Cek == "1" select e).ToList();
 
-        
+    public void OnPI(ChangeEventArgs args)
+    {
+        transaksi = serviceOrder.GetOrderAktif(args.Value.ToString());
+
+        Transh.IrTransDs.Clear();
         if (transaksi != null)
         {
-            foreach (var item in transaksi)
+            foreach (var item in transaksi.PoTransDs)
             {
-                Transh.ApTransDs.Add(new ApTransDView()
+                Transh.IrTransDs.Add(new IrTransDView()
                 {
-                    Lpb = item.Dokumen,
-                    DueDate = item.Tanggal,
-                    Jumlah = item.Sisa,
-                    KodeTran = item.KodeTran
+                    ItemCode = item.ItemCode,
+                    NamaItem = item.NamaItem,
+                    Qty = item.Qty,
+                    Harga = item.Harga,
+                    Discount =item.Discount,
+                    Lokasi = item.Lokasi,
+                    Jumlah = item.Jumlah
 
                 });
             }
         }
-
-
     }
 }

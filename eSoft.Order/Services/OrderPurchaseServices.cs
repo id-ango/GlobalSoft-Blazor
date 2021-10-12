@@ -52,6 +52,30 @@ namespace eSoft.Order.Services
             return _context.PoTransHs.Include(p => p.PoTransDs).Where(x => x.PoTransHId == id).FirstOrDefault();
         }
 
+        public List<PoTransH> GetTransHAktif()
+        {
+            List<PoTransH> PoTrans = new List<PoTransH>();
+
+
+            try
+            {
+                PoTrans = _context.PoTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Kode == "71" && x.Cek=="1").ToList();
+                
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return PoTrans;
+           
+
+        }
+
+        public PoTransH GetOrderAktif(string customer)
+        {
+          
+            return _context.PoTransHs.Include(p => p.PoTransDs).Where(x => x.NoLpb == customer).FirstOrDefault();
+        }
 
         public List<PoTransH> GetTransH()
         {
@@ -84,7 +108,7 @@ namespace eSoft.Order.Services
         {
             List<PoTransH> PoTrans = new List<PoTransH>();
 
-            PoTrans = _context.PoTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Tanggal > DateTime.Today.AddMonths(-3) && x.Kode == "82").ToList();
+            PoTrans = _context.PoTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Tanggal > DateTime.Today.AddMonths(-3) && x.Kode == "71").ToList();
 
             return PoTrans;
 
