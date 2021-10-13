@@ -381,6 +381,16 @@ namespace eSoft.Hutang.Services
 
         }
 
+        public bool CekBeli(string noLpb)
+        {
+            var cekFirst = _context.ApHutangs.Where(x => x.Dokumen == noLpb && x.Bayar == 0).FirstOrDefault();
+
+            if (cekFirst != null)
+                return true;
+
+            return false;
+        }
+
         public List<ApTransD> GetTransD()
         {
             return  _context.ApTransDs.ToList();

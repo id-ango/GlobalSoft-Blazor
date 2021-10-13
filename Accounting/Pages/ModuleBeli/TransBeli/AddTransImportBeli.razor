@@ -188,10 +188,6 @@
 
 </div>
 
-@if (IsVisible)
-{
-    <ModalBeliComponent SrcCode="srccode" OnClose="OnVisibleClose" OnDetail="OnDetailTrans" isEdit="IsEdit" DetailRubah="Transd" Location="lokasi"></ModalBeliComponent>
-}
 
 
 @if (DialogOpen)
@@ -199,30 +195,7 @@
     <ModalDialogComponent Title="Alert" Text="Kode Bank Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
 }
 
-@if (SearchOpen)
-{
 
-    <ModalSearchComponent OnClose="OnSearchClose" Items="supplier" Context="cbBank" GetFilterableText="@(item =>$"{item.Supplier} {item.NamaSup} {item.Alamat} {item.Kota}")">
-        <TableHeader>
-            <th scope="col">Supplier</th>
-            <th scope="col">Name</th>
-            <th scope="col">Alamat</th>
-
-            <th></th>
-        </TableHeader>
-        <RowTemplate>
-            <td>@cbBank.Supplier</td>
-            <td>@cbBank.NamaSup</td>
-            <td>@cbBank.Alamat</td>
-            <td>
-                <button @onclick="() => BtnChoose(cbBank.Supplier)" class="btn btn-success">Choose</button>
-
-            </td>
-        </RowTemplate>
-    </ModalSearchComponent>
-
-
-}
 
 <style>
     label {
@@ -233,11 +206,9 @@
 
 @code {
         IrTransHView Transh = new IrTransHView() { IrTransDs = new List<IrTransDView>() };
-    private List<ApSuppl> supplier;
-    private List<IcItem> srccode;
+   
     private List<IcLokasi> lokasi;
     private List<PoTransH> banks;
-    private List<PoTransH> Listbanks;
 
 
     private IrTransDView Transd = new IrTransDView();

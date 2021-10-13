@@ -24,6 +24,7 @@ namespace eSoft.Order.Services
         PoTransH AddTransH(PoTransHView trans);
         Task<bool> DelTransH(int id);
         Task<bool> EditTransH(PoTransHView trans);
-        bool SaveOrderAktif(string customer);
+        void SaveOrderAktif(string customer);
+        void  DelOrderAktif(string customer);
     }
 }

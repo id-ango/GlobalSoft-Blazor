@@ -70,13 +70,22 @@ namespace eSoft.Order.Services
            
 
         }
-        public bool SaveOrderAktif(string customer)
+        public void SaveOrderAktif(string customer)
         {
 
              _context.PoTransHs.Include(p => p.PoTransDs).Where(x => x.NoLpb == customer).FirstOrDefault().Cek = "3";
             _context.SaveChanges();
 
-            return true;
+          //  return true;
+        }
+
+        public  void DelOrderAktif(string customer)
+        {
+
+            _context.PoTransHs.Include(p => p.PoTransDs).Where(x => x.NoLpb == customer).FirstOrDefault().Cek = "1";
+             _context.SaveChanges();
+
+            //  return true;
         }
 
         public PoTransH GetOrderAktif(string customer)

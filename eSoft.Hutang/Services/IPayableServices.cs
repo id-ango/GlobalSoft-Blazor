@@ -40,5 +40,6 @@ namespace eSoft.Hutang.Services
         Task<bool> DelTransH(int id);
         bool CekAlreadyPayment(string dokumen);
         ApHutang GetHutang(string bukti);
+        bool CekBeli(string noLpb);
     }
 }
