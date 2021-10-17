@@ -59,8 +59,8 @@ namespace eSoft.Pembelian.Services
             List<IrTransH> IrTrans = new List<IrTransH>();
 
 
-            try
-            {
+          //  try
+          //  {
                 IrTrans = _context.IrTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Kode == "82" || x.Kode == "83").ToList();
 
                 foreach (var item in IrTrans)
@@ -73,11 +73,11 @@ namespace eSoft.Pembelian.Services
                     
                 }
 
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
             return IrTrans;
             // return  _context.CbTransHs.Include(p =>p.CbTransDs).OrderByDescending(x =>x.Tanggal).ToListAsync();
             //  return await _context.ApTransHs.OrderByDescending(x => x.Tanggal).ToListAsync();

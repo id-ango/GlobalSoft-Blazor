@@ -547,12 +547,12 @@ namespace eSoft.Persediaan.Services
         }
 
 
-        public async Task<List<IcTransH>> GetTransH()
+        public List<IcTransH> GetTransH()
         {
             List<IcTransH> IcTrans = new List<IcTransH>();
             try
             {
-                IcTrans = await _context.IcTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Kode == "90").ToListAsync();
+                IcTrans =  _context.IcTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Kode == "90").ToList();
 
             }
             catch (Exception)
@@ -566,11 +566,11 @@ namespace eSoft.Persediaan.Services
 
         }
 
-        public async Task<List<IcTransH>> Get3TransH()
+        public  List<IcTransH> Get3TransH()
         {
             List<IcTransH> IcTrans = new List<IcTransH>();
 
-            IcTrans = await _context.IcTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Tanggal > DateTime.Today.AddMonths(-3) && x.Kode == "90").ToListAsync();
+            IcTrans = _context.IcTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Tanggal > DateTime.Today.AddMonths(-3) && x.Kode == "90").ToList();
 
 
             return IcTrans;
@@ -580,12 +580,12 @@ namespace eSoft.Persediaan.Services
 
         }
 
-        public async Task<List<IcTransD>> GetTransD()
+        public List<IcTransD> GetTransD()
         {
-            return await _context.IcTransDs.ToListAsync();
+            return _context.IcTransDs.ToList();
         }
 
-        public async Task<bool> AddTransH(IcTransHView trans)
+        public IcTransH AddTransH(IcTransHView trans)
         {
             //string test = codeview.SrcCode.ToUpper();
             //var cekFirst = _context.CbSrcCodes.Where(x => x.SrcCode == test).ToList();
@@ -663,11 +663,18 @@ namespace eSoft.Persediaan.Services
             }
 
             _context.IcTransHs.Add(transH);
+            _context.SaveChanges();
+            var TempTrans = GetTransDoc(transH.NoFaktur);
 
-            await _context.SaveChangesAsync();
-            return true;
+            return TempTrans;
+          //  return true;
 
 
+        }
+
+        public IcTransH GetTransDoc(string docno)
+        {
+            return _context.IcTransHs.Include(p => p.IcTransDs).Where(x => x.NoFaktur == docno).FirstOrDefault();
         }
 
         public async Task<bool> EditTransH(IcTransHView trans)

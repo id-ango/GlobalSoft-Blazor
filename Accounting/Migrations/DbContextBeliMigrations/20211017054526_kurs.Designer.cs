@@ -10,8 +10,8 @@ using eSoft.Pembelian.Data;
 namespace Accounting.Migrations.DbContextBeliMigrations
 {
     [DbContext(typeof(DbContextBeli))]
-    [Migration("20211011084621_kursbelitambah")]
-    partial class kursbelitambah
+    [Migration("20211017054526_kurs")]
+    partial class kurs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

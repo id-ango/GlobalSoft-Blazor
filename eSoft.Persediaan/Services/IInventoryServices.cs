@@ -46,10 +46,10 @@ namespace eSoft.Persediaan.Services
         Task<bool> EditIcAcct(IcAcctView codeview);
         Task<bool> DelIcAcct(int codeview);
         IcTransH GetIcTrans(int id);
-        Task<List<IcTransH>> GetTransH();
-        Task<List<IcTransH>> Get3TransH();
-        Task<List<IcTransD>> GetTransD();
-        Task<bool> AddTransH(IcTransHView codeview);
+        List<IcTransH> GetTransH();
+        List<IcTransH> Get3TransH();
+        List<IcTransD> GetTransD();
+        IcTransH AddTransH(IcTransHView codeview);
         Task<bool> EditTransH(IcTransHView codeview);
         Task<bool> DelTransH(int codeview);
     }

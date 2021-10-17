@@ -2,7 +2,7 @@
 
 namespace Accounting.Migrations.DbContextBeliMigrations
 {
-    public partial class kursbelitambah : Migration
+    public partial class kurs : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
