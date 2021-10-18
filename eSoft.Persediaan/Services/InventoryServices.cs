@@ -691,7 +691,7 @@ namespace eSoft.Persediaan.Services
                     IcItem cekItem = _context.IcItems.Where(x => x.ItemCode == item.ItemCode).FirstOrDefault();
                     if (cekItem != null)
                     {
-                        IcAltItem itemlokasi1 = _context.IcAltItems.Where(x => x.ItemCode == item.ItemCode && x.Lokasi == item.Lokasi).FirstOrDefault();
+                        IcAltItem itemlokasi1 = _context.IcAltItems.Where(x => x.ItemCode == item.ItemCode && x.Lokasi == ExistingTrans.Lokasi).FirstOrDefault();
                         if (itemlokasi1 != null)
                         {
                             itemlokasi1.Qty += item.QtyShp;
@@ -699,7 +699,7 @@ namespace eSoft.Persediaan.Services
                         }
 
 
-                        IcAltItem itemlokasi2 = _context.IcAltItems.Where(x => x.ItemCode == item.ItemCode && x.Lokasi == item.Lokasi2).FirstOrDefault();
+                        IcAltItem itemlokasi2 = _context.IcAltItems.Where(x => x.ItemCode == item.ItemCode && x.Lokasi == ExistingTrans.Lokasi2).FirstOrDefault();
                         if (itemlokasi2 != null)
                         {
                             itemlokasi2.Qty -= item.QtyShp;

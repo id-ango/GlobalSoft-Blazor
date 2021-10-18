@@ -1,4 +1,4 @@
-﻿@page "/ModulePersediaan/AddTransMutasi"
+﻿@page "/ModulePersediaan/EditTransMutasi/{Id:int}"
 @using eSoft.Persediaan.Model
 @using eSoft.Persediaan.View
 @using eSoft.Persediaan.Services
@@ -8,8 +8,10 @@
 @inject NavigationManager navigationmanager
 
 
+
+
 <div class="top-row px-4 " style="z-index:5">
-    <h3>Add Transaksi Adjustment</h3>
+    <h3>Edit Transaksi Mutasi</h3>
 </div>
 
 
@@ -18,6 +20,14 @@
         <DataAnnotationsValidator />
         <ValidationSummary />
 
+
+        <div class="form-group">
+            <label>
+                No. Bukti :
+                <InputText class="form-control" @bind-Value="Transh.NoFaktur" style="text-transform:uppercase" disabled="disabled" />
+            </label>
+        </div>
+        <br />
         <div class="form-group">
             <label>
                 Tanggal :
@@ -61,33 +71,37 @@
 
             </label>
         </div>
-        <br/>
+        <br />
+
+        <br />
         <div class="container">
             <button class="btn-success" type="submit">Simpan</button>
             <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModulePersediaan/TransMutasi", false))">Batal</button>
         </div>
+
         <br />
         <br />
 
     </EditForm>
 </div>
-
 <div class="container">
     <DetailGridComponent Items="Transh.IcTransDs" Context="transaksi">
         <TableHeader>
             <th scope="col">Item</th>
             <th scope="col">Nama</th>
-            <th scope="col">Satuan</th>  
+            <th scope="col">Satuan</th>
+
             <th scope="col">Qty</th>
-       
+
             <th></th>
         </TableHeader>
         <RowTemplate>
             <td>@transaksi.ItemCode</td>
             <td>@transaksi.NamaItem</td>
             <td>@transaksi.Satuan</td>
+
             <td>@transaksi.QtyShp.ToString("N")</td>
-         
+
 
             <td>
                 <button @onclick="(() => Rubah(transaksi))" class="btn btn-success">
@@ -109,6 +123,7 @@
 
 @if (IsVisible)
 {
+   
     <ModalMutasiComponent SrcCode="srccode" OnClose="OnVisibleClose" OnDetail="OnDetailTrans" isEdit="IsEdit" DetailRubah="Transd"></ModalMutasiComponent>
 }
 
@@ -117,32 +132,6 @@
 {
     <ModalDialogComponent Title="Alert" Text="Transaksi Sudah Ada" TombolSave="false" OnClose="OnDialogClose"></ModalDialogComponent>
 }
-@*@if (SearchOpen)
-    {
-
-        <ModalSearchComponent OnClose="OnSearchClose" Items="banks" Context="cbBank" GetFilterableText="@(item =>$"{item.Supplier} {item.NamaSup} {item.Alamat} ")">
-            <TableHeader>
-                <th scope="col">Supplier</th>
-                <th scope="col">Nama</th>
-                <th scope="col">Alamat</th>
-                <th scope="col">Telpon</th>
-                <th></th>
-            </TableHeader>
-            <RowTemplate>
-                <td>@cbBank.Supplier</td>
-                <td>@cbBank.NamaSup</td>
-                <td>@cbBank.Alamat</td>
-                <td>@cbBank.Telpon</td>
-                <td>
-                    <button @onclick="() => BtnChoose(cbBank.Supplier)" class="btn btn-success">Choose</button>
-
-                </td>
-            </RowTemplate>
-        </ModalSearchComponent>
-
-
-    }*@
-
 
 <style>
     label {
@@ -152,12 +141,17 @@
 
 
 @code {
-    IcTransHView Transh = new IcTransHView() { IcTransDs = new List<IcTransDView>() };
 
+    [Parameter]
+    public int Id { get; set; }
+
+    IcTransHView Transh = new IcTransHView() { IcTransDs = new List<IcTransDView>() };
+    private IcTransH TransAll = new IcTransH() { IcTransDs = new List<IcTransD>() };
     private List<IcItem> srccode;
     private List<IcLokasi> banks;
     private IcTransDView Transd = new IcTransDView();
     private IcTransDView TransK = new IcTransDView();
+
 
     public string kurs { get; set; } = "";
 
@@ -167,26 +161,26 @@
     public bool IsKurs { get; set; }
     public bool IsEdit { get; set; }
     public bool SearchOpen { get; set; }
- 
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        Transh.Tanggal = DateTime.Now;
-
+        // Transh.Tanggal = DateTime.Now;
         LoadBank();
         LoadSrcCode();
+        LoadTrans();
     }
+
+    #region ondialogbutton
 
     private void OnVisibleClose()
     {
 
         IsVisible = false;
-
+        IsKurs = false;
         StateHasChanged();
 
     }
-
 
     private void OnDialogClose(bool accepted)
     {
@@ -196,20 +190,20 @@
 
     }
 
+    #endregion
 
 
     private void HandleValidSubmit()
     {
 
-        var newEdit = service.AddTransH(Transh);
+        var newEdit = service.EditTransH(Transh);
         if (newEdit != null)
         {
-            var id = newEdit.IcTransHId.ToString().Trim();
-            //  navigationmanager.NavigateTo("/PrintBuktiBayar/{id", false);
+            //  var id = newEdit.IcTransHId.ToString().Trim();
+            var id = Transh.IcTransHId.ToString().Trim();
             navigationmanager.NavigateTo("/ModulePersediaan/TransMutasi", false);
             //  navigationmanager.NavigateTo($"/PrintBuktiBayar/{id}");
         }
-
 
     }
 
@@ -230,12 +224,30 @@
         StateHasChanged();
     }
 
+    private void OnAddLine()
+    {
+        if (!string.IsNullOrEmpty(kurs))
+        {
+            this.IsVisible = false;
+            this.IsKurs = true;
+        }
+        else
+        {
+            this.IsVisible = true;
+            this.IsKurs = false;
+        }
+
+        StateHasChanged();
+
+
+    }
+
+    #region loadall
 
     void LoadBank()
     {
 
         banks = service.GetIcLokasi();
-
     }
 
     void LoadSrcCode()
@@ -245,13 +257,42 @@
 
     }
 
+    void LoadTrans()
+    {
+        TransAll = service.GetIcTrans(Id);
+        Transh.IcTransHId = Id;
+        Transh.NoFaktur = TransAll.NoFaktur;
+        Transh.Tanggal = TransAll.Tanggal;
+        Transh.Lokasi = TransAll.Lokasi;
+        Transh.Lokasi2 = TransAll.Lokasi2;
 
+        //   Transh.Supplier = TransAll.Supplier;
+
+        Transh.Keterangan = TransAll.Keterangan;
+        foreach (var item in TransAll.IcTransDs)
+        {
+            Transh.IcTransDs.Add(new IcTransDView
+            {
+                ItemCode = item.ItemCode,
+                NamaItem = item.NamaItem,
+                Satuan = item.Satuan,           
+                QtyShp = item.QtyShp
+               
+            });
+        }
+    }
+
+
+    #endregion
+
+    #region button detail
     private void Rubah(IcTransDView transd)
     {
         Transd = new IcTransDView();
         Transd = transd;
         IsEdit = true;
         OnAddLine();
+
 
     }
 
@@ -261,29 +302,19 @@
         Transh.IcTransDs.Remove(transd);
         //ShowOnClick();
     }
-
-    private void OnAddLine()
-    {
-
-        this.IsVisible = true;
+    #endregion
 
 
-        StateHasChanged();
+    //private void BtnChoose(string textSearch)
+    //{
+    //    if (!string.IsNullOrEmpty(textSearch))
+    //    {
+    //        Transh.Supplier = textSearch;
+    //    }
 
-        //IsEdit = false;
-        //ShowOnClick();
-    }
-
-    private void BtnChoose(string textSearch)
-    {
-        if (!string.IsNullOrEmpty(textSearch))
-        {
-            Transh.Lokasi = textSearch;
-        }
-
-        SearchOpen = false;
-        StateHasChanged();
-    }
+    //    SearchOpen = false;
+    //    StateHasChanged();
+    //}
 
     private void OnSearchClose(bool accepted)
     {
@@ -292,5 +323,7 @@
         StateHasChanged();
 
     }
+
+
 
 }
