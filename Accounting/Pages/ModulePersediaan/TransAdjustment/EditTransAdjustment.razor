@@ -164,11 +164,11 @@
     #endregion
 
 
-    private void HandleValidSubmit()
+    private async Task HandleValidSubmit()
     {
 
-        var newEdit = service.EditTransH(Transh);
-        if (newEdit != null)
+        var newEdit = await service.EditTransH(Transh);
+        if (newEdit)
         {
             //  var id = newEdit.IcTransHId.ToString().Trim();
             var id = Transh.IcTransHId.ToString().Trim();
