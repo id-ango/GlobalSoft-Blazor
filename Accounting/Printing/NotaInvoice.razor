@@ -1,0 +1,190 @@
+﻿@layout PrintLayout
+
+@page "/ModulePrinting/PrintNotaInvoice"
+@using eSoft.Penjualan.Model
+@using eSoft.Penjualan.View
+@using eSoft.Piutang.Model
+@using eSoft.Persediaan.Model
+@using eSoft.Fungsi.Function
+@using eSoft.Penjualan.Services
+
+@inject ISalesServices service
+@inject NavigationManager navigationmanager
+@*<div class="dontprint" style="display:none inline">
+        <br />
+        &emsp;<NavLink href="/ModuleJual/TransJual" class="btn btn-primary btn-lg">&nbsp;Back&nbsp;</NavLink>&emsp;
+        <NavLink class="btn btn-success btn-lg" onclick="window.print()">&nbsp; Cetak &nbsp;</NavLink>
+        &emsp;<NavLink @onclick="() => OpenPrint(Id)" class="btn btn-primary btn-lg">&nbsp;Surat Jalan&nbsp;</NavLink>&emsp;
+    </div>*@
+
+<body>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+       
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td width="70%">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td>
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:15px;">CV BMA TEKNIK</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;">Pucang Sewu VII No. 1B, Surabaya</td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                @*<tr>
+                                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:15px;">Service Provider </td>
+                                </tr>*@
+                                @*<tr>
+                                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;">No. Nota  : PJL-10321-00032</td>
+                                </tr>*@
+                            <tr>
+                                <td>
+                                    <table width="80%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:12px;">AHMAD MUKIT, BPK/PB SINDON JAYA</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:12px;">TRIMULYA RT 01 RW 06 DESA TRIMULYA KEC, DEMAK</td>
+                                        </tr>
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                
+                            </tr>
+                                
+                                
+                                @*<tr>
+                                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;">BBPS Biller Id: UGVCL0000GUJ01</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;">BBPS Transaction Id: PT01GYWT4625</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;">Payment Channel: androidapp 8.14.55</td>
+                                </tr>*@
+                                <tr>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td width="30%" valign="top" >
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" align="right">
+                    
+                    <tr>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" align="left">Tanggal.&nbsp;</td>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" align="right">09-10-21</td>
+                    </tr>
+                    <tr>
+                        
+                    </tr>
+                    <tr>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" align="left">Invoice No.</td>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" align="right">7405379159</td>
+                    </tr>
+                    <tr>
+                        
+                    </tr>
+                    @*<tr>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" align="right">demo@gmail.com</td>
+                    </tr>*@
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td  colspan="2" style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:15px;" align="center">
+                INVOICE
+            </td>
+           
+        </tr>
+        <tr>
+            <td colspan="2">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-left:1px solid #333; border-right:1px solid #333;" width="34%" height="32" align="center">Description</td>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;" width="26%" align="center">Bill Amount</td>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;" width="25%" align="center">Convenience Fee  (Inclusive of 18% GST)</td>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333; border-right:1px solid #333;" width="15%" align="center">Total Amount</td>
+                    </tr>
+                    <tr>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-left:1px solid #333; border-right:1px solid #333;" height="32" align="center">Bill Payment for Uttar Gujarat Vij Company Limited  75203207160</td>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-right:1px solid #333;" align="center">3770</td>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-right:1px solid #333;" align="center">0</td>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-right:1px solid #333; border-right:1px solid #333;" align="center">3770</td>
+                    </tr>
+                    <tr>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-left:1px solid #333; border-right:1px solid #333;" height="32" align="center"></td>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-right:1px solid #333;" align="center"></td>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-right:1px solid #333;" align="center"></td>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-right:1px solid #333; border-right:1px solid #333;" align="center"></td>
+                    </tr>
+                    <tr>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-left:1px solid #333; border-right:1px solid #333;" height="32" align="center"></td>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-right:1px solid #333;" align="center"></td>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-right:1px solid #333;" align="center"></td>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-right:1px solid #333; border-right:1px solid #333;" align="center"></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" colspan="2">Total Amount in Words: Three Thousand Seven Hundred Seventy Rupees Only</td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px;" colspan="2">Please Note:</td>
+        </tr>
+        <tr>
+            <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" colspan="2">Dear Consumer, the bill payment will reflect in next 48 hours or in the next billing cycle, at your service provider&rsquo;s end. Please  contact paytm customer support for any queries regarding this order.</td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        @*<tr>
+            <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px;" colspan="2">DECLARATION:</td>
+        </tr>
+        <tr>
+            <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" colspan="2">This is not an invoice but only a confirmation of the receipt of the amount paid against for the service as described above.  Subject to terms and conditions mentioned at paytm.com</td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" colspan="2" align="center">(This is computer generated receipt and does not require physical signature.)  <br />B-121 Sector 5, Noida, Uttar Pradesh 201301,<br />  Service tax registration number: AAACO4007ASD002<br />  Paytm Order ID :12252016430</td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="2">&nbsp;</td>
+        </tr>*@
+    </table>
+</body>
+
+
+
+@code {
+
+}

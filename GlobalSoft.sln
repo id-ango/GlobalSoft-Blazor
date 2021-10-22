@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSoft.Penjualan", "eSoft.Pe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSoft.Order", "eSoft.Order\eSoft.Order.csproj", "{48E20EEA-DDB9-4922-BF22-02CD3D275BFF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eSoft.LatihanHTML", "eSoft.LatihanHTML\eSoft.LatihanHTML.csproj", "{E898E5AF-DA59-4756-9F93-9AFE53F08C00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSoft.LatihanHTML", "eSoft.LatihanHTML\eSoft.LatihanHTML.csproj", "{E898E5AF-DA59-4756-9F93-9AFE53F08C00}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
