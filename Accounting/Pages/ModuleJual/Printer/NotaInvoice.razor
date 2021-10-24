@@ -138,57 +138,107 @@
                     <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333;   border-right:1px solid #333;" align="center"></td>
                 </tr>
                 <tr>
-                    <td colspan="3" rowspan="4" valign="top">@TransAll.Keterangan</td>
-                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right">Sub Total</td>
-                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right">@TransAll.TtlJumlah.ToString("N")</td>
+                    <td colspan="3"  valign="top">
+                        <p>@TransAll.Keterangan</p>  
+                        <p>
+                            <table width="100%">
+                                <tr>
+                                    <td width="40%">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="4">
+                                            <tr>
+                                                <td style="font-family: Verdana, Geneva, sans-serif; font-weight: 300; font-size: 8px;  " align="left">
+                                                    <span>PERHATIAN:</span><br />
+                                                    <span>
+                                                        Barang-barang yang sudah dibeli tidak bisa dikembalikan kecuali ada perjanjian
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td width="40%">
+                                        <table width="100%" border="1" cellspacing="0" cellpadding="4" style="border-color:red">
+                                            <tr>
+                                                <td style="font-family: Verdana, Geneva, sans-serif; font-weight: 300; font-size: 14px; color:red  " align="left">
+                                                    <span>CV BMA TEKNIK</span><br />
+                                                    <span>
+                                                        BCA. 4688-92-2001
+                                                    </span> <br/>
+                                                    <span>
+                                                        BRI. 1156-01-000-469-301
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td width="20%"></td>
+                                </tr>
+                            </table>
+                            
+                        </p>
+                    </td>
+                    <td colspan="2" valign="top">
+                        <table width="100%">
+                            <tr>
+                                <td width="40%" style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right">Sub Total</td>
+                                <td width="60%" style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right">@TransAll.TtlJumlah.ToString("N")</td>
+                            </tr>
+                            @if (TransAll.Ppn != 0)
+                            {
+                                <tr>
+
+                                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right">PPn</td>
+                                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right">@TransAll.Ppn.ToString("N")</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr>
+
+                                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right"></td>
+                                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right"></td>
+                                </tr>
+                            }
+                            <tr>
+
+                                <td style="font-family: Verdana, Geneva, sans-serif; font-weight: 300; font-size: 11px; border-bottom: 1px solid #333; " align="right">O. Kirim</td>
+                                <td style="font-family: Verdana, Geneva, sans-serif; font-weight: 300; font-size: 11px; border-bottom: 1px solid #333; " align="right">@TransAll.Ongkos.ToString("N")</td>
+                            </tr>
+                            <tr>
+
+                                <td style="font-family: Verdana, Geneva, sans-serif; font-weight: 300; font-size: 11px;  " align="right">Total</td>
+                                <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right">@TransAll.Jumlah.ToString("N")</td>
+                            </tr>
+                        </table>
+                    </td>
+                   
                 </tr>
-                @if (TransAll.Ppn != 0)
-                {
-                    <tr>
+              
 
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right">PPn</td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right">@TransAll.Ppn.ToString("N")</td>
-                    </tr>
-                }
-                else
-                {
-                    <tr>
-
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right"></td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right"></td>
-                    </tr>
-                }
-
-                <tr>
-
-                    <td style="font-family: Verdana, Geneva, sans-serif; font-weight: 300; font-size: 11px; border-bottom: 1px solid #333; " align="right">O. Kirim</td>
-                    <td style="font-family: Verdana, Geneva, sans-serif; font-weight: 300; font-size: 11px; border-bottom: 1px solid #333; " align="right">@TransAll.Ongkos.ToString("N")</td>
-                </tr>
-                <tr>
-
-                    <td style="font-family: Verdana, Geneva, sans-serif; font-weight: 300; font-size: 11px;  " align="right">Total</td>
-                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right">@TransAll.Jumlah.ToString("N")</td>
-                </tr>
+           
             </table>
         </td>
     </tr>
     <tr>
         <td colspan="2">&nbsp;</td>
     </tr>
-    <tr>
-        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" colspan="2">Total Amount in Words: Three Thousand Seven Hundred Seventy Rupees Only</td>
-    </tr>
-    <tr>
-        <td colspan="2">&nbsp;</td>
-    </tr>
-    <tr>
+    
+   
+    @*<tr>
         <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px;" colspan="2">Please Note:</td>
     </tr>
     <tr>
         <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" colspan="2">Dear Consumer, the bill payment will reflect in next 48 hours or in the next billing cycle, at your service provider&rsquo;s end. Please  contact paytm customer support for any queries regarding this order.</td>
-    </tr>
+    </tr>*@
     <tr>
-        <td colspan="3">&nbsp;</td>
+        <td colspan="2">&nbsp;</td>
     </tr>
     @*<tr>
             <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px;" colspan="2">DECLARATION:</td>

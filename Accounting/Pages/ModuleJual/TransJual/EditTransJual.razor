@@ -299,6 +299,7 @@
             var id = Transh.OeTransHId.ToString().Trim();
             //     navigationmanager.NavigateTo($"/PrintBuktiBayar/{id}");
             navigationmanager.NavigateTo("/ModuleJual/TransJual", false);
+          //  navigationmanager.NavigateTo($"/ModulePrinting/PrintSuratJalan/{id}");
         }
         else
         {
@@ -457,7 +458,7 @@
 
     }
 
- private void OnSearchClose(bool accepted)
+    private void OnSearchClose(bool accepted)
     {
 
         SearchOpen = false;

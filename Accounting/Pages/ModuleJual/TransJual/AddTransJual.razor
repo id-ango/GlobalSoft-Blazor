@@ -276,8 +276,9 @@
         {
             var id = newEdit.OeTransHId.ToString().Trim();
             //  navigationmanager.NavigateTo("/PrintBuktiBayar/{id", false);
-            navigationmanager.NavigateTo("/ModuleJual/TransJual", false);
+          //  navigationmanager.NavigateTo("/ModuleJual/TransJual", false);
             //  navigationmanager.NavigateTo($"/PrintBuktiBayar/{id}");
+            navigationmanager.NavigateTo($"/ModulePrinting/PrintSuratJalan/{id}");
         }
 
 
@@ -373,14 +374,14 @@
     {
 
         var itemcode = (from e in supplier where e.Customer == args.Value.ToString() select e).FirstOrDefault();
-       
+
         Transh.AlamatKirim = (string.IsNullOrEmpty(serviceAR.GetCustomerCode(itemcode.Customer).AlmtKrm) ?
                                      "" : serviceAR.GetCustomerCode(itemcode.Customer).AlmtKrm)
                               + "\r\n" +
                               (string.IsNullOrEmpty(serviceAR.GetCustomerCode(itemcode.Customer).KotaKrm) ?
                                      "" : serviceAR.GetCustomerCode(itemcode.Customer).KotaKrm);
 
-       Transh.NamaCust = serviceAR.GetCustomerCode(itemcode.Customer).NamaLengkap;
+        Transh.NamaCust = serviceAR.GetCustomerCode(itemcode.Customer).NamaLengkap;
 
     }
 

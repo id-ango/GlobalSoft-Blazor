@@ -59,6 +59,7 @@
     <Folder Include="Pages\ModuleBank\SrcCode\" />
     <Folder Include="Pages\ModuleOrder\ReturOrderBeli\" />
     <Folder Include="Pages\ModuleLedger\Account\" />
+    <Folder Include="Printing\" />
   </ItemGroup>
 
 </Project>
