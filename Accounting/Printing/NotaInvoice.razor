@@ -1,156 +1,196 @@
 ﻿@layout PrintLayout
 
-@page "/ModulePrinting/PrintNotaInvoice"
+@page "/ModulePrinting/PrintNotaInvoice/{Id:int}"
 @using eSoft.Penjualan.Model
 @using eSoft.Penjualan.View
 @using eSoft.Piutang.Model
 @using eSoft.Persediaan.Model
 @using eSoft.Fungsi.Function
 @using eSoft.Penjualan.Services
+@using eSoft.Piutang.Services
 
 @inject ISalesServices service
+@inject IReceivableServices serviceAR
 @inject NavigationManager navigationmanager
-@*<div class="dontprint" style="display:none inline">
-        <br />
-        &emsp;<NavLink href="/ModuleJual/TransJual" class="btn btn-primary btn-lg">&nbsp;Back&nbsp;</NavLink>&emsp;
-        <NavLink class="btn btn-success btn-lg" onclick="window.print()">&nbsp; Cetak &nbsp;</NavLink>
-        &emsp;<NavLink @onclick="() => OpenPrint(Id)" class="btn btn-primary btn-lg">&nbsp;Surat Jalan&nbsp;</NavLink>&emsp;
-    </div>*@
 
-<body>
-   
-    
-       
-    <table width="100%" border="0" cellspacing="0" cellpadding="0">
 
-        <tr>
-            <td colspan="2">&nbsp;</td>
-        </tr>
 
-        <tr>
-            <td width="70%">
-                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+<div class="dontprint" style="display:none inline">
+    <br />
+    &emsp;<NavLink href="/ModuleJual/TransJual" class="btn btn-primary btn-lg">&nbsp;Back&nbsp;</NavLink>&emsp;
+    <NavLink class="btn btn-success btn-lg" onclick="window.print()">&nbsp; Cetak &nbsp;</NavLink>
+    &emsp;<NavLink @onclick="() => OpenPrint(Id)" class="btn btn-primary btn-lg">&nbsp;Surat Jalan&nbsp;</NavLink>&emsp;
+</div>
+
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+    <tr>
+        <td colspan="2">&nbsp;</td>
+    </tr>
+
+    <tr>
+        <td width="70%">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:14px;">@Perusahaan</td>
+                            </tr>
+                            <tr>
+                                <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:12px;">@Alamat</td>
+                            </tr>
+                            <tr>
+                                <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:6px;">&nbsp;</td>
+                            </tr>
+
+
+                            <tr>
+                                <td>
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;">@TransAll.NamaCust</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;">@($"{@customers.Alamat} \n {customers.Kota}") </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:6px;">&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                </td>
+
+                            </tr>
+
+                         
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+
+        <td width="30%" valign="top">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" align="right">
+
+                <tr>
+                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" align="left">Tanggal.&nbsp;</td>
+                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" align="right">@TransAll.Tanggal.ToShortDateString()</td>
+                </tr>
+              
+                <tr>
+                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" align="left"> No Nota.</td>
+                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" align="right">@TransAll.NoLpb</td>
+                </tr>
+               
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:15px;" align="center">
+            @Title
+        </td>
+    </tr>
+
+
+    <tr>
+        <td colspan="3">
+            <table width="100%" border="0" cellspacing="0" cellpadding="4">
+                <tr>
+                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-left:1px solid #333; border-right:1px solid #333;" width="50%" height="32" align="center">Keterangan</td>
+                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;" width="10%" align="center">Quantity</td>
+                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;" width="12%" align="center">Harga</td>
+                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;" width="10%" align="center">Diskon</td>
+                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;" width="18%" align="center">Jumlah</td>
+                </tr>
+                @foreach (var item in TransAll.OeTransDs)
+                {
+
                     <tr>
-                        <td>
-                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                <tr>
-                                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:14px;">CV BMA TEKNIK</td>
-                                </tr>
-                                <tr>
-                                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:12px;">Pucang Sewu VII No. 1B, Surabaya</td>
-                                </tr>
-                                <tr>
-                                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:6px;">&nbsp;</td>
-                                </tr>
-
-
-                                <tr>
-                                    <td>
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                            <tr>
-                                                <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;">AHMAD MUKIT, BPK/PB SINDON JAYA</td>
-                                            </tr>
-                                            <tr>
-                                                <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;">TRIMULYA RT 01 RW 06 DESA TRIMULYA KEC, DEMAK</td>
-                                            </tr>
-                                            <tr>
-                                                <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:6px;">&nbsp;</td>
-                                            </tr>
-                                        </table>
-                                    </td>
-
-                                </tr>
-
-                                @*<tr>
-                                    <td>&nbsp;</td>
-                                </tr>*@
-                            </table>
-                        </td>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  border-left:1px solid #333; " align="left">@item.NamaItem</td>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right">@($"{@item.Qty.ToString("F0")} {@item.Satuan}") </td>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right">@item.Harga.ToString("N")</td>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right">@item.Discount.ToString("N")</td>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;   border-right:1px solid #333;" align="right">@item.Jumlah.ToString("N")</td>
                     </tr>
-                </table>
-            </td>
+                }
 
-            <td width="30%" valign="top">
-                <table width="100%" border="0" cellspacing="0" cellpadding="0" align="right">
+                @if (TransAll.OeTransDs.Count < 6)
+                {
+                    for (var x = TransAll.OeTransDs.Count; x < 6; x++)
+                    {
+                        <tr>
+                            <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-left:1px solid #333; " align="center"></td>
+                            <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; " align="center"></td>
+                            <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; " align="center"></td>
+                            <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" align="center"></td>
+                            <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;  border-right:1px solid #333;" align="center"></td>
+                        </tr>
+                    }
+                }
 
+                <tr>
+                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333;  border-left:1px solid #333; " align="center"></td>
+                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333;  " align="center"></td>
+                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333;  " align="center"></td>
+                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; " align="center"></td>
+                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333;   border-right:1px solid #333;" align="center"></td>
+                </tr>
+                <tr>
+                    <td colspan="3" rowspan="4" valign="top">@TransAll.Keterangan</td>
+                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right">Sub Total</td>
+                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right">@TransAll.TtlJumlah.ToString("N")</td>
+                </tr>
+                @if (TransAll.Ppn != 0)
+                {
                     <tr>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" align="left">Tanggal.&nbsp;</td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" align="right">09-10-21</td>
-                    </tr>
-                    @*<tr>
-                    </tr>*@
-                    <tr>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" align="left">Invoice No.</td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" align="right">PJL-10321-00106</td>
-                    </tr>
-                    @*<tr>
-                    </tr>*@
-                    @*<tr>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" align="right">demo@gmail.com</td>
-                    </tr>*@
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:15px;" align="center">
-                NOTA PENJUALAN
-            </td>
-        </tr>
 
-        
-        <tr>
-            <td colspan="3">
-                <table width="100%" border="0" cellspacing="0" cellpadding="4">
-                    <tr>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-left:1px solid #333; border-right:1px solid #333;" width="50%" height="32" align="center">Keterangan</td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;" width="10%" align="center">Quantity</td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;" width="10%" align="center">Harga</td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333; border-right:1px solid #333;" width="10%" align="center">Diskon</td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333; border-right:1px solid #333;" width="20%" align="center">Jumlah</td>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right">PPn</td>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right">@TransAll.Ppn.ToString("N")</td>
                     </tr>
+                }
+                else
+                {
                     <tr>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;  border-left:1px solid #333; border-right:1px solid #333;"  align="left">MMJP120x4B VFD, 30KW, Blower 11KW</td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;  border-right:1px solid #333;" align="right">1 UNIT</td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;  border-right:1px solid #333;" align="right">125,000,000.00</td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;  border-right:1px solid #333; border-right:1px solid #333;" align="right">1,000,000.00</td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;  border-right:1px solid #333; border-right:1px solid #333;" align="right">125,000,000.00</td>
+
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right"></td>
+                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right"></td>
                     </tr>
-                    <tr>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;  border-left:1px solid #333; border-right:1px solid #333;" align="left">Ruuber for this bolt</td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;  border-right:1px solid #333;" align="right">100 PCS</td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;  border-right:1px solid #333;" align="right">250,000,000.00</td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;  border-right:1px solid #333; border-right:1px solid #333;" align="right">0</td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;  border-right:1px solid #333; border-right:1px solid #333;" align="right">1,000,000,000.00</td>
-                    </tr>
-                    <tr>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-left:1px solid #333; border-right:1px solid #333;"  align="center"></td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-right:1px solid #333;" align="center"></td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-right:1px solid #333;" align="center"></td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-right:1px solid #333; border-right:1px solid #333;" align="center"></td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; border-right:1px solid #333; border-right:1px solid #333;" align="center"></td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3">&nbsp;</td>
-        </tr>
-        <tr>
-            <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" colspan="2">Total Amount in Words: Three Thousand Seven Hundred Seventy Rupees Only</td>
-        </tr>
-        <tr>
-            <td colspan="3">&nbsp;</td>
-        </tr>
-        <tr>
-            <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px;" colspan="2">Please Note:</td>
-        </tr>
-        <tr>
-            <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" colspan="2">Dear Consumer, the bill payment will reflect in next 48 hours or in the next billing cycle, at your service provider&rsquo;s end. Please  contact paytm customer support for any queries regarding this order.</td>
-        </tr>
-        <tr>
-            <td colspan="3">&nbsp;</td>
-        </tr>
-        @*<tr>
+                }
+
+                <tr>
+
+                    <td style="font-family: Verdana, Geneva, sans-serif; font-weight: 300; font-size: 11px; border-bottom: 1px solid #333; " align="right">O. Kirim</td>
+                    <td style="font-family: Verdana, Geneva, sans-serif; font-weight: 300; font-size: 11px; border-bottom: 1px solid #333; " align="right">@TransAll.Ongkos.ToString("N")</td>
+                </tr>
+                <tr>
+
+                    <td style="font-family: Verdana, Geneva, sans-serif; font-weight: 300; font-size: 11px;  " align="right">Total</td>
+                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right">@TransAll.Jumlah.ToString("N")</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">&nbsp;</td>
+    </tr>
+    <tr>
+        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" colspan="2">Total Amount in Words: Three Thousand Seven Hundred Seventy Rupees Only</td>
+    </tr>
+    <tr>
+        <td colspan="2">&nbsp;</td>
+    </tr>
+    <tr>
+        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px;" colspan="2">Please Note:</td>
+    </tr>
+    <tr>
+        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" colspan="2">Dear Consumer, the bill payment will reflect in next 48 hours or in the next billing cycle, at your service provider&rsquo;s end. Please  contact paytm customer support for any queries regarding this order.</td>
+    </tr>
+    <tr>
+        <td colspan="3">&nbsp;</td>
+    </tr>
+    @*<tr>
             <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px;" colspan="2">DECLARATION:</td>
         </tr>
         <tr>
@@ -174,11 +214,65 @@
         <tr>
             <td colspan="2">&nbsp;</td>
         </tr>*@
-    </table>
-</body>
+</table>
 
 
 
-@code {
 
+@code { [Parameter] public string Title { get; set; } = "NOTA PENJUALAN";
+    [Parameter] public int Id { get; set; }
+
+    private OeTransHView Transh = new OeTransHView() { OeTransDs = new List<OeTransDView>() };
+    private OeTransH TransAll = new OeTransH() { OeTransDs = new List<OeTransD>() };
+    private ArCust customers;
+    // private List<IcItem> srccode;
+    private OeTransDView Transd = new OeTransDView();
+    private OeTransDView TransK = new OeTransDView();
+    //   private List<TransDView> TransDs = new List<TransDView>();
+    private string enabled { get; set; }
+    public string Perusahaan { get; set; }
+    public string Alamat { get; set; }
+
+    public string kurs { get; set; } = "";
+    private int noUrut { get; set; } = 1;
+
+    protected override void OnInitialized()
+    {
+        // Transh.Tanggal = DateTime.Now;
+
+        //LoadBank();
+        //LoadSrcCode();
+        LoadTrans();
+    }
+
+    //void LoadBank()
+    //{
+    //    banks = service.GetBank();
+    //}
+
+    //void LoadSrcCode()
+    //{
+    //    srccode = service.GetSrcCode();
+    //}
+
+    void LoadTrans()
+    {
+        TransAll = service.GetOeTrans(Id);
+        customers = serviceAR.GetCustomerCode(TransAll.Customer);
+
+        if (TransAll.Pajak)
+        {
+            Perusahaan = "CV BMA TEKNIK";
+            Alamat = "Pucang Sewu VII No. 1B, Surabaya";
+        } else
+        {
+            Perusahaan = " ";
+            Alamat = " ";
+        }
+    }
+
+    private void OpenPrint(int xKdBank)
+    {
+        navigationmanager.NavigateTo($"/PrintSuratJalan/{xKdBank}");
+    }
 }
