@@ -59,13 +59,39 @@ namespace eSoft.Penjualan.Services
             return transD;
         }
 
-        public List<OeTransD> Detail2(string xKdHeader, DateTime tgl1, DateTime tgl2)
+        public List<OeTrans> Detail2(string xKdHeader, DateTime tgl1, DateTime tgl2)
         {
+            List<OeTransH> transH = new List<OeTransH>();
             List<OeTransD> transD = new List<OeTransD>();
+            List<OeTrans> trans = new List<OeTrans>();
 
+            transH = _context.OeTransHs.Include(p => p.OeTransDs).Where(x => x.Tanggal >= tgl1 && x.Tanggal <= tgl2).ToList();
             transD = _context.OeTransDs.Where(x => x.ItemCode == xKdHeader).ToList();
 
-            return transD;
+            if (transH != null && transD != null)
+            {
+                trans = (from header in transH
+                            join detail in transD on header.OeTransHId equals detail.OeTransHId
+                            select new OeTrans()
+                            {
+                                ItemCode = detail.ItemCode,
+                                NamaItem = detail.NamaItem,
+                                Harga = detail.Harga,
+                                Qty = detail.Qty,
+                                Jumlah = detail.Jumlah,
+                                Lokasi = detail.Lokasi,
+                                NoLpb = header.NoLpb,
+                                Customer = header.Customer,
+                                NamaCust = header.NamaCust,
+                                Tanggal = header.Tanggal,
+                                AlamatKirim = header.AlamatKirim
+                            }).ToList();
+            }
+
+
+          
+
+            return trans;
         }
 
         #endregion
@@ -108,7 +134,7 @@ namespace eSoft.Penjualan.Services
                                OeTransHId = e.OeTransHId,
                                NoLpb = e.NoLpb,
                                Customer = e.Customer,
-                               NamaCust =e.NamaCust,
+                               NamaCust = e.NamaCust,
                                AlamatKirim = e.AlamatKirim,
                                Tanggal = e.Tanggal,
                                Keterangan = e.Keterangan,
@@ -126,7 +152,7 @@ namespace eSoft.Penjualan.Services
                                Kode = e.Kode,
                                Cek = e.Cek,
                                Pajak = e.Pajak
-                               
+
 
                            }).ToList();
 
@@ -251,7 +277,7 @@ namespace eSoft.Penjualan.Services
                         NoLpb = transH.NoLpb,
                         Tanggal = trans.Tanggal,
                         HrgCost = item.HrgCost,
-                        Cost = item.HrgCost*item.Qty,
+                        Cost = item.HrgCost * item.Qty,
                         JumDpp = mQty5
                     });
 
@@ -270,7 +296,7 @@ namespace eSoft.Penjualan.Services
                                 NamaItem = cekItem.NamaItem,
                                 Satuan = cekItem.Satuan,
                                 Lokasi = item.Lokasi,
-                                Qty = -1* item.Qty
+                                Qty = -1 * item.Qty
                             };
                             _contextIc.IcAltItems.Add(Produk);
 
@@ -332,7 +358,7 @@ namespace eSoft.Penjualan.Services
             };
             _contextAr.ArPiutngs.Add(piutang);
 
-          
+
             Customer.Piutang += transH.Jumlah;
 
             _contextAr.ArCusts.Update(Customer);
@@ -382,7 +408,7 @@ namespace eSoft.Penjualan.Services
                                         Satuan = cekItem.Satuan,
                                         Lokasi = item.Lokasi,
                                         Qty = (cKode == "95" ? -1 * item.Qty : item.Qty)
-                                        
+
                                     };
                                     _contextIc.IcAltItems.Add(Produk);
 
@@ -394,7 +420,7 @@ namespace eSoft.Penjualan.Services
                                     else
                                         cekLokasi1.Qty += item.Qty;
 
-                                  //  cekLokasi1.Qty += item.Qty;
+                                    //  cekLokasi1.Qty += item.Qty;
                                     _contextIc.IcAltItems.Update(cekLokasi1);
                                 }
                                 //   cekItem.Qty -= item.Qty;
@@ -407,16 +433,16 @@ namespace eSoft.Penjualan.Services
                                         cekItem.Qty += item.Qty;
 
 
-                                //    cekItem.Qty += item.Qty;
+                                    //    cekItem.Qty += item.Qty;
                                 }
 
                                 if (cekItem.CostMethod == (int)costMethod.Moving_Avg)  // jika moving avarage
                                 {
-                                    if(cKode == "95")
+                                    if (cKode == "95")
                                         cekItem.Cost -= item.Cost;
                                     else
                                         cekItem.Cost += item.Cost;
-                                  
+
                                 }
                                 else
                                 {
@@ -663,7 +689,7 @@ namespace eSoft.Penjualan.Services
                                         else
                                             cekItem.Cost -= (item.HrgCost * item.Qty);
 
-                                       
+
                                     }
                                     else
                                     {
@@ -951,7 +977,7 @@ namespace eSoft.Penjualan.Services
             };
             _contextAr.ArPiutngs.Add(piutang);
 
-           
+
             Customer.Piutang -= transH.Jumlah;
 
             _contextAr.ArCusts.Update(Customer);
@@ -1036,6 +1062,6 @@ namespace eSoft.Penjualan.Services
 
         #endregion
 
-       
+
     }
 }

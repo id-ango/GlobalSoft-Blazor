@@ -90,34 +90,35 @@
     case 2:
         <div class="container">
 
-            <DataGridPenjualanPerItemComponent Items="TransHeader" OnDetail="OpenDetail"></DataGridPenjualanPerItemComponent>
+            <DataGridPenjualanPerItemComponent Items="TransItem" OnDetail="OpenDetail2"></DataGridPenjualanPerItemComponent>
 
         </div>
         @if (DetailOpen2)
         {
 
-            <ModalDetailJualComponent OnClose="OnSearchClose" Items="TransDetail" Context="transaksi2" GetFilterableText="@(item =>$"{item.ItemCode} {item.NamaItem} ")">
+            <ModalDetailJualComponent OnClose="OnSearchClose" Items="TransDetail2" Context="transaksi3" GetFilterableText="@(item =>$"{item.ItemCode} {item.NamaItem} ")">
                 <TableHeader>
-                    <th scope="col">Item</th>
-                    <th scope="col">Nama Item</th>
-                    <th scope="col">Satuan</th>
-                    <th scope="col">Qty</th>
+                    <th scope="col">Customer</th>
+                    <th scope="col">Nama</th>
+                    <th scope="col">Tanggal</th>
+                    <th scope="col">Alamat</th>
                     <th scope="col">Harga</th>
-                    <th scope="col">Diskon</th>
+                    <th scope="col">Qty</th>
                     <th scope="col">Jumlah</th>
                     <th scope="col">Lokasi</th>
 
                     <th></th>
                 </TableHeader>
                 <RowTemplate>
-                    <td>@transaksi2.ItemCode</td>
-                    <td>@transaksi2.NamaItem</td>
-                    <td>@transaksi2.Satuan</td>
-                    <td style="text-align:right">@transaksi2.Qty.ToString("N")</td>
-                    <td style="text-align:right">@transaksi2.Harga.ToString("N")</td>
-                    <td style="text-align:right">@transaksi2.Discount.ToString("N")</td>
-                    <td style="text-align:right">@transaksi2.Jumlah.ToString("N")</td>
-                    <td>@transaksi2.Lokasi</td>
+                    <td>@transaksi3.Customer</td>
+                    <td>@transaksi3.NamaCust</td>
+                    <td>@transaksi3.Tanggal.ToShortDateString()</td>
+                    <td>@transaksi3.AlamatKirim</td>
+                    <td>@transaksi3.Harga.ToString("N")</td>
+                    <td>@transaksi3.Qty.ToString("N")</td>
+                    <td>@transaksi3.Jumlah.ToString("N")</td>
+                   
+                    <td>@transaksi3.Lokasi</td>
                 </RowTemplate>
             </ModalDetailJualComponent>
 
@@ -132,6 +133,7 @@
     public List<OeTransH> TransHeader;
     public List<OeTransD> TransDetail;
     public List<IcItem> TransItem;
+    public List<OeTrans> TransDetail2;
 
     private string nCount { get; set; }
     private string nOngkir { get; set; }
@@ -140,6 +142,7 @@
 
     public OeTransH transh = new OeTransH();
     List<OeTransH> transaksi = new List<OeTransH>();
+
 
     public int Tampilan { get; set; } = 1;
 
@@ -168,6 +171,7 @@
     {
 
         DetailOpen = false;
+        DetailOpen2 = false;
         StateHasChanged();
 
     }
@@ -204,7 +208,7 @@
     private void OpenDetail2(IcItem xKdBank)
     {
 
-        TransDetail = service.Detail2(xKdBank.ItemCode,Tanggal1, Tanggal2);
+        TransDetail2 = service.Detail2(xKdBank.ItemCode,Tanggal1, Tanggal2);
         DetailOpen2 = !DetailOpen2;
         //  navigationmanager.NavigateTo($"/ModuleJual/EditTransJual/{xKdBank}");
         StateHasChanged();
