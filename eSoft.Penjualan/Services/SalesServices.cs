@@ -59,6 +59,14 @@ namespace eSoft.Penjualan.Services
             return transD;
         }
 
+        public List<OeTransD> Detail2(string xKdHeader, DateTime tgl1, DateTime tgl2)
+        {
+            List<OeTransD> transD = new List<OeTransD>();
+
+            transD = _context.OeTransDs.Where(x => x.ItemCode == xKdHeader).ToList();
+
+            return transD;
+        }
 
         #endregion
 

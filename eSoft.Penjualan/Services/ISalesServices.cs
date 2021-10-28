@@ -27,6 +27,7 @@ namespace eSoft.Penjualan.Services
         Task<bool> EditTransH(OeTransHView trans);
         List<OeTransH> Laporan1(DateTime tgl1, DateTime tgl2);
         List<OeTransD> Detail1(int xKdHeader);
+        List<OeTransD> Detail2(string xKdHeader, DateTime tgl1, DateTime tgl2);
     }
 }
 
