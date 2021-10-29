@@ -77,6 +77,12 @@ namespace eSoft.Penjualan.Services
                                 ItemCode = detail.ItemCode,
                                 NamaItem = detail.NamaItem,
                                 Harga = detail.Harga,
+                                Persen = detail.Persen,
+                                Discount = detail.Discount,
+                                Satuan = detail.Satuan,
+                                Ppn = header.Ppn,
+                                PpnPersen = header.PpnPersen,
+                                Ongkos = header.Ongkos,
                                 Qty = detail.Qty,
                                 Jumlah = detail.Jumlah,
                                 Lokasi = detail.Lokasi,
@@ -94,6 +100,47 @@ namespace eSoft.Penjualan.Services
             return trans;
         }
 
+        public List<OeTrans> Detail3(string xKdHeader, DateTime tgl1, DateTime tgl2)
+        {
+            List<OeTransH> transH = new List<OeTransH>();
+            List<OeTransD> transD = new List<OeTransD>();
+            List<OeTrans> trans = new List<OeTrans>();
+
+            transH = _context.OeTransHs.Include(p => p.OeTransDs).Where(x =>x.Customer == xKdHeader && ( x.Tanggal >= tgl1 && x.Tanggal <= tgl2)).ToList();
+            transD = _context.OeTransDs.ToList();
+
+            if (transH != null && transD != null)
+            {
+                
+                trans = (from header in transH
+                         join detail in transD on header.OeTransHId equals detail.OeTransHId
+                         select new OeTrans()
+                         {
+                             ItemCode = detail.ItemCode,
+                             NamaItem = detail.NamaItem,
+                             Harga = detail.Harga,
+                             Persen = detail.Persen,
+                             Discount = detail.Discount,
+                             Satuan = detail.Satuan,
+                             Ppn = header.Ppn,
+                             PpnPersen = header.PpnPersen,
+                             Ongkos = header.Ongkos,
+                             Qty = detail.Qty,
+                             Jumlah = detail.Jumlah,
+                             Lokasi = detail.Lokasi,
+                             NoLpb = header.NoLpb,
+                             Customer = header.Customer,
+                             NamaCust = header.NamaCust,
+                             Tanggal = header.Tanggal,
+                             AlamatKirim = header.AlamatKirim
+                         }).ToList();
+            }
+
+
+
+
+            return trans;
+        }
         #endregion
 
         #region getclass

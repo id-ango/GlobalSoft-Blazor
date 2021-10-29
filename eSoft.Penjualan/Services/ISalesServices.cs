@@ -28,6 +28,7 @@ namespace eSoft.Penjualan.Services
         List<OeTransH> Laporan1(DateTime tgl1, DateTime tgl2);
         List<OeTransD> Detail1(int xKdHeader);
         List<OeTrans> Detail2(string xKdHeader, DateTime tgl1, DateTime tgl2);
+        List<OeTrans> Detail3(string xKdHeader, DateTime tgl1, DateTime tgl2);
     }
 }
 

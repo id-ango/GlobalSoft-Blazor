@@ -1,7 +1,7 @@
 ﻿@using eSoft.Penjualan.Model
 @using eSoft.Penjualan.View
-@using eSoft.Persediaan.Model
 
+@using eSoft.Piutang.Model
 
 @using System.Collections.Generic
 @using System.Linq
@@ -17,13 +17,12 @@
 <table class="table table-striped table-hover">
 
     <thead>
-        <tr>          
-            <th scope="col">Item</th>
-            <th scope="col">Qty</th>
-            <th scope="col">Hrg Jual</th>
-            <th scope="col">USD</th>
-            <th scope="col">Hrg Net</th>
-            <th scope="col">Cost</th>
+        <tr>
+            <th scope="col">Customer</th>
+           
+            <th scope="col">Alamat</th>
+            <th scope="col">Telpon</th>
+           
             <th></th>
         </tr>
     </thead>
@@ -33,36 +32,33 @@
 
         @*<thead>
 
-            <tr>@TableHeader</tr>
-        </thead>*@
+                <tr>@TableHeader</tr>
+            </thead>*@
         @*<thead>
-            <tr>
-                <th scope="col">Item</th>
-                <th scope="col">Qty</th>
-                <th scope="col">Hrg Jual</th>
-                <th scope="col">USD</th>
-                <th scope="col">Hrg Net</th>
-                <th scope="col">Cost</th>
-                <th></th>
-            </tr>
-        </thead>*@
+                <tr>
+                    <th scope="col">Item</th>
+                    <th scope="col">Qty</th>
+                    <th scope="col">Hrg Jual</th>
+                    <th scope="col">USD</th>
+                    <th scope="col">Hrg Net</th>
+                    <th scope="col">Cost</th>
+                    <th></th>
+                </tr>
+            </thead>*@
         <tbody>
             @foreach (var transaksi in result)
             {
                 <tr>
 
                     <td>
-                        @transaksi.NamaItem
+                        @transaksi.NamaCust
                         <br />
-                        <span class="badge bg-primary">@transaksi.ItemCode</span>
-                        <br />
-                        <span class="badge bg-secondary">@transaksi.Satuan</span>
+                        <span class="badge bg-primary">@transaksi.Customer</span>
+                        
                     </td>
-                    <td>@transaksi.Qty.ToString("N")</td>
-                    <td>@transaksi.HrgJual.ToString("N")</td>
-                    <td>@transaksi.HrgUsd.ToString("N")</td>
-                    <td>@transaksi.HrgNetto.ToString("N")</td>
-                    <td>@transaksi.Cost.ToString("N")</td>
+                    <td>@transaksi.Alamat</td>
+                    <td>@transaksi.Telpon</td>
+                    
 
                     <td>
                         <button @onclick="() => BtnDetail(transaksi)" class="btn btn-success">
@@ -84,20 +80,20 @@
 @code {
 
     [Parameter]
-    public List<IcItem> Items { get; set; }
+    public List<ArCust> Items { get; set; }
 
     [Parameter]
-    public EventCallback<IcItem> OnDetail { get; set; }
+    public EventCallback<ArCust> OnDetail { get; set; }
 
     private string nJumlah { get; set; }
 
-    private List<IcItem> result = new List<IcItem>();
-    private List<IcItem> result2 = new List<IcItem>();
+    private List<ArCust> result = new List<ArCust>();
+    private List<ArCust> result2 = new List<ArCust>();
 
     private string searchText;
 
 
-    private Task BtnDetail(IcItem xKode)
+    private Task BtnDetail(ArCust xKode)
     {
         return OnDetail.InvokeAsync(xKode);
 
@@ -127,8 +123,9 @@
             //   result = result.Where(x => x.NamaCust || x.AlamatKirim).ToList();
             result2 = (from t in result2
                        where
-   ((t.NamaItem?.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ?? false) ||
-     (t.ItemCode?.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ?? false))
+   ((t.NamaCust?.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ?? false) ||
+   (t.Alamat?.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ?? false) ||
+     (t.Customer?.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ?? false))
                        select t).ToList();
 
 
@@ -139,7 +136,7 @@
         else
             result = Items;
 
-      //  nJumlah = result.Sum(x => x.Jumlah).ToString("N");
+        //  nJumlah = result.Sum(x => x.Jumlah).ToString("N");
     }
 
 

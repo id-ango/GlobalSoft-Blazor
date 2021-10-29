@@ -38,8 +38,10 @@
     <div class="col-4">
         <br />
         <button class="btn btn-primary" @onclick="@(() => proses1())">Display Penjualan</button>
-        <button class="btn btn-primary" @onclick="@(() => proses2())">Display Penjualan/Item</button>
         <br />
+        <button class="btn btn-primary" @onclick="@(() => proses2())">Display Item/Customer</button>
+        <br />
+        <button class="btn btn-primary" @onclick="@(() => proses3())">Display Customer/Item</button>
     </div>
 </div>
 
@@ -96,31 +98,92 @@
         @if (DetailOpen2)
         {
 
-            <ModalDetailJualComponent OnClose="OnSearchClose" Items="TransDetail2" Context="transaksi3" GetFilterableText="@(item =>$"{item.ItemCode} {item.NamaItem} ")">
+            <ModalDetailJualComponent OnClose="OnSearchClose" Items="TransDetail2" Context="transaksi3" GetFilterableText="@(item =>$"{item.Customer} {item.NamaCust} {item.Lokasi}  {item.AlamatKirim}")">
                 <TableHeader>
                     <th scope="col">Customer</th>
-                    <th scope="col">Nama</th>
-                    <th scope="col">Tanggal</th>
-                    <th scope="col">Alamat</th>
-                    <th scope="col">Harga</th>
+
+                    <th scope="col">Dokumen</th>
+
                     <th scope="col">Qty</th>
+                    <th scope="col">Harga</th>
+                    <th scope="col">Disc%</th>
                     <th scope="col">Jumlah</th>
                     <th scope="col">Lokasi</th>
 
                     <th></th>
                 </TableHeader>
                 <RowTemplate>
-                    <td>@transaksi3.Customer</td>
-                    <td>@transaksi3.NamaCust</td>
-                    <td>@transaksi3.Tanggal.ToShortDateString()</td>
-                    <td>@transaksi3.AlamatKirim</td>
-                    <td>@transaksi3.Harga.ToString("N")</td>
+
+                    <td>
+                        @transaksi3.NamaCust
+                        <br />
+                        <span class="badge bg-primary">@transaksi3.Customer</span>
+                    </td>
+
+                    <td>
+                        @transaksi3.NoLpb
+                        <br />
+                        <span class="badge bg-primary">@transaksi3.Tanggal.ToShortDateString()</span>
+
+                    </td>
+                    @*<td>@transaksi3.AlamatKirim</td>*@
                     <td>@transaksi3.Qty.ToString("N")</td>
+                    <td>@transaksi3.Harga.ToString("N")</td>
+                    <td>@transaksi3.Persen.ToString("N")</td>
                     <td>@transaksi3.Jumlah.ToString("N")</td>
-                   
                     <td>@transaksi3.Lokasi</td>
                 </RowTemplate>
             </ModalDetailJualComponent>
+
+
+        }
+
+        break;
+    case 3:
+        <div class="container">
+
+            <DataGridPenjualanPerCustComponent Items="TransCustomer" OnDetail="OpenDetail3"></DataGridPenjualanPerCustComponent>
+
+        </div>
+        @if (DetailOpen3)
+        {
+
+<ModalDetailJualComponent OnClose="OnSearchClose" Items="TransDetail2" Context="transaksi2" GetFilterableText="@(item =>$"{item.ItemCode} {item.NamaItem} ")">
+    <TableHeader>
+        <th scope="col">Item</th>
+        <th scope="col">Dokumen</th>
+       
+        <th scope="col">Qty</th>
+        <th scope="col">Harga</th>
+        <th scope="col">Diskon</th>
+        <th scope="col">Jumlah</th>
+        <th scope="col">Lokasi</th>
+
+        <th></th>
+    </TableHeader>
+    <RowTemplate>
+        <td>
+            @transaksi2.NamaItem
+            <br />
+            <span class="badge bg-primary">@transaksi2.ItemCode</span>
+            <br />
+            <span class="badge bg-secondary">@transaksi2.Satuan</span>
+        </td>
+
+        <td>
+            @transaksi2.NoLpb
+            <br />
+            <span class="badge bg-primary">@transaksi2.Tanggal.ToShortDateString()</span>
+
+        </td>
+    
+        <td style="text-align:right">@transaksi2.Qty.ToString("N")</td>
+        <td style="text-align:right">@transaksi2.Harga.ToString("N")</td>
+        <td style="text-align:right">@transaksi2.Persen.ToString("N")</td>
+        <td style="text-align:right">@transaksi2.Jumlah.ToString("N")</td>
+        <td>@transaksi2.Lokasi</td>
+    </RowTemplate>
+</ModalDetailJualComponent>
 
 
         }
@@ -134,6 +197,7 @@
     public List<OeTransD> TransDetail;
     public List<IcItem> TransItem;
     public List<OeTrans> TransDetail2;
+    public List<ArCust> TransCustomer;
 
     private string nCount { get; set; }
     private string nOngkir { get; set; }
@@ -150,6 +214,7 @@
     public bool NullDialogOpen { get; set; }
     public bool DetailOpen { get; set; }
     public bool DetailOpen2 { get; set; }
+    public bool DetailOpen3 { get; set; }
 
     public DateTime Tanggal1 { get; set; }
     public DateTime Tanggal2 { get; set; }
@@ -172,6 +237,7 @@
 
         DetailOpen = false;
         DetailOpen2 = false;
+        DetailOpen3 = false;
         StateHasChanged();
 
     }
@@ -208,8 +274,25 @@
     private void OpenDetail2(IcItem xKdBank)
     {
 
-        TransDetail2 = service.Detail2(xKdBank.ItemCode,Tanggal1, Tanggal2);
+        TransDetail2 = service.Detail2(xKdBank.ItemCode, Tanggal1, Tanggal2);
         DetailOpen2 = !DetailOpen2;
+        //  navigationmanager.NavigateTo($"/ModuleJual/EditTransJual/{xKdBank}");
+        StateHasChanged();
+    }
+
+    private void proses3()
+    {
+        TransCustomer = serviceAR.GetCustomer();
+        Tampilan = 3;
+        //  nJumlah = TransHeader.Sum(x => x.Jumlah).ToString("N");
+        StateHasChanged();
+    }
+
+    private void OpenDetail3(ArCust xKdBank)
+    {
+
+        TransDetail2 = service.Detail3(xKdBank.Customer, Tanggal1, Tanggal2);
+        DetailOpen3 = !DetailOpen3;
         //  navigationmanager.NavigateTo($"/ModuleJual/EditTransJual/{xKdBank}");
         StateHasChanged();
     }
