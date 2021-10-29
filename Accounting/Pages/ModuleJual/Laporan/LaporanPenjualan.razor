@@ -98,7 +98,7 @@
         @if (DetailOpen2)
         {
 
-            <ModalDetailJualComponent OnClose="OnSearchClose" Items="TransDetail2" Context="transaksi3" GetFilterableText="@(item =>$"{item.Customer} {item.NamaCust} {item.Lokasi}  {item.AlamatKirim}")">
+            <ModalDetailJualComponent OnClose="OnSearchClose" Items="TransDetail2" Context="transaksi3" GetFilterableText="@(item =>$"{item.Customer} {item.NamaCust} {item.Lokasi} {item.AlamatKirim} {item.NoLpb}")">
                 <TableHeader>
                     <th scope="col">Customer</th>
 
@@ -148,7 +148,7 @@
         @if (DetailOpen3)
         {
 
-<ModalDetailJualComponent OnClose="OnSearchClose" Items="TransDetail2" Context="transaksi2" GetFilterableText="@(item =>$"{item.ItemCode} {item.NamaItem} ")">
+<ModalDetailJualComponent OnClose="OnSearchClose" Items="TransDetail2" Context="transaksi2" GetFilterableText="@(item =>$"{item.ItemCode} {item.NamaItem} {item.NoLpb} ")">
     <TableHeader>
         <th scope="col">Item</th>
         <th scope="col">Dokumen</th>
