@@ -628,6 +628,23 @@ namespace eSoft.Piutang.Services
 
         #endregion Transaksi Piutang Class
 
+        #region laporan piutang
+
+        public List<ArPiutng> Detail1(string xKdHeader, DateTime tgl1, DateTime tgl2)
+        {
+            
+            List<ArPiutng> trans = new List<ArPiutng>();
+
+            trans = _context.ArPiutngs.Where(x => x.Customer == xKdHeader && (x.Tanggal >= tgl1 && x.Tanggal <= tgl2)).ToList();
+           
+
+            
+
+            return trans;
+        }
+
+        #endregion
+
         public string GetNumber()
         {
             string kodeno = "ARI";
