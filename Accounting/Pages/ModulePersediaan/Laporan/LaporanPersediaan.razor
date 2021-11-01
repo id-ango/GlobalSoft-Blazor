@@ -1,17 +1,24 @@
-﻿@page "/ModulePiutang/LaporanPiutang"
+﻿@page "/ModulePersediaan/LaporanPersediaan"
 
-@using eSoft.Piutang.Model
-@using eSoft.Piutang.View
-@using eSoft.Piutang.Services
+@using eSoft.Persediaan.Model
+@using eSoft.Persediaan.View
+@using eSoft.Persediaan.Services
 
 @using eSoft.Penjualan.Model
 @using eSoft.Penjualan.View
 @using eSoft.Penjualan.Services
 
-@inject IReceivableServices   service
+@using eSoft.Pembelian.Model
+@using eSoft.Pembelian.View
+@using eSoft.Pembelian.Services
+
+@inject IInventoryServices   service
+@inject ISalesServices   service
+@inject IPurchaseServices   service
+
 @inject NavigationManager navigationmanager
 
-<h3>Laporan Piutang</h3>
+<h3>Laporan Persediaan</h3>
 <div class="row">
     <div class="col-4">
         <EditForm Model="transh">
@@ -85,7 +92,7 @@
     case 2:
         <div class="container">
 
-            <DataGridUangMukaComponent Items="TransDetailView" ></DataGridUangMukaComponent>
+            <DataGridUangMukaComponent Items="TransDetailView"></DataGridUangMukaComponent>
 
         </div>
 
@@ -97,7 +104,7 @@
 
 
     public List<ArPiutng> TransDetail;
-    public List<ArCust> TransItem = new List<ArCust>();
+    public List<IcItem> TransItem = new List<IcItem>();
     public List<ArPiutngView> TransDetailView;
 
     private string nCount { get; set; }

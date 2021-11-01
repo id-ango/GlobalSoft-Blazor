@@ -630,19 +630,40 @@ namespace eSoft.Piutang.Services
 
         #region laporan piutang
 
-        public List<ArPiutng> Detail1(string xKdHeader, DateTime tgl1, DateTime tgl2)
+        public List<ArPiutng> Detail1(string xKdHeader)
         {
             
             List<ArPiutng> trans = new List<ArPiutng>();
 
-            trans = _context.ArPiutngs.Where(x => x.Customer == xKdHeader && (x.Tanggal >= tgl1 && x.Tanggal <= tgl2)).ToList();
-           
-
-            
-
+            trans = _context.ArPiutngs.Where(x => x.Customer == xKdHeader && (x.Sisa != 0)).ToList();
+  
             return trans;
         }
 
+        public List<ArPiutngView> GetUangMuka()
+        {
+            List<ArPiutngView> transView = new List<ArPiutngView>(); 
+            var trans = _context.ArPiutngs.Where(x => x.Kode == "CA" && x.KodeTran=="13" && x.Sisa != 0).ToList();
+            var customer = GetCustomer();
+
+
+            if(trans != null && customer != null)
+            {
+                transView = (from header in trans
+                         join detail in customer on header.Customer equals detail.Customer
+                         select new ArPiutngView()
+                         {
+                             Sisa = header.Sisa,
+                             Dokumen = header.Dokumen,
+                             Tanggal = header.Tanggal,
+                             Customer = header.Customer,
+                             NamaCust = detail.NamaCust,     
+                             KdBank = GetTransDoc(header.Dokumen).KdBank
+                         }).ToList();
+            }
+
+            return transView;
+        }
         #endregion
 
         public string GetNumber()

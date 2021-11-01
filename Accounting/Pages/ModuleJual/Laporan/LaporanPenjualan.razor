@@ -148,42 +148,42 @@
         @if (DetailOpen3)
         {
 
-<ModalDetailJualComponent OnClose="OnSearchClose" Items="TransDetail2" Context="transaksi2" GetFilterableText="@(item =>$"{item.ItemCode} {item.NamaItem} {item.NoLpb} ")">
-    <TableHeader>
-        <th scope="col">Item</th>
-        <th scope="col">Dokumen</th>
-       
-        <th scope="col">Qty</th>
-        <th scope="col">Harga</th>
-        <th scope="col">Diskon</th>
-        <th scope="col">Jumlah</th>
-        <th scope="col">Lokasi</th>
+            <ModalDetailJualComponent OnClose="OnSearchClose" Items="TransDetail2" Context="transaksi2" GetFilterableText="@(item =>$"{item.ItemCode} {item.NamaItem} {item.NoLpb} ")">
+                <TableHeader>
+                    <th scope="col">Item</th>
+                    <th scope="col">Dokumen</th>
 
-        <th></th>
-    </TableHeader>
-    <RowTemplate>
-        <td>
-            @transaksi2.NamaItem
-            <br />
-            <span class="badge bg-primary">@transaksi2.ItemCode</span>
-            <br />
-            <span class="badge bg-secondary">@transaksi2.Satuan</span>
-        </td>
+                    <th scope="col">Qty</th>
+                    <th scope="col">Harga</th>
+                    <th scope="col">Diskon</th>
+                    <th scope="col">Jumlah</th>
+                    <th scope="col">Lokasi</th>
 
-        <td>
-            @transaksi2.NoLpb
-            <br />
-            <span class="badge bg-primary">@transaksi2.Tanggal.ToShortDateString()</span>
+                    <th></th>
+                </TableHeader>
+                <RowTemplate>
+                    <td>
+                        @transaksi2.NamaItem
+                        <br />
+                        <span class="badge bg-primary">@transaksi2.ItemCode</span>
+                        <br />
+                        <span class="badge bg-secondary">@transaksi2.Satuan</span>
+                    </td>
 
-        </td>
-    
-        <td style="text-align:right">@transaksi2.Qty.ToString("N")</td>
-        <td style="text-align:right">@transaksi2.Harga.ToString("N")</td>
-        <td style="text-align:right">@transaksi2.Persen.ToString("N")</td>
-        <td style="text-align:right">@transaksi2.Jumlah.ToString("N")</td>
-        <td>@transaksi2.Lokasi</td>
-    </RowTemplate>
-</ModalDetailJualComponent>
+                    <td>
+                        @transaksi2.NoLpb
+                        <br />
+                        <span class="badge bg-primary">@transaksi2.Tanggal.ToShortDateString()</span>
+
+                    </td>
+
+                    <td style="text-align:right">@transaksi2.Qty.ToString("N")</td>
+                    <td style="text-align:right">@transaksi2.Harga.ToString("N")</td>
+                    <td style="text-align:right">@transaksi2.Persen.ToString("N")</td>
+                    <td style="text-align:right">@transaksi2.Jumlah.ToString("N")</td>
+                    <td>@transaksi2.Lokasi</td>
+                </RowTemplate>
+            </ModalDetailJualComponent>
 
 
         }

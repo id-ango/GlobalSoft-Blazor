@@ -38,6 +38,7 @@ namespace eSoft.Piutang.Services
         Task<bool> DelTransH(int id);
         ArPiutng GetPiutang(string bukti);
         bool CekAlreadyPayment(string dokumen);
-        List<ArPiutng> Detail1(string xKdHeader, DateTime tgl1, DateTime tgl2);
+        List<ArPiutng> Detail1(string xKdHeader);
+        List<ArPiutngView> GetUangMuka();
     }
 }

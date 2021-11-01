@@ -15,6 +15,7 @@ namespace eSoft.Persediaan.View
         public string Tanggal { get; set; }
         public string ItemCode { get; set; }
         public string Dokumen { get; set; }
+        public string Keterangan { get; set; }
         public decimal Harga { get; set; }
         [Column(TypeName = "decimal(18,4)")]
         public decimal Persen { get; set; }
@@ -37,5 +38,6 @@ namespace eSoft.Persediaan.View
         public decimal JumDpp { get; set; }
         [Column(TypeName = "decimal(18,4)")]
         public decimal Jumlah { get; set; }
+        
     }
 }
