@@ -46,6 +46,7 @@
     <ProjectReference Include="..\eSoft.CashBank\eSoft.CashBank.csproj" />
     <ProjectReference Include="..\eSoft.Fungsi\eSoft.Fungsi.csproj" />
     <ProjectReference Include="..\eSoft.Hutang\eSoft.Hutang.csproj" />
+    <ProjectReference Include="..\eSoft.LaporanStock\eSoft.LaporanStock.csproj" />
     <ProjectReference Include="..\eSoft.Ledger\eSoft.Ledger.csproj" />
     <ProjectReference Include="..\eSoft.Order\eSoft.Order.csproj" />
     <ProjectReference Include="..\eSoft.Pembelian\eSoft.Pembelian.csproj" />

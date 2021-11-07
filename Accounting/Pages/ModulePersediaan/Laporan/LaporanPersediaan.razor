@@ -12,9 +12,12 @@
 @using eSoft.Pembelian.View
 @using eSoft.Pembelian.Services
 
-@inject IInventoryServices   service
-@inject ISalesServices   service
-@inject IPurchaseServices   service
+@using eSoft.LaporanStock.Services
+
+@inject IInventoryServices   serviceIC
+@inject ISalesServices   serviceOE
+@inject IPurchaseServices   serviceIR
+@inject ILaporanStockServices  services
 
 @inject NavigationManager navigationmanager
 
@@ -40,10 +43,9 @@
 
     <div class="col-4">
         <br />
-        <button class="btn btn-primary" @onclick="@(() => proses1())">Display Piutang</button>
+        <button class="btn btn-primary" @onclick="@(() => proses1())">Display Mutasi</button>
         <br />
-        <button class="btn btn-primary" @onclick="@(() => proses2())">Display Uang Muka</button>
-        <br />
+       
     </div>
 </div>
 
@@ -56,20 +58,20 @@
     case 1:
         <div class="container">
 
-            <DataGridPiutangComponent Items="TransItem" OnDetail="OpenDetail"></DataGridPiutangComponent>
+            <DataGridLaporanStockComponent Items="TransItem" OnDetail="OpenDetail"></DataGridLaporanStockComponent>
 
         </div>
         @if (DetailOpen)
         {
 
-            <ModalDetailJualComponent OnClose="OnSearchClose" Items="TransDetail" Context="transaksi2" GetFilterableText="@(item => $"{item.Customer} {item.Dokumen} ")">
+            <ModalSearchComponent OnClose="OnSearchClose" Items="TransDetail" Context="transaksi2" GetFilterableText="@(item => $"{item.ItemCode} {item.Keterangan} ")">
                 <TableHeader>
                     <th scope="col">Dokumen</th>
                     <th scope="col">Tanggal</th>
                     <th scope="col">Keterangan</th>
                     <th scope="col">Jumlah</th>
                     <th scope="col">Bayar</th>
-                    <th scope="col">Sisa</th>
+                
 
                     <th></th>
                 </TableHeader>
@@ -78,40 +80,33 @@
                     <td>@transaksi2.Tanggal.ToShortDateString()</td>
                     <td>@transaksi2.Keterangan</td>
                     <td style="text-align:right">@transaksi2.Jumlah.ToString("N")</td>
-                    <td style="text-align:right">@transaksi2.Bayar.ToString("N")</td>
-                    <td style="text-align:right">@transaksi2.Sisa.ToString("N")</td>
+                    <td style="text-align:right">@transaksi2.Qty.ToString("N")</td>
+                   
 
                 </RowTemplate>
-            </ModalDetailJualComponent>
+            </ModalSearchComponent>
 
 
         }
 
         break;
 
-    case 2:
-        <div class="container">
-
-            <DataGridUangMukaComponent Items="TransDetailView"></DataGridUangMukaComponent>
-
-        </div>
-
-        break;
+    
 
 }
 
 @code {
 
 
-    public List<ArPiutng> TransDetail;
+    public List<IcStockCardView> TransDetail;
     public List<IcItem> TransItem = new List<IcItem>();
-    public List<ArPiutngView> TransDetailView;
+    public List<IcStockCardView> TransDetailView;
 
     private string nCount { get; set; }
     private string nOngkir { get; set; }
     private string nJumlah { get; set; }
     private string nPPn { get; set; }
-    public ArTransH transh = new ArTransH();
+    public IcStockCardView transh = new IcStockCardView();
 
 
     public int Tampilan { get; set; } = 1;
@@ -150,32 +145,21 @@
 
     private void proses1()
     {
-        TransItem = service.GetCustomer();
+        TransItem = serviceIC.GetIcItem();
         Tampilan = 1;
         //  nJumlah = TransHeader.Sum(x => x.Jumlah).ToString("N");
         // StateHasChanged();
     }
 
-    private void OpenDetail(ArCust xKdBank)
+    private void OpenDetail(IcItem xKdBank)
     {
 
-        TransDetail = service.Detail1(xKdBank.Customer);
+        TransDetail = services.CetakMutasi(Tanggal1,Tanggal2, xKdBank.ItemCode);
         DetailOpen = !DetailOpen;
         //  navigationmanager.NavigateTo($"/ModuleJual/EditTransJual/{xKdBank}");
         StateHasChanged();
     }
 
-    private void proses2()
-    {
-        TransDetailView = service.GetUangMuka();
-        Tampilan = 2;
-        //  nJumlah = TransHeader.Sum(x => x.Jumlah).ToString("N");
-        // StateHasChanged();
-    }
-
-    //private void OpenPrint(int xKdBank)
-    //{
-    //    navigationmanager.NavigateTo($"/PrintSuratJalan/{xKdBank}");
-    //}
+   
 
 }

@@ -12,7 +12,7 @@ namespace eSoft.Persediaan.View
     {
         public int IcStockCardId { get; set; }
         public string Kode { get; set; }
-        public string Tanggal { get; set; }
+        public DateTime Tanggal { get; set; }
         public string ItemCode { get; set; }
         public string Dokumen { get; set; }
         public string Keterangan { get; set; }

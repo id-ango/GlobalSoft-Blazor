@@ -36,6 +36,8 @@ using eSoft.Penjualan.Services;
 using eSoft.Order.Data;
 using eSoft.Order.Services;
 
+using eSoft.LaporanStock.Services;
+
 using Microsoft.EntityFrameworkCore;
 using BlazorFluentUI;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -103,6 +105,7 @@ namespace Accounting
             services.AddTransient<IPurchaseServices, PurchaseServices>();
             services.AddTransient<ISalesServices, SalesServices>();
             services.AddTransient<IOrderPurchaseServices, OrderPurchaseServices>();
+            services.AddTransient<ILaporanStockServices, LaporanStockServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

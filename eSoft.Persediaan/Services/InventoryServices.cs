@@ -7,6 +7,7 @@ using eSoft.Persediaan.Data;
 using eSoft.Persediaan.Model;
 using eSoft.Persediaan.View;
 
+
 using Microsoft.EntityFrameworkCore;
 
 namespace eSoft.Persediaan.Services
@@ -864,6 +865,8 @@ namespace eSoft.Persediaan.Services
             return cAngNo;
 
         }
+
+       
 
     }
 }
