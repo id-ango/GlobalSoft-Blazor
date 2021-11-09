@@ -64,23 +64,23 @@
         @if (DetailOpen)
         {
 
-            <ModalSearchComponent OnClose="OnSearchClose" Items="TransDetail" Context="transaksi2" GetFilterableText="@(item => $"{item.ItemCode} {item.Keterangan} ")">
+            <ModalSearchComponent OnClose="OnSearchClose" Items="TransDetail" Context="transaksi2" GetFilterableText="@(item => $"{item.ItemCode} {item.Keterangan} {item.Dokumen} ")">
                 <TableHeader>
-                    <th scope="col">Dokumen</th>
-                    <th scope="col">Tanggal</th>
-                    <th scope="col">Keterangan</th>
-                    <th scope="col">Jumlah</th>
-                    <th scope="col">Bayar</th>
-                
+                    <th scope="col" style="width:15%">Dokumen</th>
+                    <th scope="col" style="width:15%">Tanggal</th>
+                    <th scope="col" style="width:30%">Keterangan</th>
+                    <th scope="col" style="width:20%">Qty</th>
+                    <th scope="col" style="width:20%">Balance</th>
+                                    
 
                     <th></th>
                 </TableHeader>
                 <RowTemplate>
-                    <td>@transaksi2.Dokumen</td>
-                    <td>@transaksi2.Tanggal.ToShortDateString()</td>
-                    <td>@transaksi2.Keterangan</td>
-                    <td style="text-align:right">@transaksi2.Jumlah.ToString("N")</td>
-                    <td style="text-align:right">@transaksi2.Qty.ToString("N")</td>
+                    <td style="width:15%">@transaksi2.Dokumen</td>
+                    <td style="width:15%">@transaksi2.Tanggal.ToShortDateString()</td>
+                    <td style="width:30%">@transaksi2.Keterangan</td>
+                    <td style="width:20%; text-align:right">@transaksi2.Qty.ToString("N")</td>
+                    <td style="width:20%; text-align:right">@transaksi2.Jumlah.ToString("N")</td>
                    
 
                 </RowTemplate>
