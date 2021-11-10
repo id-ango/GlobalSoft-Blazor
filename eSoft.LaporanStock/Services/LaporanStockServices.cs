@@ -79,7 +79,7 @@ namespace eSoft.LaporanStock.Services
 
             if (TransAwalIC != null)
             {
-                SldAwalIC = TransAwalIC.Sum(x => (x.Kode == "81" ? x.QtyShp : 0));
+                SldAwalIC = TransAwalIC.Sum(x => (x.Kode == "81" || x.Kode == "72" ? x.QtyShp : 0));
             }
             else
             {
@@ -101,7 +101,7 @@ namespace eSoft.LaporanStock.Services
                 );
 
             transHIR = _contextIR.IrTransHs.Include(p => p.IrTransDs).Where(x => x.Tanggal >= Tanggal1 && x.Tanggal <= Tanggal2).ToList();
-            transDIR = _contextIR.IrTransDs.Where(x => x.ItemCode == kodeBank).ToList();
+            transDIR = _contextIR.IrTransDs.Where(x => x.ItemCode == kodeBank && (x.Tanggal >= Tanggal1 && x.Tanggal <= Tanggal2)).ToList();
 
             if (transHIR != null && transDIR != null)
             {
@@ -109,6 +109,7 @@ namespace eSoft.LaporanStock.Services
                                join f in transDIR on e.IrTransHId equals f.IrTransHId
                                select new IcStockCardView()
                                {
+                                   Kode = e.Kode,
                                    ItemCode = f.ItemCode,
                                    Keterangan = e.NamaSup+", "+e.Keterangan,
                                    Tanggal = f.Tanggal.Date,
@@ -120,8 +121,8 @@ namespace eSoft.LaporanStock.Services
                 Transaksi.AddRange(Rincian1);
             }
 
-            transHIC = _context.IcTransHs.Include(p => p.IcTransDs).Where(x => (x.Tanggal >= Tanggal1 && x.Tanggal <= Tanggal2) && x.Kode == "81").ToList();
-            transDIC = _context.IcTransDs.Where(x => x.ItemCode == kodeBank).ToList();
+            transHIC = _context.IcTransHs.Include(p => p.IcTransDs).Where(x => (x.Tanggal >= Tanggal1 && x.Tanggal <= Tanggal2) && (x.Kode == "81" || x.Kode == "72")).ToList();
+            transDIC = _context.IcTransDs.Where(x => x.ItemCode == kodeBank && (x.Tanggal >= Tanggal1 && x.Tanggal <= Tanggal2)).ToList();
 
             if (transHIC != null && transDIC != null)
             {
@@ -129,6 +130,7 @@ namespace eSoft.LaporanStock.Services
                                join f in transDIC on e.IcTransHId equals f.IcTransHId
                                select new IcStockCardView()
                                {
+                                   Kode = e.Kode,
                                    ItemCode = f.ItemCode,
                                    Keterangan = e.Keterangan,
                                    Tanggal = f.Tanggal.Date,
@@ -142,7 +144,7 @@ namespace eSoft.LaporanStock.Services
 
 
             transHOE = _contextOE.OeTransHs.Include(p => p.OeTransDs).Where(x => x.Tanggal >= Tanggal1 && x.Tanggal <= Tanggal2).ToList();
-            transDOE = _contextOE.OeTransDs.Where(x => x.ItemCode == kodeBank).ToList();
+            transDOE = _contextOE.OeTransDs.Where(x => x.ItemCode == kodeBank && (x.Tanggal >= Tanggal1 && x.Tanggal <= Tanggal2)).ToList();
 
             if (transHOE != null && transDOE != null)
             {
@@ -150,6 +152,7 @@ namespace eSoft.LaporanStock.Services
                                join f in transDOE on e.OeTransHId equals f.OeTransHId
                                select new IcStockCardView()
                                {
+                                   Kode = e.Kode,
                                    ItemCode = f.ItemCode,
                                    Keterangan = e.NamaCust+", "+e.Keterangan,
                                    Tanggal = f.Tanggal.Date,
