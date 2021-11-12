@@ -884,5 +884,75 @@ namespace eSoft.Pembelian.Services
 
         }
         #endregion
+
+        #region laporan
+        public List<IrTransH> Laporan1(DateTime tgl1, DateTime tgl2)
+        {
+            List<IrTransH> transH = new List<IrTransH>();
+
+            transH = _context.IrTransHs.Where(x => x.Tanggal >= tgl1 && x.Tanggal <= tgl2).OrderByDescending(t => t.Tanggal).ToList();
+
+            foreach (var item in transH)
+            {
+
+                item.Jumlah = (item.Kode == "82" ? item.Jumlah : -1 * item.Jumlah);
+                item.TtlJumlah = (item.Kode == "82" ? item.TtlJumlah : -1 * item.TtlJumlah);
+                item.Ongkos = (item.Kode == "82" ? item.Ongkos : -1 * item.Ongkos);
+                item.Ppn = (item.Kode == "82" ? item.Ppn : -1 * item.Ppn);
+            }
+
+            return transH;
+        }
+
+        public List<IrTransD> Detail1(int xKdHeader)
+        {
+            List<IrTransD> transD = new List<IrTransD>();
+
+            transD = _context.IrTransDs.Where(x => x.IrTransHId == xKdHeader).ToList();
+
+            return transD;
+        }
+
+        public List<IrTrans> Detail2(string xKdHeader, DateTime tgl1, DateTime tgl2)
+        {
+            List<IrTransH> transH = new List<IrTransH>();
+            List<IrTransD> transD = new List<IrTransD>();
+            List<IrTrans> trans = new List<IrTrans>();
+
+            transH = _context.IrTransHs.Include(p => p.IrTransDs).Where(x => x.Tanggal >= tgl1 && x.Tanggal <= tgl2).ToList();
+            transD = _context.IrTransDs.Where(x => x.ItemCode == xKdHeader && (x.Tanggal >= tgl1 && x.Tanggal <= tgl2)).ToList();
+
+            if (transH != null && transD != null)
+            {
+                trans = (from header in transH
+                         join detail in transD on header.IrTransHId equals detail.IrTransHId
+                         select new IrTrans()
+                         {
+                             ItemCode = detail.ItemCode,
+                             NamaItem = detail.NamaItem,
+                             Harga = detail.Harga,
+                             Persen = detail.Persen,
+                             Discount = detail.Discount,
+                             Satuan = detail.Satuan,
+                             Ppn = header.Ppn,
+                             PpnPersen = header.PpnPersen,
+                             Ongkos = header.Ongkos,
+                             Qty = detail.Qty,
+                             Jumlah = detail.Jumlah,
+                             Lokasi = detail.Lokasi,
+                             NoLpb = header.NoLpb,
+                             Supplier = header.Supplier,
+                             NamaSuppl = header.NamaSup,
+                             Tanggal = header.Tanggal,
+                             NoPrj = header.NoPrj
+                         }).ToList();
+            }
+
+
+
+
+            return trans;
+        }
+        #endregion
     }
 }
