@@ -17,13 +17,13 @@
 
     <thead>
         <tr>          
-            <th scope="col">Item</th>
-            <th scope="col">Qty</th>
-            <th scope="col">Hrg Jual</th>
-            <th scope="col">USD</th>
-            <th scope="col">Hrg Net</th>
-            <th scope="col">Cost</th>
-            <th></th>
+            <th scope="col" style="width:40%">Item</th>
+            <th scope="col" style="width:10%">Qty</th>
+            <th scope="col" style="width:10%">Hrg Jual</th>
+            <th scope="col" style="width:10%">USD</th>
+            <th scope="col" style="width:10%">Hrg Net</th>
+            <th scope="col" style="width:10%">Cost</th>
+            <th style="width:10%"></th>
         </tr>
     </thead>
 </table>
@@ -50,20 +50,20 @@
             {
                 <tr>
 
-                    <td>
+                    <td style="width:40%">
                         @transaksi.NamaItem
                         <br />
                         <span class="badge bg-primary">@transaksi.ItemCode</span>
                         <br />
                         <span class="badge bg-secondary">@transaksi.Satuan</span>
                     </td>
-                    <td>@transaksi.Qty.ToString("N")</td>
-                    <td>@transaksi.HrgJual.ToString("N")</td>
-                    <td>@transaksi.HrgUsd.ToString("N")</td>
-                    <td>@transaksi.HrgNetto.ToString("N")</td>
-                    <td>@transaksi.Cost.ToString("N")</td>
+                    <td style="width:10%">@transaksi.Qty.ToString("N")</td>
+                    <td style="width:10%">@transaksi.HrgJual.ToString("N")</td>
+                    <td style="width:10%">@transaksi.HrgUsd.ToString("N")</td>
+                    <td style="width:10%">@transaksi.HrgNetto.ToString("N")</td>
+                    <td style="width:10%">@transaksi.Cost.ToString("N")</td>
 
-                    <td>
+                    <td style="width:10%">
                         <button @onclick="() => BtnDetail(transaksi)" class="btn btn-success">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-square" viewBox="0 0 16 16">
                                 <path d="M3.626 6.832A.5.5 0 0 1 4 6h8a.5.5 0 0 1 .374.832l-4 4.5a.5.5 0 0 1-.748 0l-4-4.5z" />

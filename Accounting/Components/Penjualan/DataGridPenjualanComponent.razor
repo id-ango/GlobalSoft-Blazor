@@ -16,14 +16,14 @@
 
     <thead>
         <tr>
-            <th scope="col">No Bukti</th>
-            <th scope="col">Customer</th>
-            <th scope="col">Tanggal</th>
-            <th scope="col">Keterangan</th>
-            <th scope="col">Jumlah</th>
-            <th scope="col">PPN</th>
-            <th scope="col">Ongkir</th>
-            <th scope="col">Total</th>
+            <th scope="col" style="width:10%">No Bukti</th>
+            <th scope="col" style="width:20%">Customer</th>
+            <th scope="col" style="width:10%">Tanggal</th>
+            <th scope="col" style="width:20%">Keterangan</th>
+            <th scope="col" style="width:10%">Jumlah</th>
+            <th scope="col" style="width:10%">PPN</th>
+            <th scope="col" style="width:10%">Ongkir</th>
+            <th scope="col" style="width:10%">Total</th>
             <th></th>
         </tr>
     </thead>
@@ -39,14 +39,14 @@
             @foreach (var transaksi in result)
             {
                 <tr style=@(transaksi.Kode == "95" ? "background-color:lightblue" : "")>
-                    <td>@transaksi.NoLpb</td>
-                    <td>@transaksi.NamaCust</td>
-                    <td>@transaksi.Tanggal.ToShortDateString()</td>
-                    <td>@transaksi.Keterangan</td>
-                    <td style="text-align:right">@transaksi.TtlJumlah.ToString("N")</td>
-                    <td style="text-align:right">@transaksi.Ppn.ToString("N")</td>
-                    <td style="text-align:right">@transaksi.Ongkos.ToString("N")</td>
-                    <td style="text-align:right">@transaksi.Jumlah.ToString("N")</td>
+                    <td style="width:10%">@transaksi.NoLpb</td>
+                    <td style="width:20%">@transaksi.NamaCust</td>
+                    <td style="width:10%">@transaksi.Tanggal.ToShortDateString()</td>
+                    <td style="width:20%">@transaksi.Keterangan</td>
+                    <td style="text-align:right ; width:10%">@transaksi.TtlJumlah.ToString("N")</td>
+                    <td style="text-align:right ; width:10%">@transaksi.Ppn.ToString("N")</td>
+                    <td style="text-align:right ; width:10%">@transaksi.Ongkos.ToString("N")</td>
+                    <td style="text-align:right ; width:10%">@transaksi.Jumlah.ToString("N")</td>
 
                     <td>
                         <button @onclick="() => BtnDetail(transaksi)" class="btn btn-success">

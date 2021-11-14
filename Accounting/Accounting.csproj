@@ -16,6 +16,7 @@
     <Content Remove="Components\ModalDetailCashBankComponent.razor" />
     <Content Remove="Components\ModalDetailPiutangComponent.razor" />
     <Content Remove="Components\RadioButtonComponent.razor" />
+    <Content Remove="Pages\ModuleBank\AntarBank\EditTrfBank.razor" />
     <Content Remove="Pages\ModuleBank\TransBank\EditAddTransBank.razor" />
   </ItemGroup>
 

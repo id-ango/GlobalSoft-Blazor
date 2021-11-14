@@ -312,7 +312,7 @@ namespace eSoft.CashBank.Services
                 Refno = transfer.DocNo,
                 Tanggal = trans.Tanggal,
                 Keterangan = trans.Keterangan,
-                Kurs = trans.Kurs,
+                Kurs = trans.Kurs2,
                 Saldo = trans.Saldo,
                 KSaldo = trans.KSaldo,
                 CbTransDs = new List<CbTransD>()
@@ -329,7 +329,7 @@ namespace eSoft.CashBank.Services
                 KValue = trans.KValue,
                 Jumlah = trans.Saldo,
                 KJumlah = trans.KSaldo,
-                Kurs = trans.Kurs
+                Kurs = trans.Kurs2
             });
 
             var bankd = (from e in _context.CbBanks where e.KodeBank == trans.KodeBank2 select e).FirstOrDefault();
@@ -647,6 +647,7 @@ namespace eSoft.CashBank.Services
                     {
                         //  transH.DocNo = ExistingTrans.DocNo;
                         DocNo = ExistingTrans.DocNo,
+                        Refno = ExistingTrans.Refno,
                         KodeBank = trans.KodeBank.ToUpper(),
                         Tanggal = trans.Tanggal,
                         Keterangan = trans.Keterangan,

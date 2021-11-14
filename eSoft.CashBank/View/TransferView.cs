@@ -23,6 +23,8 @@ namespace eSoft.CashBank.View
         public string Giro { get; set; }
         [StringLength(3)]
         public string Kurs { get; set; }
+        [StringLength(3)]
+        public string Kurs2 { get; set; }
         [Column(TypeName = "decimal(18,4)")]
         public decimal KValue { get; set; }
         [Column(TypeName = "decimal(18,4)")]
