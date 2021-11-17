@@ -153,13 +153,13 @@
 
     public string kurs { get; set; } = "";
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         // Transh.Tanggal = DateTime.Now;
 
 
 
-        await LoadTrans();
+        LoadTrans();
     }
 
     void LoadBank()
@@ -168,9 +168,9 @@
     }
 
 
-    async Task LoadTrans()
+    private void LoadTrans()
     {
-        TransAll = await service.GetTransferId(Id);
+        TransAll = service.GetTransferId(Id);
         bank1 = service.GetBankKd(TransAll.KodeBank1).NmBank;
         bank2 = service.GetBankKd(TransAll.KodeBank2).NmBank;
         Kbank1 = service.GetBankKd(TransAll.KodeBank1).Kurs;

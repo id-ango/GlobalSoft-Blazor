@@ -233,12 +233,12 @@
 
 
 
-    private async Task HandleValidSubmit()
+    private void HandleValidSubmit()
     {
         Transh.Kurs = this.kurs1;
         Transh.Kurs2 = this.kurs2;
 
-        var newEdit = await service.AddTransfer(Transh);
+        var newEdit = service.AddTransfer(Transh);
         if (newEdit != null)
         {
             //  await ExportToPdf(Transh);
