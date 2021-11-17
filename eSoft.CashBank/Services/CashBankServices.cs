@@ -234,14 +234,14 @@ namespace eSoft.CashBank.Services
         #endregion srcode Class
 
         #region Transfer Antar Bank
-        public async Task<CbTransfer> GetTransferDoc(string docno)
+        public CbTransfer GetTransferDoc(string docno)
         {
-            return await _context.CbTransfers.Where(x => x.DocNo == docno).FirstOrDefaultAsync();
+            return _context.CbTransfers.Where(x => x.DocNo == docno).FirstOrDefault();
         }
 
-        public async Task<CbTransfer> GetTransferId(int id)
+        public CbTransfer GetTransferId(int id)
         {
-            return await _context.CbTransfers.Where(x => x.CbTransferId == id).FirstOrDefaultAsync();
+            return _context.CbTransfers.Where(x => x.CbTransferId == id).FirstOrDefault();
         }
 
         public List<CbTransfer> GetTransfer()
@@ -252,7 +252,7 @@ namespace eSoft.CashBank.Services
         }
 
 
-        public async Task<CbTransfer> AddTransfer(TransferView trans)
+        public CbTransfer AddTransfer(TransferView trans)
         {
             //string test = codeview.SrcCode.ToUpper();
             //var cekFirst = _context.CbSrcCodes.Where(x => x.SrcCode == test).ToList();
@@ -263,6 +263,8 @@ namespace eSoft.CashBank.Services
                 Tanggal = trans.Tanggal,
                 Keterangan = trans.Keterangan,
                 Kurs = trans.Kurs,
+                Kurs2 = trans.Kurs2,
+                KValue = trans.KValue,
                 Saldo = trans.Saldo,
                 KSaldo = trans.KSaldo,
                 KodeBank1 = trans.KodeBank1.ToUpper(),
@@ -338,21 +340,23 @@ namespace eSoft.CashBank.Services
             _context.CbBanks.Update(bankd);
             _context.CbTransHs.Add(transHd);
 
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
 
             var TempTrans = GetTransferDoc(transfer.DocNo);
 
-            return await TempTrans;
+            return TempTrans;
             // return true;
 
 
         }
 
-        public async Task<CbTransfer> EditTransfer(TransferView trans)
+        public CbTransfer EditTransfer(TransferView trans)
         {
-            //string test = codeview.SrcCode.ToUpper();
-            //var cekFirst = _context.CbSrcCodes.Where(x => x.SrcCode == test).ToList();
-            var ExistingTrans = _context.CbTransfers.Where(x => x.CbTransferId == trans.CbTransferId).FirstOrDefault();
+           
+
+                //string test = codeview.SrcCode.ToUpper();
+                //var cekFirst = _context.CbSrcCodes.Where(x => x.SrcCode == test).ToList();
+                var ExistingTrans = _context.CbTransfers.Where(x => x.CbTransferId == trans.CbTransferId).FirstOrDefault();
             if (ExistingTrans != null)
             {
                 _context.CbTransfers.Remove(ExistingTrans);
@@ -383,6 +387,7 @@ namespace eSoft.CashBank.Services
                     Tanggal = trans.Tanggal,
                     Keterangan = trans.Keterangan,
                     Kurs = trans.Kurs,
+                    Kurs2 = trans.Kurs2,
                     KValue = trans.KValue,
                     Saldo = trans.Saldo,
                     KSaldo = trans.KSaldo,
@@ -433,7 +438,7 @@ namespace eSoft.CashBank.Services
                     Refno = transfer.DocNo,
                     Tanggal = trans.Tanggal,
                     Keterangan = trans.Keterangan,
-                    Kurs = trans.Kurs,
+                    Kurs = trans.Kurs2,
                     Saldo = trans.Saldo,
                     KSaldo = trans.KSaldo,
                     CbTransDs = new List<CbTransD>()
@@ -450,7 +455,7 @@ namespace eSoft.CashBank.Services
                     KValue = trans.KValue,
                     Jumlah = trans.Saldo,
                     KJumlah = trans.KSaldo,
-                    Kurs = trans.Kurs
+                    Kurs = trans.Kurs2
                 });
 
                 var bankd = (from e in _context.CbBanks where e.KodeBank == trans.KodeBank2 select e).FirstOrDefault();
@@ -459,11 +464,11 @@ namespace eSoft.CashBank.Services
                 _context.CbBanks.Update(bankd);
                 _context.CbTransHs.Add(transHd);
 
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
 
                 var TempTrans = GetTransferDoc(transfer.DocNo);
 
-                return await TempTrans;
+                return TempTrans;
 
 
             }
@@ -877,9 +882,14 @@ namespace eSoft.CashBank.Services
 
             Transaksi.AddRange(Rincian);
             SaldoAwal = 0;
-            
-                Transaksi = Transaksi.Select(i => { SaldoAwal += i.Saldo; i.Balance = SaldoAwal; return i; }).ToList();
-         
+
+            //  Transaksi = Transaksi.Select(i => { SaldoAwal += i.Saldo; i.Balance = SaldoAwal; return i; }).ToList();
+            //foreach (var item in Transaksi)
+            //{
+
+            //    SaldoAwal = SaldoAwal + item.Saldo;
+            //    item.Balance = SaldoAwal;
+            //}
 
             return Transaksi;
         }

@@ -20,11 +20,9 @@
     <EditForm Model="@Transh" OnValidSubmit="HandleValidSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
-        @* <div class="float-md-right">
-            <SfButton CssClass="e-primary" IconCss="e-icons e-save-icon" Type="submit">Simpan</SfButton>
-            </div>*@
+       
 
-        <label>@kurs1</label> <br />
+    
 
         <div class="form-group">
             <label>
@@ -136,10 +134,6 @@
 </style>
 
 
-@*
-    <SfToast ID="toast_default" @ref="ToastObj" Title="Delete Record" Content="@ToastContent" Icon="e-meeting">
-    <ToastPosition X="@ToastPosition"></ToastPosition>
-    </SfToast>*@
 
 @code {
     BankView bank = new BankView();

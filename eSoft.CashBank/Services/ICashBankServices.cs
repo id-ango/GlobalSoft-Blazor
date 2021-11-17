@@ -29,10 +29,10 @@ namespace eSoft.CashBank.Services
         CbTransH AddTransH(TransHView transH);
         CbTransH EditTransH(TransHView transH);
         Task<bool> DelTransH(int id);
-        Task<CbTransfer> GetTransferId(int id);
+        CbTransfer GetTransferId(int id);
         List<CbTransfer> GetTransfer();
-        Task<CbTransfer> AddTransfer(TransferView transfer);
-        Task<CbTransfer> EditTransfer(TransferView transH);
+        CbTransfer AddTransfer(TransferView transfer);
+        CbTransfer EditTransfer(TransferView transH);
         Task<bool> DelTransfer(int id);
         List<RekeningView> CetakMutasi(DateTime Tanggal1, DateTime Tanggal2, string KodeBank);
     }

@@ -1,136 +1,143 @@
-﻿@page "/EditTrfBank/{id:int}"
-@using System.ComponentModel.DataAnnotations
+﻿@page "/ModuleBank/EditTrfBank/{id:int}"
+@using eSoft.CashBank.Model
+@using eSoft.CashBank.View
+
+
+@inject ICashBankServices service
 @inject NavigationManager navigationmanager
-@inject BMASolution.Services.IKasBankService service
-@using Newtonsoft.Json
-@inject Microsoft.JSInterop.IJSRuntime JS
-@using BMASolution.Printing
-@using System.IO
 
-<style>
-    .e-edit-icon::before {
-        content: '\ea9a';
-    }
-
-    .e-delete-icon::before {
-        content: '\e94a';
-    }
-
-    .e-add-icon::before {
-        content: '\e7f9';
-    }
-
-    .e-save-icon::before {
-        content: '\e735';
-    }
-
-    .form-message {
-        padding: 0.5rem;
-        font-weight: 700;
-    }
-
-    #toast_default .e-meeting::before {
-        content: "\e705";
-        font-size: 17px;
-    }
-
-    .bootstrap4 #toast_default .e-meeting::before {
-        content: "\e763";
-        font-size: 20px;
-    }
-</style>
-
-
-
-<div class="container">
-    <div class="master">
-        <div class="row">
-            <div class="col-7">
-                <h2>Edit Antar Kas/Bank</h2>
-            </div>
-
-            <div class="col-5 float-right">
-                <h2 style="color:blue">@Transh.DocNo</h2>
-            </div>
-        </div>
-
-        <EditForm Model="@Transh" OnValidSubmit="HandleValidSubmit">
-            <DataAnnotationsValidator />
-            <div class=" row float-md-right">
-                <SfButton CssClass="e-primary" IconCss="e-icons e-save-icon" Type="submit">Simpan</SfButton>
-            </div>
-
-            <label>@kurs1</label> <br />
-
-            <div class="form-group">
-                <SfComboBox TValue="string" TItem="CbBank" DataSource="banks" Placeholder="Dari Rekening" FloatLabelType="FloatLabelType.Auto" @bind-Value="@Transh.KodeBank1">
-                    <ComboBoxEvents TItem="CbBank" TValue="string" ValueChange="OnChangeBank1"></ComboBoxEvents>
-                    <ComboBoxFieldSettings Text="NmBank" Value="KodeBank"></ComboBoxFieldSettings>
-                </SfComboBox>
-                <ValidationMessage For="@(() => Transh.KodeBank1)" />
-            </div>
-            <label>@kurs2</label> <br />
-
-            <div class="form-group">
-                <SfComboBox TValue="string" TItem="CbBank" DataSource="banks" Placeholder="Rekening Tujuan" FloatLabelType="FloatLabelType.Auto" @bind-Value="@Transh.KodeBank2">
-                    <ComboBoxEvents TItem="CbBank" TValue="string" ValueChange="OnChangeBank2"></ComboBoxEvents>
-                    <ComboBoxFieldSettings Text="NmBank" Value="KodeBank"></ComboBoxFieldSettings>
-                </SfComboBox>
-                <ValidationMessage For="@(() => Transh.KodeBank2)" />
-            </div>
-
-            <div class="form-group">
-                <SfDatePicker TValue="DateTime" @bind-Value="Transh.Tanggal" Placeholder="Tanggal" FloatLabelType="FloatLabelType.Auto" Format="dd-MMM-yy">
-                </SfDatePicker>
-                <ValidationMessage For="@(() => Transh.Tanggal)" />
-            </div>
-            <div class="form-group">
-                <SfTextBox CssClass="e-outline" @bind-Value="@Transh.Keterangan" Multiline="true" Placeholder="Keterangan" FloatLabelType="FloatLabelType.Auto"></SfTextBox>
-                <ValidationMessage For="@(() => Transh.Keterangan)" />
-            </div>
-            @if (this.IsKurs1 || this.IsKurs2)
-            {
-                <div class="container">
-                    <div class="row">
-                        <div class="col">
-                            <SfNumericTextBox CssClass="e-outline" @bind-Value="@Transh.KValue" @onfocusout="KursUbah" Placeholder="Kurs" FloatLabelType="FloatLabelType.Auto"></SfNumericTextBox>
-
-                        </div>
-
-                        <div class="col">
-                            <SfNumericTextBox CssClass="e-outline" @bind-Value="@Transh.KSaldo" @onfocusout="KursUbah" Placeholder="Receipt" FloatLabelType="FloatLabelType.Auto"></SfNumericTextBox>
-                        </div>
-                    </div>
-
-                </div>
-            }
-            else
-            {
-                <div class="form-group">
-
-                    <SfNumericTextBox CssClass="e-outline" @bind-Value="@Transh.Saldo" Placeholder="Jumlah" FloatLabelType="FloatLabelType.Auto"></SfNumericTextBox>
-
-
-                </div>
-            }
-        </EditForm>
-
-
-        
-        <div class="float-md-right form-message">
-            <span>Saldo   : @Transh.Saldo.ToString("#,##0.##")</span>
-        </div>
-        <div class="float-md-right form-message">
-            <span> Balance : @Transh.KSaldo.ToString("#,##0.##")</span>
-        </div>
-    </div>
+<div class="top-row px-4 " style="z-index:5">
+    <h3>Edit Transfer Antar Bank</h3>
 </div>
 
 
 
-<SfToast ID="toast_default" @ref="ToastObj" Title="Delete Record" Content="@ToastContent" Icon="e-meeting">
-    <ToastPosition X="@ToastPosition"></ToastPosition>
-</SfToast>
+
+<div class="container">
+
+    <EditForm Model="@Transh" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <label>
+                Doc No. :
+                <InputText class="form-control" @bind-Value="Transh.DocNo" style="text-transform:uppercase" disabled="disabled" />
+            </label>
+        </div>
+
+
+
+        <div class="form-group">
+            <label>
+                Dari Rekening : <br />
+                <InputSelect class="form-control" @bind-Value="Transh.KodeBank1" style="width:60%; display:inline" @oninput="OnKurs1">
+                    <option value="">&nbsp;&nbsp;---Select Bank---&nbsp;&nbsp;</option>
+                    @foreach (var item in banks)
+                    {
+                        <option value="@item.KodeBank">[@item.KodeBank]&nbsp; @item.NmBank</option>
+                    }
+
+                </InputSelect>
+                &nbsp;@kurs1
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label>
+                Dari Rekening : <br />
+                <InputSelect class="form-control" @bind-Value="Transh.KodeBank2" style="width:60%; display:inline" @oninput="OnKurs2">
+                    <option value="">&nbsp;&nbsp;---Select Bank---&nbsp;&nbsp;</option>
+                    @foreach (var item in banks)
+                    {
+                        <option value="@item.KodeBank">[@item.KodeBank]&nbsp; @item.NmBank</option>
+                    }
+
+                </InputSelect>
+                &nbsp;@kurs2
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label>
+                Tanggal :
+                <InputDate class="form-control" @bind-Value="Transh.Tanggal" />
+            </label>
+        </div>
+
+
+        <div class="form-group">
+            <label>
+                Keterangan :
+                <InputTextArea class="form-control" @bind-Value="Transh.Keterangan" />
+            </label>
+        </div>
+
+
+        @if (this.IsKurs1 || this.IsKurs2)
+        {
+            <div class="container">
+
+
+                <div class="row">
+                    <div class="col">
+                        <label>
+                            Kurs :
+                            <InputNumber class="form-control" @bind-Value="Transh.KValue" @onfocusout="KursUbah" />
+                        </label>
+
+                    </div>
+
+                    <div class="col">
+                        <label>
+                            Receipt :
+                            <InputNumber class="form-control" @bind-Value="Transh.KSaldo" @onfocusout="KursUbah" />
+                        </label>
+
+                    </div>
+                </div>
+
+            </div>
+        }
+        else
+        {
+            <div class="form-group">
+                <label>
+                    Jumlah :
+                    <InputNumber class="form-control" @bind-Value="Transh.Saldo" />
+                </label>
+
+
+            </div>
+        }
+
+        <br />
+        <div class="float-md-right">
+            <button class="btn-success" type="submit">Simpan</button>
+            <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo(" /ModuleBank/TransAntarBank", false))">Batal</button>
+        </div>
+        <br />
+        <br />
+
+
+    </EditForm>
+
+    <div class="float-md-right form-message">
+        <span>Saldo   : @Transh.Saldo.ToString("#,##0.##")</span>
+    </div>
+    <div class="float-md-right form-message">
+        <span> Balance : @Transh.KSaldo.ToString("#,##0.##")</span>
+    </div>
+
+</div>
+
+<style>
+    label {
+        width: 100%;
+    }
+</style>
+
+
 
 @code {
 
@@ -139,8 +146,14 @@
     private TransferView Transh = new TransferView();
     private CbTransfer TransAll = new CbTransfer();
 
+    BankView bank = new BankView();
+    public string Testing { get; set; }
+    private bool DialogOpen { get; set; }
+
+    public bool SearchOpen { get; set; }
+
     private List<CbBank> banks;
-  
+
 
     //   private List<TransDView> TransDs = new List<TransDView>();
     private string enabled { get; set; }
@@ -148,27 +161,38 @@
     public string kurs1 { get; set; }
     public string kurs2 { get; set; }
 
- //   private bool IsVisible = false;
+    //   private bool IsVisible = false;
     private bool IsKurs1 = false;
     private bool IsKurs2 = false;
- //   private bool IsEdit = false;
+    //   private bool IsEdit = false;
 
-    SfToast ToastObj;
-    private string ToastPosition = "Right";
-    private string ToastContent { get; set; } = " ";
 
-    private void ShowOnClick()
-    {
-        this.ToastObj.Show();
-    }
 
-    protected override async Task OnInitializedAsync()
+
+    protected override void OnInitialized()
     {
         // Transh.Tanggal = DateTime.Now;
 
         LoadBank();
-      
-        await LoadTrans();
+        LoadTrans();
+
+          if (this.kurs1 == null)
+        {
+            this.IsKurs1 = false;
+        }
+        else
+        {
+            this.IsKurs1 = true;
+        }
+
+         if (this.kurs2 == null)
+        {
+            this.IsKurs2 = false;
+        }
+        else
+        {
+            this.IsKurs2 = true;
+        }
     }
 
     void LoadBank()
@@ -176,32 +200,33 @@
         banks = service.GetBank();
     }
 
-    
-    async Task LoadTrans()
+
+    void LoadTrans()
     {
-        TransAll = await service.GetTransferId(Id);
+        TransAll = service.GetTransferId(Id);
         Transh.CbTransferId = Id;
         Transh.DocNo = TransAll.DocNo;
         Transh.Tanggal = TransAll.Tanggal;
         Transh.Kurs = TransAll.Kurs;
         Transh.KodeBank1 = TransAll.KodeBank1;
         Transh.KodeBank2 = TransAll.KodeBank2;
-        kurs1 = service.GetBankKd(TransAll.KodeBank1).Kurs;
-        kurs2 = service.GetBankKd(TransAll.KodeBank2).Kurs;
+        kurs1 = TransAll.Kurs;
+        kurs2 = TransAll.Kurs2;
+        // kurs1 = service.GetBankKd(TransAll.KodeBank1).Kurs;
+        // kurs2 = service.GetBankKd(TransAll.KodeBank2).Kurs;
         Transh.Keterangan = TransAll.Keterangan;
         Transh.Saldo = TransAll.Saldo;
         Transh.KSaldo = TransAll.KSaldo;
         Transh.KValue = TransAll.KValue;
-        
 
+       
     }
 
 
-
-    public void OnChangeBank1(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string, CbBank> args)
+    private void OnKurs1(ChangeEventArgs args)
     {
+        kurs1 = (from e in banks where e.KodeBank == args.Value.ToString() select e.Kurs).FirstOrDefault();
 
-        this.kurs1 = args.ItemData?.Kurs;
         if (this.kurs1 == null)
         {
             this.IsKurs1 = false;
@@ -211,14 +236,11 @@
             this.IsKurs1 = true;
         }
 
-        // this.IsKurs1 = ((this.kurs1.Length != 0 ) ? true : false);
-
     }
 
-    public void OnChangeBank2(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string, CbBank> args)
+    private void OnKurs2(ChangeEventArgs args)
     {
-
-        this.kurs2 = args.ItemData?.Kurs;
+        kurs2 = (from e in banks where e.KodeBank == args.Value.ToString() select e.Kurs).FirstOrDefault();
         if (this.kurs2 == null)
         {
             this.IsKurs2 = false;
@@ -227,7 +249,10 @@
         {
             this.IsKurs2 = true;
         }
+
     }
+
+
 
 
     private void KursUbah()
@@ -239,10 +264,12 @@
 
 
 
-    private async Task HandleValidSubmit()
+    private void HandleValidSubmit()
     {
+        Transh.Kurs = this.kurs1;
+        Transh.Kurs2 = this.kurs2;
 
-        var newEdit = await service.EditTransfer(Transh);
+        var newEdit = service.EditTransfer(Transh);
         if (newEdit != null)
         {
             var id = newEdit.CbTransferId.ToString().Trim();
@@ -251,21 +278,14 @@
             //  GeneratePDF(newEdit);
             navigationmanager.NavigateTo($"printTrfbank/{id}");
 
-            //navigationmanager.NavigateTo("TransBank", false);
-            //string Url = "/printbuktikasbank/" + id;
-            //await JS.InvokeAsync<object>("open", Url, "_blank");
 
         }
-        navigationmanager.NavigateTo("TransBank", false);
+
+        navigationmanager.NavigateTo("/ModuleBank/TransAntarBank", false);
         //add = !add;
         //StateHasChanged();
 
     }
 
-    //public async void GeneratePDF(CbTransH trans)
-    //{
-    //    BuktiKasBank service = new BuktiKasBank();
-    //    MemoryStream documentStream = service.CreatePdfDocument(trans);
-    //    await JS.SaveAs("BuktiKasBank.pdf", documentStream.ToArray());
-    //}
+
 }
