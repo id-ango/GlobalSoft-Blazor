@@ -14,15 +14,19 @@
 
 <div class="dontprint" style="display:none inline">
     <br />
-    &emsp;<NavLink href="/ModuleJual/TransJual" class="btn btn-primary btn-lg">&nbsp;Back&nbsp;</NavLink>&emsp;
-    <NavLink class="btn btn-success btn-lg" onclick="window.print()">&nbsp; Cetak &nbsp;</NavLink>
+     &emsp;
+    
+        <NavLink href="/ModuleJual/TransJual" class="btn btn-primary btn-lg">&nbsp;Back&nbsp;</NavLink>
+   
+    
+     &emsp; <NavLink class="btn btn-success btn-lg" onclick="window.print()">&nbsp; Cetak &nbsp;</NavLink>
     &emsp;<NavLink @onclick="() => OpenPrint(Id)" class="btn btn-primary btn-lg">&nbsp;Nota&nbsp;</NavLink>&emsp;
 </div>
 
 <div id="page-wrap">
     <div class="kepala">
-        <span class="judul"><u>CV BMA TEKNIK</u></span><br />
-        <span class="alamat">Pucang Sewu VII No. 1B, Surabaya</span>
+        <span class="judul"><u>@Perusahaan</u></span><br />
+        <span class="alamat">@Alamat</span>
     </div>
 
 
@@ -147,6 +151,7 @@
 
 @code { [Parameter] public string Title { get; set; } = "SURAT JALAN";
     [Parameter] public int Id { get; set; }
+     [Parameter] public int Cetak { get; set; }
 
     private OeTransHView Transh = new OeTransHView() { OeTransDs = new List<OeTransDView>() };
     private OeTransH TransAll = new OeTransH() { OeTransDs = new List<OeTransD>() };
@@ -159,30 +164,32 @@
 
     public string kurs { get; set; } = "";
     private int noUrut { get; set; } = 1;
+    public string Perusahaan { get; set; }
+    public string Alamat { get; set; }
+
 
     protected override void OnInitialized()
     {
-        // Transh.Tanggal = DateTime.Now;
-
-        //LoadBank();
-        //LoadSrcCode();
+        
         LoadTrans();
+
     }
 
-    //void LoadBank()
-    //{
-    //    banks = service.GetBank();
-    //}
-
-    //void LoadSrcCode()
-    //{
-    //    srccode = service.GetSrcCode();
-    //}
-
+   
     void LoadTrans()
     {
         TransAll = service.GetOeTrans(Id);
-
+        if (TransAll.Pajak)
+        {
+            Perusahaan = "CV BMA TEKNIK";
+            Alamat = "Pucang Sewu VII No. 1B, Surabaya";
+            
+        } else
+        {
+            Perusahaan = "PT. BMA TEKNIK INDONESIA";
+            Alamat = "Pucang Sewu VII No. 1B, Surabaya";
+           
+        }
 
     }
 

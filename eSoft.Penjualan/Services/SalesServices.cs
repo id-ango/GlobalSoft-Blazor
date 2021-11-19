@@ -225,12 +225,47 @@ namespace eSoft.Penjualan.Services
 
         public List<OeTransH> GetTransHNon()
         {
-            List<OeTransH> OeTrans = new List<OeTransH>();
+           // List<OeTransH> OeTrans = new List<OeTransH>();
 
 
-            try
-            {
-                OeTrans = _context.OeTransHs.OrderByDescending(x => x.Tanggal).Where(x => (x.Kode == "94" || x.Kode == "95") && x.Pajak == false).ToList();
+           // try
+           // {
+                List<OeTransH> OeTrans = new List<OeTransH>();
+
+
+                try
+                {
+                    OeTrans = (from e in _context.OeTransHs
+                               orderby e.Tanggal descending
+                               where ((e.Kode == "94" || e.Kode == "95") && e.Pajak == false)
+                               select new OeTransH
+                               {
+                                   OeTransHId = e.OeTransHId,
+                                   NoLpb = e.NoLpb,
+                                   Customer = e.Customer,
+                                   NamaCust = e.NamaCust,
+                                   AlamatKirim = e.AlamatKirim,
+                                   Tanggal = e.Tanggal,
+                                   Keterangan = e.Keterangan,
+
+                                   Jumlah = (e.Kode == "94" ? e.Jumlah : -1 * e.Jumlah),
+                                   TtlJumlah = (e.Kode == "94" ? e.TtlJumlah : -1 * e.TtlJumlah),
+                                   Ongkos = (e.Kode == "94" ? e.Ongkos : -1 * e.Ongkos),
+                                   Ppn = (e.Kode == "94" ? e.Ppn : -1 * e.Ppn),
+
+                                   PpnPersen = e.PpnPersen,
+
+                                   DPayment = e.DPayment,
+                                   Tagihan = e.Tagihan,
+                                   TotalQty = e.TotalQty,
+                                   Kode = e.Kode,
+                                   Cek = e.Cek,
+                                   Pajak = e.Pajak
+
+
+                               }).ToList();
+
+               //     OeTrans = _context.OeTransHs.OrderByDescending(x => x.Tanggal).Where(x => (x.Kode == "94" || x.Kode == "95") && x.Pajak == false).ToList();
 
                 // foreach (var item in OeTrans)
                 //  {
@@ -281,6 +316,7 @@ namespace eSoft.Penjualan.Services
                 NamaCust = trans.NamaCust,
                 AlamatKirim = trans.AlamatKirim,
                 Tanggal = trans.Tanggal,
+                JthTempo = trans.JthTempo,
                 Keterangan = trans.Keterangan,
                 Jumlah = trans.Jumlah,
                 Ongkos = trans.Ongkos,

@@ -299,7 +299,7 @@
             var id = Transh.OeTransHId.ToString().Trim();
             //     navigationmanager.NavigateTo($"/PrintBuktiBayar/{id}");
             navigationmanager.NavigateTo("/ModuleJual/TransJual", false);
-          //  navigationmanager.NavigateTo($"/ModulePrinting/PrintSuratJalan/{id}");
+            //  navigationmanager.NavigateTo($"/ModulePrinting/PrintSuratJalan/{id}");
         }
         else
         {
@@ -373,6 +373,7 @@
         Transh.OeTransHId = Id;
         Transh.NoLpb = TransAll.NoLpb;
         Transh.Tanggal = TransAll.Tanggal;
+        Transh.JthTempo = TransAll.JthTempo;
         Transh.NamaCust = TransAll.NamaCust;
         Transh.Customer = TransAll.Customer;
         Transh.AlamatKirim = TransAll.AlamatKirim;

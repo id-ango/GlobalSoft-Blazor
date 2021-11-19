@@ -1,6 +1,6 @@
 ﻿@layout PrintLayout
 
-@page "/ModulePrinting/PrintNotaInvoice/{Id:int}"
+@page "/ModulePrinting/PrintNotaInvoice/{Id:int} {Cetak:int}"
 @using eSoft.Penjualan.Model
 @using eSoft.Penjualan.View
 @using eSoft.Piutang.Model
@@ -163,12 +163,12 @@
                                         <table width="100%" border="1" cellspacing="0" cellpadding="4" style="border-color:red">
                                             <tr>
                                                 <td style="font-family: Verdana, Geneva, sans-serif; font-weight: 300; font-size: 14px; color:red  " align="left">
-                                                    <span>CV BMA TEKNIK</span><br />
+                                                    <span>@Perusahaan</span><br />
                                                     <span>
-                                                        BCA. 4688-92-2001
+                                                        @Rekening1
                                                     </span> <br/>
                                                     <span>
-                                                        BRI. 1156-01-000-469-301
+                                                        @Rekening2
                                                     </span>
                                                 </td>
                                             </tr>
@@ -271,6 +271,7 @@
 
 @code { [Parameter] public string Title { get; set; } = "NOTA PENJUALAN";
     [Parameter] public int Id { get; set; }
+     [Parameter] public int Cetak { get; set; }
 
     private OeTransHView Transh = new OeTransHView() { OeTransDs = new List<OeTransDView>() };
     private OeTransH TransAll = new OeTransH() { OeTransDs = new List<OeTransD>() };
@@ -282,6 +283,8 @@
     private string enabled { get; set; }
     public string Perusahaan { get; set; }
     public string Alamat { get; set; }
+    public string Rekening1 { get; set; }
+    public string Rekening2 { get; set; }
 
     public string kurs { get; set; } = "";
     private int noUrut { get; set; } = 1;
@@ -314,10 +317,14 @@
         {
             Perusahaan = "CV BMA TEKNIK";
             Alamat = "Pucang Sewu VII No. 1B, Surabaya";
+            Rekening1 = "BCA. 4688-92-2001";
+            Rekening2 = "BRI. 1156-01-000-469-301";
         } else
         {
-            Perusahaan = " ";
-            Alamat = " ";
+            Perusahaan = "PT. BMA TEKNIK INDONESIA";
+            Alamat = "Pucang Sewu VII No. 1B, Surabaya";
+            Rekening1 = "BCA. 4686718000";
+            Rekening2 = " ";
         }
     }
 
