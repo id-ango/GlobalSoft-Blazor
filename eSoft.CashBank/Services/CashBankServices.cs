@@ -380,6 +380,7 @@ namespace eSoft.CashBank.Services
                     bank2.KSaldo -= ExistingTrans.KSaldo;
                     _context.CbBanks.Update(bank2);
                 }
+            //    _context.SaveChanges();
 
                 CbTransfer transfer = new()
                 {

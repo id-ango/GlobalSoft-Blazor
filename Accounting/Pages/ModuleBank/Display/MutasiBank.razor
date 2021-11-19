@@ -97,10 +97,10 @@
     public string kurs { get; set; } = "";
     private string kodeBank { get; set; } = "";
 
-    private DateTime TglStart = DateTime.Now;
-    private DateTime TglEnd = DateTime.Now;
+    private DateTime TglStart = DateTime.Today;
+    private DateTime TglEnd = DateTime.Today;
 
-  
+
     public bool DeleteDialogOpen { get; set; }
     public bool NullDialogOpen { get; set; }
     public bool SearchOpen { get; set; }
@@ -112,7 +112,9 @@
     {
         base.OnInitialized();
         LoadGet();
-
+        //this.TglStart = DateTime.Today;
+        //this.TglEnd = DateTime.Now;
+        //StateHasChanged();
     }
 
     private void LoadGet()
