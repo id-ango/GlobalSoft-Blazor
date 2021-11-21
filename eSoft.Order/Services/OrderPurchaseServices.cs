@@ -59,7 +59,7 @@ namespace eSoft.Order.Services
 
             try
             {
-                PoTrans = _context.PoTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Kode == "71" && x.Cek=="1").ToList();
+                PoTrans = _context.PoTransHs.OrderByDescending(x => x.Tanggal.Date).Where(x => x.Kode == "71" && x.Cek=="1").ToList();
                 
             }
             catch (Exception)
@@ -101,7 +101,7 @@ namespace eSoft.Order.Services
            
             try
             {
-                PoTrans = _context.PoTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Kode == "71").ToList();
+                PoTrans = _context.PoTransHs.OrderByDescending(x => x.Tanggal.Date).Where(x => x.Kode == "71").ToList();
               //  PoTrans = (from e in _context.PoTransHs orderby e.Tanggal where e.Kode == "71" select e).ToList();
 
                 //foreach (var item in PoTrans)
@@ -125,7 +125,7 @@ namespace eSoft.Order.Services
         {
             List<PoTransH> PoTrans = new List<PoTransH>();
 
-            PoTrans = _context.PoTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Tanggal > DateTime.Today.AddMonths(-3) && x.Kode == "71").ToList();
+            PoTrans = _context.PoTransHs.OrderByDescending(x => x.Tanggal.Date).Where(x => x.Tanggal.Date > DateTime.Today.Date.AddMonths(-3) && x.Kode == "71").ToList();
 
             return PoTrans;
 

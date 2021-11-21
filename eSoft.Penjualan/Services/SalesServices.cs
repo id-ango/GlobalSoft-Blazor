@@ -36,16 +36,33 @@ namespace eSoft.Penjualan.Services
         {
             List<OeTransH> transH = new List<OeTransH>();
 
-            transH = _context.OeTransHs.Where(x => x.Tanggal >= tgl1 && x.Tanggal <= tgl2).OrderByDescending(t => t.Tanggal).ToList();
+            transH = _context.OeTransHs.Where(x => x.Tanggal.Date >= tgl1.Date && x.Tanggal.Date <= tgl2.Date).OrderByDescending(t => t.Tanggal.Date)
+                .Select (
+                x => new OeTransH
+                { 
+                    OeTransHId = x.OeTransHId,
+                    Kode = x.Kode,
+                    Tanggal = x.Tanggal,
+                    NoLpb = x.NoLpb,
+                    NamaCust = x.NamaCust,
+                    Customer = x.Customer,
+                    Keterangan = x.Keterangan,
+                    TtlJumlah = (x.Kode == "94" ? x.TtlJumlah : -1 * x.TtlJumlah),
+                     Ppn = (x.Kode == "94" ? x.Ppn : -1 * x.Ppn),
+                    Ongkos = (x.Kode == "94" ? x.Ongkos : -1 * x.Ongkos),                   
+                    Jumlah  = (x.Kode == "94" ? x.Jumlah : -1 * x.Jumlah)
+                }
+                ).
+                ToList();
 
-            foreach (var item in transH)
-            {
+            //foreach (var item in transH)
+            //{
 
-                item.Jumlah = (item.Kode == "94" ? item.Jumlah : -1 * item.Jumlah);
-                item.TtlJumlah = (item.Kode == "94" ? item.TtlJumlah : -1 * item.TtlJumlah);
-                item.Ongkos = (item.Kode == "94" ? item.Ongkos : -1 * item.Ongkos);
-                item.Ppn = (item.Kode == "94" ? item.Ppn : -1 * item.Ppn);
-            }
+            //    item.Jumlah = (item.Kode == "94" ? item.Jumlah : -1 * item.Jumlah);
+            //    item.TtlJumlah = (item.Kode == "94" ? item.TtlJumlah : -1 * item.TtlJumlah);
+            //    item.Ongkos = (item.Kode == "94" ? item.Ongkos : -1 * item.Ongkos);
+            //    item.Ppn = (item.Kode == "94" ? item.Ppn : -1 * item.Ppn);
+            //}
 
             return transH;
         }
@@ -65,7 +82,7 @@ namespace eSoft.Penjualan.Services
             List<OeTransD> transD = new List<OeTransD>();
             List<OeTrans> trans = new List<OeTrans>();
 
-            transH = _context.OeTransHs.Include(p => p.OeTransDs).Where(x => x.Tanggal >= tgl1 && x.Tanggal <= tgl2).ToList();
+            transH = _context.OeTransHs.Include(p => p.OeTransDs).Where(x => x.Tanggal.Date >= tgl1.Date && x.Tanggal.Date <= tgl2.Date).ToList();
             transD = _context.OeTransDs.Where(x => x.ItemCode == xKdHeader).ToList();
 
             if (transH != null && transD != null)
@@ -106,7 +123,7 @@ namespace eSoft.Penjualan.Services
             List<OeTransD> transD = new List<OeTransD>();
             List<OeTrans> trans = new List<OeTrans>();
 
-            transH = _context.OeTransHs.Include(p => p.OeTransDs).Where(x =>x.Customer == xKdHeader && ( x.Tanggal >= tgl1 && x.Tanggal <= tgl2)).ToList();
+            transH = _context.OeTransHs.Include(p => p.OeTransDs).Where(x =>x.Customer == xKdHeader && ( x.Tanggal.Date >= tgl1.Date && x.Tanggal.Date <= tgl2.Date)).ToList();
             transD = _context.OeTransDs.ToList();
 
             if (transH != null && transD != null)
@@ -288,7 +305,7 @@ namespace eSoft.Penjualan.Services
         {
             List<OeTransH> OeTrans = new List<OeTransH>();
 
-            OeTrans = _context.OeTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Tanggal > DateTime.Today.AddMonths(-3) && (x.Kode == "94" || x.Kode == "95")).ToList();
+            OeTrans = _context.OeTransHs.OrderByDescending(x => x.Tanggal.Date).Where(x => x.Tanggal.Date > DateTime.Today.Date.AddMonths(-3) && (x.Kode == "94" || x.Kode == "95")).ToList();
 
             return OeTrans;
 

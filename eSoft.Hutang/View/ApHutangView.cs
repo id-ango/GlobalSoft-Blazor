@@ -6,13 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-namespace eSoft.Piutang.View
-
+namespace eSoft.Hutang.View
 {
-    public class ArPiutngView
+    public class ApHutangView
     {
-        public int ArPiutngId { get; set; }
+        public int ApHutangId { get; set; }
         public string Kode { get; set; }
         public string Dokumen { get; set; }
         public DateTime Tanggal { get; set; }
@@ -20,8 +18,8 @@ namespace eSoft.Piutang.View
         public string KodeTran { get; set; }
         public string LPB { get; set; }
         public string Keterangan { get; set; }
-        public string Customer { get; set; }
-        public string NamaCust { get; set; }
+        public string Supplier { get; set; }
+        public string NamaSuppl { get; set; }
         public string KdBank { get; set; }
         public bool Pajak { get; set; }
         [Column(TypeName = "decimal(18,4)")]
@@ -48,7 +46,10 @@ namespace eSoft.Piutang.View
         public decimal SldDisc { get; set; }
         [Column(TypeName = "decimal(18,4)")]
         public decimal SldUnpl { get; set; }
-
-
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal Kurs { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal Nilai { get; set; }
+        public string Currency { get; set; }
     }
 }

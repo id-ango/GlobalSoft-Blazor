@@ -541,7 +541,7 @@ namespace eSoft.CashBank.Services
         public List<CbTransH> GetTransH()
         {
             // return  _context.CbTransHs.Include(p =>p.CbTransDs).OrderByDescending(x =>x.Tanggal).ToListAsync();
-            var test = (from e in _context.CbTransHs orderby e.Tanggal descending select e ).ToList();
+            var test = (from e in _context.CbTransHs orderby e.Tanggal.Date descending select e ).ToList();
 
             return test;
             
@@ -552,7 +552,7 @@ namespace eSoft.CashBank.Services
         public List<SearchTransHView> GetTransHSearch()
         {
             // return  _context.CbTransHs.Include(p =>p.CbTransDs).OrderByDescending(x =>x.Tanggal).ToListAsync();
-            var test = (from e in _context.CbTransHs orderby e.Tanggal
+            var test = (from e in _context.CbTransHs orderby e.Tanggal.Date
                         select new SearchTransHView 
                         {CbTransHId = e.CbTransHId,
                          DocNo = e.DocNo,
@@ -571,7 +571,7 @@ namespace eSoft.CashBank.Services
         public List<CbTransH> Get3TransH()
         {
             // return  _context.CbTransHs.Include(p =>p.CbTransDs).OrderByDescending(x =>x.Tanggal).ToListAsync();
-            return _context.CbTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Tanggal > DateTime.Today.AddMonths(-3)).ToList();
+            return _context.CbTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Tanggal.Date > DateTime.Today.Date.AddMonths(-3)).ToList();
 
         }
 
@@ -841,7 +841,7 @@ namespace eSoft.CashBank.Services
                 .Where(x => x.KodeBank == kodeBank).FirstOrDefault();
 
             var TransAwal = _context.CbTransHs
-               .Where(x => x.KodeBank == kodeBank && (x.Tanggal > bankawal.ClrDate.Date   &&  x.Tanggal < Tanggal1))
+               .Where(x => x.KodeBank == kodeBank && (x.Tanggal.Date > bankawal.ClrDate.Date   &&  x.Tanggal.Date < Tanggal1.Date))
               .Select(x => new RekeningView
               {
                   KodeBank = x.KodeBank,

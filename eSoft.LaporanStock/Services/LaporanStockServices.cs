@@ -52,11 +52,11 @@ namespace eSoft.LaporanStock.Services
 
            
 
-            TransAwalJual = _contextOE.OeTransDs.Where(x =>x.ItemCode == kodeBank && x.Tanggal < Tanggal1)                
+            TransAwalJual = _contextOE.OeTransDs.Where(x =>x.ItemCode == kodeBank && x.Tanggal.Date < Tanggal1.Date)                
                 .ToList();
-             TransAwalBeli = _contextIR.IrTransDs.Where(x => x.ItemCode == kodeBank && x.Tanggal < Tanggal1)
+             TransAwalBeli = _contextIR.IrTransDs.Where(x => x.ItemCode == kodeBank && x.Tanggal.Date < Tanggal1.Date)
                 .ToList();
-             TransAwalIC = _context.IcTransDs.Where(x => x.ItemCode == kodeBank && x.Tanggal < Tanggal1)
+             TransAwalIC = _context.IcTransDs.Where(x => x.ItemCode == kodeBank && x.Tanggal.Date < Tanggal1.Date)
                 .ToList();
 
            
@@ -100,8 +100,8 @@ namespace eSoft.LaporanStock.Services
             }
                 );
 
-            transHIR = _contextIR.IrTransHs.Include(p => p.IrTransDs).Where(x => x.Tanggal >= Tanggal1 && x.Tanggal <= Tanggal2).ToList();
-            transDIR = _contextIR.IrTransDs.Where(x => x.ItemCode == kodeBank && (x.Tanggal >= Tanggal1 && x.Tanggal <= Tanggal2)).ToList();
+            transHIR = _contextIR.IrTransHs.Include(p => p.IrTransDs).Where(x => x.Tanggal.Date >= Tanggal1.Date && x.Tanggal.Date <= Tanggal2.Date).ToList();
+            transDIR = _contextIR.IrTransDs.Where(x => x.ItemCode == kodeBank && (x.Tanggal.Date >= Tanggal1.Date && x.Tanggal.Date <= Tanggal2.Date)).ToList();
 
             if (transHIR != null && transDIR != null)
             {
@@ -121,8 +121,8 @@ namespace eSoft.LaporanStock.Services
                 Transaksi.AddRange(Rincian1);
             }
 
-            transHIC = _context.IcTransHs.Include(p => p.IcTransDs).Where(x => (x.Tanggal >= Tanggal1 && x.Tanggal <= Tanggal2) && (x.Kode == "81" || x.Kode == "72")).ToList();
-            transDIC = _context.IcTransDs.Where(x => x.ItemCode == kodeBank && (x.Tanggal >= Tanggal1 && x.Tanggal <= Tanggal2)).ToList();
+            transHIC = _context.IcTransHs.Include(p => p.IcTransDs).Where(x => (x.Tanggal.Date >= Tanggal1.Date && x.Tanggal.Date <= Tanggal2.Date) && (x.Kode == "81" || x.Kode == "72")).ToList();
+            transDIC = _context.IcTransDs.Where(x => x.ItemCode == kodeBank && (x.Tanggal.Date >= Tanggal1.Date && x.Tanggal.Date <= Tanggal2.Date)).ToList();
 
             if (transHIC != null && transDIC != null)
             {
@@ -143,8 +143,8 @@ namespace eSoft.LaporanStock.Services
             }
 
 
-            transHOE = _contextOE.OeTransHs.Include(p => p.OeTransDs).Where(x => x.Tanggal >= Tanggal1 && x.Tanggal <= Tanggal2).ToList();
-            transDOE = _contextOE.OeTransDs.Where(x => x.ItemCode == kodeBank && (x.Tanggal >= Tanggal1 && x.Tanggal <= Tanggal2)).ToList();
+            transHOE = _contextOE.OeTransHs.Include(p => p.OeTransDs).Where(x => x.Tanggal.Date >= Tanggal1.Date && x.Tanggal.Date <= Tanggal2.Date).ToList();
+            transDOE = _contextOE.OeTransDs.Where(x => x.ItemCode == kodeBank && (x.Tanggal.Date >= Tanggal1.Date && x.Tanggal.Date <= Tanggal2.Date)).ToList();
 
             if (transHOE != null && transDOE != null)
             {

@@ -61,7 +61,7 @@ namespace eSoft.Pembelian.Services
 
           //  try
           //  {
-                IrTrans = _context.IrTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Kode == "82" || x.Kode == "83").ToList();
+                IrTrans = _context.IrTransHs.OrderByDescending(x => x.Tanggal.Date).Where(x => x.Kode == "82" || x.Kode == "83").ToList();
 
                 foreach (var item in IrTrans)
                 {
@@ -89,7 +89,7 @@ namespace eSoft.Pembelian.Services
         {
             List<IrTransH> IrTrans = new List<IrTransH>();
 
-            IrTrans = _context.IrTransHs.OrderByDescending(x => x.Tanggal).Where(x => x.Tanggal > DateTime.Today.AddMonths(-3) && x.Kode == "82" || x.Kode == "83").ToList();
+            IrTrans = _context.IrTransHs.OrderByDescending(x => x.Tanggal.Date).Where(x => x.Tanggal.Date > DateTime.Today.Date.AddMonths(-3) && x.Kode == "82" || x.Kode == "83").ToList();
 
             return IrTrans;
 
@@ -890,7 +890,7 @@ namespace eSoft.Pembelian.Services
         {
             List<IrTransH> transH = new List<IrTransH>();
 
-            transH = _context.IrTransHs.Where(x => x.Tanggal >= tgl1 && x.Tanggal <= tgl2).OrderByDescending(t => t.Tanggal).ToList();
+            transH = _context.IrTransHs.Where(x => x.Tanggal.Date >= tgl1.Date && x.Tanggal.Date <= tgl2.Date).OrderByDescending(t => t.Tanggal.Date).ToList();
 
             foreach (var item in transH)
             {
@@ -919,8 +919,8 @@ namespace eSoft.Pembelian.Services
             List<IrTransD> transD = new List<IrTransD>();
             List<IrTrans> trans = new List<IrTrans>();
 
-            transH = _context.IrTransHs.Include(p => p.IrTransDs).Where(x => x.Tanggal >= tgl1 && x.Tanggal <= tgl2).ToList();
-            transD = _context.IrTransDs.Where(x => x.ItemCode == xKdHeader && (x.Tanggal >= tgl1 && x.Tanggal <= tgl2)).ToList();
+            transH = _context.IrTransHs.Include(p => p.IrTransDs).Where(x => x.Tanggal.Date >= tgl1.Date && x.Tanggal.Date <= tgl2.Date).ToList();
+            transD = _context.IrTransDs.Where(x => x.ItemCode == xKdHeader && (x.Tanggal.Date >= tgl1.Date && x.Tanggal.Date <= tgl2.Date)).ToList();
 
             if (transH != null && transD != null)
             {

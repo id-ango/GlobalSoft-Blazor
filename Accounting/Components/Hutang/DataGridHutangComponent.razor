@@ -1,5 +1,5 @@
 ﻿
-@using eSoft.Piutang.Model
+@using eSoft.Hutang.Model
 
 @using System.Collections.Generic
 @using System.Linq
@@ -16,10 +16,10 @@
 
     <thead>
         <tr>
-            <th scope="col" style="width:25%">Customer</th>
+            <th scope="col" style="width:25%">Supplier</th>
             <th scope="col" style="width:45%">Alamat</th>
             <th scope="col" style="width:15%">Telpon</th>
-            <th scope="col" style="width:15%">Piutang</th>
+            <th scope="col" style="width:15%">Hutang</th>
             <th></th>
         </tr>
     </thead>
@@ -34,14 +34,14 @@
             <tr>
 
                 <td style="width:25%">
-                    @transaksi.NamaCust
+                    @transaksi.NamaSup
                     <br />
-                    <span class="badge bg-primary">@transaksi.Customer</span>
+                    <span class="badge bg-primary">@transaksi.Supplier</span>
 
                 </td>
                 <td style="width:45%">@transaksi.Alamat</td>
                 <td style="width:15%">@transaksi.Telpon</td>
-                <td style="width:15%">@transaksi.Piutang.ToString("N")</td>
+                <td style="width:15%">@transaksi.Hutang.ToString("N")</td>
 
                 <td>
                     <button @onclick="() => BtnDetail(transaksi)" class="btn btn-success">
@@ -63,20 +63,20 @@
 @code {
 
     [Parameter]
-    public List<ArCust> Items { get; set; }
+    public List<ApSuppl> Items { get; set; }
 
     [Parameter]
-    public EventCallback<ArCust> OnDetail { get; set; }
+    public EventCallback<ApSuppl> OnDetail { get; set; }
 
     private string nJumlah { get; set; }
 
-    private List<ArCust> result = new List<ArCust>();
-    private List<ArCust> result2 = new List<ArCust>();
+    private List<ApSuppl> result = new List<ApSuppl>();
+    private List<ApSuppl> result2 = new List<ApSuppl>();
 
     private string searchText;
 
 
-    private Task BtnDetail(ArCust xKode)
+    private Task BtnDetail(ApSuppl xKode)
     {
         return OnDetail.InvokeAsync(xKode);
 
@@ -106,9 +106,9 @@
             //   result = result.Where(x => x.NamaCust || x.AlamatKirim).ToList();
             result2 = (from t in result2
                        where
-   ((t.NamaCust?.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ?? false) ||
+   ((t.NamaSup?.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ?? false) ||
    (t.Alamat?.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ?? false) ||
-     (t.Customer?.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ?? false))
+     (t.Supplier?.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ?? false))
                        select t).ToList();
 
 
@@ -119,7 +119,7 @@
         else
             result = Items;
 
-        nJumlah = result.Sum(x => x.Piutang).ToString("N");
+        nJumlah = result.Sum(x => x.Hutang).ToString("N");
     }
 
 
