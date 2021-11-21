@@ -14,51 +14,44 @@
 
 <div class="dontprint" style="display:none inline">
     <br />
-     &emsp;
-    
+    &emsp;
+    @if(@TransAll.Pajak)
+    {
         <NavLink href="/ModuleJual/TransJual" class="btn btn-primary btn-lg">&nbsp;Back&nbsp;</NavLink>
-   
-    
-     &emsp; <NavLink class="btn btn-success btn-lg" onclick="window.print()">&nbsp; Cetak &nbsp;</NavLink>
+    } else
+    {
+        <NavLink href="/ModuleJual/TransJualNon" class="btn btn-primary btn-lg">&nbsp;Back&nbsp;</NavLink>
+    }
+    &emsp;
+     <NavLink class="btn btn-success btn-lg" onclick="window.print()">&nbsp; Cetak &nbsp;</NavLink>
     &emsp;<NavLink @onclick="() => OpenPrint(Id)" class="btn btn-primary btn-lg">&nbsp;Nota&nbsp;</NavLink>&emsp;
 </div>
 
 <div id="page-wrap">
-    <div class="kepala">
-        <span class="judul"><u>@Perusahaan</u></span><br />
-        <span class="alamat">@Alamat</span>
-    </div>
-
-
-
-    @*<div class="tengah">
-            <span class="judul2"><u>@Title</u></span>
-        </div>*@
-    @*<div id="header">
-        @Title
-    </div>*@
+  <br/>
     <textarea id="header" aria-label="Title">@Title</textarea>
-
+    <br/>
+     <span style="text-align:left;text-decoration:underline;font: bold 16px "Times New Roman", Sans-Serif">Kepada Yth</span> 
+     <br />
     <div >
-
+       
         <textarea id="address">
-@TransAll.NamaCust
-@TransAll.AlamatKirim
-
+            @TransAll.NamaCust
+            @TransAll.AlamatKirim
         </textarea>
 
         @*<div style="clear:both"></div>*@
 
 
         <table id="meta">
-            <tr>
+           @* <tr>
                 <td class="meta-head">Document #</td>
                 <td>@TransAll.NoLpb</td>
-            </tr>
+            </tr>*@
             <tr>
 
                 <td class="meta-head">Date</td>
-                <td>@TransAll.Tanggal.ToShortDateString()</td>
+                <td>Surabaya, @TransAll.Tanggal.ToShortDateString()</td>
             </tr>
             <tr>
                 <td class="meta-head">Customer</td>
@@ -72,21 +65,17 @@
     <table id="items">
 
         <tr>
-            <th>Keterangan</th>
-            <th>Qty</th>
-            <th>Stn</th>
-
-
-
-        </tr>
+            <th >Keterangan</th>
+            <th >Quantity</th>
+         </tr>
 
         @foreach (var item in TransAll.OeTransDs)
         {
             <tr class="item-row">
 
                 <td class="description">@item.NamaItem</td>
-                <td class="source">@item.Qty.ToString("N")</td>
-                <td class="no">@(item.Satuan)</td>
+                <td class="source">@($"{@item.Qty.ToString("F0")} {@item.Satuan}")</td>
+            
 
 
 
@@ -98,8 +87,7 @@
             for (var x = TransAll.OeTransDs.Count; x < 6; x++)
             {
                 <tr class="item-row">
-                    <td class="description"><textarea></textarea></td>
-                    <td class="no"></td>
+                    <td class="description"><textarea></textarea></td>                  
                     <td class="source"></td>
 
 
@@ -108,7 +96,7 @@
         }
         <tr>
 
-            <td colspan="3" rowspan="2" class="description"><textarea class="keterangan">@TransAll.Keterangan</textarea></td>
+            <td colspan="2" rowspan="2" class="description"><textarea class="keterangan">@TransAll.Keterangan</textarea></td>
 
         </tr>
 
@@ -120,7 +108,7 @@
     <table id="tandatangan">
         <tr>
             <th>Penerima</th>
-            <th>Nama Expedisi</th>
+            <th>Expedisi</th>
             <th>Gudang</th>
         </tr>
         <tr class="item-footer">
@@ -149,9 +137,10 @@
 </div>
 
 
-@code { [Parameter] public string Title { get; set; } = "SURAT JALAN";
+@code {
+    [Parameter] public string Title { get; set; } = "SURAT JALAN";
     [Parameter] public int Id { get; set; }
-     [Parameter] public int Cetak { get; set; }
+    [Parameter] public int Cetak { get; set; }
 
     private OeTransHView Transh = new OeTransHView() { OeTransDs = new List<OeTransDView>() };
     private OeTransH TransAll = new OeTransH() { OeTransDs = new List<OeTransD>() };
@@ -170,12 +159,12 @@
 
     protected override void OnInitialized()
     {
-        
+
         LoadTrans();
 
     }
 
-   
+
     void LoadTrans()
     {
         TransAll = service.GetOeTrans(Id);
@@ -183,14 +172,17 @@
         {
             Perusahaan = "CV BMA TEKNIK";
             Alamat = "Pucang Sewu VII No. 1B, Surabaya";
-            
+
         } else
         {
             Perusahaan = "PT. BMA TEKNIK INDONESIA";
             Alamat = "Pucang Sewu VII No. 1B, Surabaya";
-           
-        }
 
+        }
+        if(TransAll.Kode == "95")
+        {
+            Title = "SURAT RETUR";
+        }
     }
 
     private void OpenPrint(int xKdBank)
