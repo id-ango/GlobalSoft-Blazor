@@ -58,7 +58,7 @@
             </li>
             <li class="nav-item px-3">
                 <NavLink class="nav-link" href="ModuleBeli/TransBeli">
-                    <span aria-hidden="true"></span> Transaksi Beli/Retur
+                    <span aria-hidden="true"></span> Pembelian/Retur
                 </NavLink>
             </li>
             
@@ -135,6 +135,11 @@
             @if (expandHutang)
             {
                 <ul class="nav flex-column">
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ModuleHutang/LaporanHutang">
+                            <span aria-hidden="true"></span> Laporan Hutang
+                        </NavLink>
+                    </li>
                     <li class="nav-item px-3">
                         <NavLink class="nav-link" href="ModuleHutang/TransHutang">
                             <span aria-hidden="true"></span> Transaksi Hutang

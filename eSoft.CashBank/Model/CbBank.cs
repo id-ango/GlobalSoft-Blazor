@@ -32,6 +32,7 @@ namespace eSoft.CashBank.Model
         public bool NonPpn { get; set; }
         public bool Pajak { get; set; }
         public string GrpBank { get; set; }
+        public string CoKode { get; set; }
 
     }
 

@@ -629,6 +629,44 @@ namespace eSoft.Hutang.Services
 
         #endregion Transaksi Hutang Class
 
+        #region laporan Hutang
+
+        public List<ApHutang> Detail1(string xKdHeader)
+        {
+
+            List<ApHutang> trans = new List<ApHutang>();
+
+            trans = _context.ApHutangs.Where(x => x.Supplier == xKdHeader && (x.Sisa != 0)).ToList();
+
+            return trans;
+        }
+
+        public List<ApHutangView> GetBayarDimuka()
+        {
+            List<ApHutangView> transView = new List<ApHutangView>();
+            var trans = _context.ApHutangs.Where(x => x.Kode == "CA" && x.KodeTran == "23" && x.Sisa != 0).ToList();
+            var supplier = GetSupplier();
+
+
+            if (trans != null && supplier != null)
+            {
+                transView = (from header in trans
+                             join detail in supplier on header.Supplier equals detail.Supplier
+                             select new ApHutangView()
+                             {
+                                 Sisa = header.Sisa,
+                                 Dokumen = header.Dokumen,
+                                 Tanggal = header.Tanggal,
+                                 Supplier = header.Supplier,
+                                 NamaSuppl = detail.NamaSup,
+                                 KdBank = GetTransDoc(header.Dokumen).KdBank
+                             }).ToList();
+            }
+
+            return transView;
+        }
+        #endregion
+
         public ApTransH GetTransDoc(string docno)
         {
             return _context.ApTransHs.Include(p => p.ApTransDs).Where(x => x.Bukti == docno).FirstOrDefault();

@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSoft.LatihanHTML", "eSoft.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSoft.LaporanStock", "eSoft.LaporanStock\eSoft.LaporanStock.csproj", "{6A46642E-B1A1-41B4-A591-8F8E16E4BF67}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSoft.Company", "eSoft.Company\eSoft.Company.csproj", "{AF6EC7CE-EE80-4881-A2A2-25EC30906B8C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{6A46642E-B1A1-41B4-A591-8F8E16E4BF67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A46642E-B1A1-41B4-A591-8F8E16E4BF67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A46642E-B1A1-41B4-A591-8F8E16E4BF67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF6EC7CE-EE80-4881-A2A2-25EC30906B8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF6EC7CE-EE80-4881-A2A2-25EC30906B8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF6EC7CE-EE80-4881-A2A2-25EC30906B8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF6EC7CE-EE80-4881-A2A2-25EC30906B8C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

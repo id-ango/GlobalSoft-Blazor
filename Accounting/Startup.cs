@@ -36,6 +36,9 @@ using eSoft.Penjualan.Services;
 using eSoft.Order.Data;
 using eSoft.Order.Services;
 
+using eSoft.Company.Data;
+using eSoft.Company.Services;
+
 using eSoft.LaporanStock.Services;
 
 using Microsoft.EntityFrameworkCore;
@@ -86,6 +89,11 @@ namespace Accounting
                  options.UseSqlServer(
                      Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Accounting")));
 
+            services.AddDbContext<DbContextCompany>(options =>
+                 options.UseSqlServer(
+                     Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Accounting")));
+
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddBlazorFluentUI();
@@ -106,6 +114,7 @@ namespace Accounting
             services.AddTransient<ISalesServices, SalesServices>();
             services.AddTransient<IOrderPurchaseServices, OrderPurchaseServices>();
             services.AddTransient<ILaporanStockServices, LaporanStockServices>();
+            services.AddTransient<ICompanyServices, CompanyServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

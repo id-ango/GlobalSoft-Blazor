@@ -40,6 +40,7 @@ namespace eSoft.CashBank.View
         public string Status { get; set; }
         public bool NonPpn { get; set; }
         public bool Pajak { get; set; }
+        public string CoKode { get; set; }
     }
 
   

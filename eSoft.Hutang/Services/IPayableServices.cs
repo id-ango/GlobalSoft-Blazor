@@ -41,5 +41,8 @@ namespace eSoft.Hutang.Services
         bool CekAlreadyPayment(string dokumen);
         ApHutang GetHutang(string bukti);
         bool CekBeli(string noLpb);
+        List<ApHutangView> GetBayarDimuka();
+        List<ApHutang> Detail1(string xKdHeader);
+
     }
 }

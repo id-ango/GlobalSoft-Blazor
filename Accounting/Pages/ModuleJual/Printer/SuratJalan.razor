@@ -36,8 +36,9 @@
     <div >
        
         <textarea id="address">
-            @TransAll.NamaCust
-            @TransAll.AlamatKirim
+            @*@TransAll.NamaCust           
+            @TransAll.AlamatKirim*@
+            @KepadaYth
         </textarea>
 
         @*<div style="clear:both"></div>*@
@@ -155,12 +156,13 @@
     private int noUrut { get; set; } = 1;
     public string Perusahaan { get; set; }
     public string Alamat { get; set; }
-
+    public string KepadaYth { get; set; }
 
     protected override void OnInitialized()
     {
 
         LoadTrans();
+        KepadaYth = TransAll.NamaCust + '\n' + TransAll.AlamatKirim;
 
     }
 

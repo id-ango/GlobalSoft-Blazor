@@ -267,8 +267,10 @@
         {
             var id = newEdit.IrTransHId.ToString().Trim();
             //  navigationmanager.NavigateTo("/PrintBuktiBayar/{id", false);
-            navigationmanager.NavigateTo("/ModuleBeli/TransBeli", false);
+           // navigationmanager.NavigateTo("/ModuleBeli/TransBeli", false);
             //  navigationmanager.NavigateTo($"/PrintBuktiBayar/{id}");
+            
+             navigationmanager.NavigateTo($"/ModulePrinting/PrintNotaPembelian/{id}");
         }
 
 

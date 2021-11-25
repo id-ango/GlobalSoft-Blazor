@@ -44,6 +44,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eSoft.CashBank\eSoft.CashBank.csproj" />
+    <ProjectReference Include="..\eSoft.Company\eSoft.Company.csproj" />
     <ProjectReference Include="..\eSoft.Fungsi\eSoft.Fungsi.csproj" />
     <ProjectReference Include="..\eSoft.Hutang\eSoft.Hutang.csproj" />
     <ProjectReference Include="..\eSoft.LaporanStock\eSoft.LaporanStock.csproj" />
@@ -60,7 +61,8 @@
     <Folder Include="Pages\ModuleBank\SrcCode\" />
     <Folder Include="Pages\ModuleOrder\ReturOrderBeli\" />
     <Folder Include="Pages\ModuleLedger\Account\" />
-    <Folder Include="Printing\" />
+    <Folder Include="Pages\ModulePiutang\Printer\" />
+   
   </ItemGroup>
 
 </Project>
