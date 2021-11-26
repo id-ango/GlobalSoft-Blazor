@@ -22,10 +22,12 @@
   <ItemGroup>
     <None Remove="Pages\ModuleBank\Printer\BuktiBayar.razor.css" />
     <None Remove="Pages\ModuleJual\Printer\BuktiBayar.razor.css" />
+    <None Remove="Pages\ModulePiutang\Printer\BuktiBayarPiutang.razor.css" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Pages\ModuleBank\Printer\BuktiBayar.razor.css" />
+    <Content Include="Pages\ModulePiutang\Printer\BuktiBayarPiutang.razor.css" />
   </ItemGroup>
 
   <ItemGroup>
@@ -61,7 +63,6 @@
     <Folder Include="Pages\ModuleBank\SrcCode\" />
     <Folder Include="Pages\ModuleOrder\ReturOrderBeli\" />
     <Folder Include="Pages\ModuleLedger\Account\" />
-    <Folder Include="Pages\ModulePiutang\Printer\" />
    
   </ItemGroup>
 
