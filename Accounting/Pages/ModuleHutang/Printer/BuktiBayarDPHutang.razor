@@ -1,6 +1,6 @@
 ﻿@layout PrintLayout
 
-@page "/ModulePrinting/PrintBuktiBayarHutang/{Id:int}"
+@page "/ModulePrinting/PrintBuktiBayarDPHutang/{Id:int}"
 @using eSoft.Hutang.Model
 @using eSoft.Hutang.View
 @using eSoft.Hutang.Services
@@ -22,11 +22,11 @@
     &emsp;
     @if (@TransAll.Pajak)
     {
-        <NavLink href="/ModuleHutang/TransApCa" class="btn btn-primary btn-lg">&nbsp;Back&nbsp;</NavLink>
+        <NavLink href="/ModuleHutang/TransApDp" class="btn btn-primary btn-lg">&nbsp;Back&nbsp;</NavLink>
     }
     else
     {
-        <NavLink href="/ModuleHutang/TransApCa" class="btn btn-primary btn-lg">&nbsp;Back&nbsp;</NavLink>
+        <NavLink href="/ModuleHutang/TransApDp" class="btn btn-primary btn-lg">&nbsp;Back&nbsp;</NavLink>
     }
     &emsp;
     <NavLink class="btn btn-success btn-lg" onclick="window.print()">&nbsp; Cetak &nbsp;</NavLink>
@@ -115,29 +115,13 @@
         <td colspan="2">
             <table width="100%" border="0" cellspacing="0" cellpadding="4">
                 <tr>
-                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-left:1px solid #333; border-right:1px solid #333;" width="15%" height="32" align="center">Tanggal</td>
-                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;" width="25%" align="center">Dokumen</td>
-                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;" width="15%" align="center">Jumlah</td>
-                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;" width="15%" align="center">Bayar</td>
-                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;" width="15%" align="center">Potongan</td>
-                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;" width="15%" align="center">Sisa</td>
+                    <td colspan="6" style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:16px; border-top:1px solid #333; border-left:1px solid #333; border-right:1px solid #333; " align="center">
+                    </td>
                 </tr>
-                @foreach (var item in TransAll.ApTransDs)
-                {
 
-                    <tr>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  border-left:1px solid #333; " align="left">@item.DueDate?.ToShortDateString()</td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="center">@item.Lpb </td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right">@item.Jumlah.ToString("N")</td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right">@item.Bayar.ToString("N")</td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;  " align="right">@item.Discount.ToString("N")</td>
-                        <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;   border-right:1px solid #333;" align="right">@item.Sisa.ToString("N")</td>
-                    </tr>
-                }
-
-                @if (TransAll.ApTransDs.Count < 6)
+                @if (TransAll.ApTransDs.Count < 5)
                 {
-                    for (var x = TransAll.ApTransDs.Count; x < 6; x++)
+                    for (var x = TransAll.ApTransDs.Count; x < 5; x++)
                     {
                         <tr>
                             <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-left:1px solid #333; " align="center">&emsp;</td>
@@ -147,9 +131,21 @@
                             <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;" align="center"></td>
                             <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px;  border-right:1px solid #333;" align="center"></td>
                         </tr>
+                        if (x == 3)
+                        {
+                            <tr>
+                                <td colspan="6" style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:16px; border-left:1px solid #333; border-right:1px solid #333; " align="center">
+                                    <span>@TransAll.Keterangan</span>
+                                </td>
+                            </tr>
+                        }
                     }
                 }
-
+                <tr>
+                    <td colspan="6" style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:16px; border-left:1px solid #333; border-right:1px solid #333; " align="center">
+                        <span>Jumlah yang dibayarkan Rp. @TransAll.Jumlah.ToString("N")  / @bank</span>
+                    </td>
+                </tr>
                 <tr>
                     <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333;  border-left:1px solid #333; " align="center">&emsp;</td>
                     <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333;  " align="center"></td>
@@ -158,8 +154,8 @@
                     <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333; " align="center"></td>
                     <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333;   border-right:1px solid #333;" align="center"></td>
                 </tr>
-               
-                
+
+
 
 
 
@@ -168,56 +164,56 @@
         </td>
     </tr>
     <tr>
-                    <td colspan="2" valign="top">
-                        <p>@TransAll.Keterangan</p>
-                        <p>
-                            <table width="100%">
+        <td colspan="2" valign="top">
+            <p></p>
+            <p>
+                <table width="100%">
+                    <tr>
+                        <td width="100%">
+                            <table width="100%" border="1" cellspacing="0" cellpadding="4" style="border-color:black">
                                 <tr>
-                                    <td width="100%">
-                                        <table width="100%" border="1" cellspacing="0" cellpadding="4" style="border-color:black">
-                                            <tr>
-                                                <td style="font-family: Verdana, Geneva, sans-serif; font-weight: 300; font-size: 14px; color:black;border-right:1px solid #333;  " align="center">
-                                                    <span>Hormat Kami</span><br />
-                                                    <span>
-                                                        &emsp;
-                                                    </span> <br />
-                                                    <span>
-                                                        &emsp;
-                                                    </span>
-                                                </td>
-                                                <td style="font-family: Verdana, Geneva, sans-serif; font-weight: 300; font-size: 14px; color:black; border-right:1px solid #333; " align="center">
-                                                    <span>Penerima</span><br />
-                                                    <span>
-                                                        &emsp;
-                                                    </span> <br />
-                                                    <span>
-                                                        &emsp;
-                                                    </span>
-                                                </td>
-                                                <td style="font-family: Verdana, Geneva, sans-serif; font-weight: 300; font-size: 14px; color:black;  " align="center">
-                                                    <span>Supplier</span><br />
-                                                    <span>
-                                                        &emsp;
-                                                    </span> <br />
-                                                    <span>
-                                                        &emsp;
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                            @*<tr>
-
-                                                </tr>*@
-                                        </table>
+                                    <td style="font-family: Verdana, Geneva, sans-serif; font-weight: 300; font-size: 14px; color:black;border-right:1px solid #333;  " align="center">
+                                        <span>Hormat Kami</span><br />
+                                        <span>
+                                            &emsp;
+                                        </span> <br />
+                                        <span>
+                                            &emsp;
+                                        </span>
                                     </td>
-
+                                    <td style="font-family: Verdana, Geneva, sans-serif; font-weight: 300; font-size: 14px; color:black; border-right:1px solid #333; " align="center">
+                                        <span>Penerima</span><br />
+                                        <span>
+                                            &emsp;
+                                        </span> <br />
+                                        <span>
+                                            &emsp;
+                                        </span>
+                                    </td>
+                                    <td style="font-family: Verdana, Geneva, sans-serif; font-weight: 300; font-size: 14px; color:black;  " align="center">
+                                        <span>Supplier</span><br />
+                                        <span>
+                                            &emsp;
+                                        </span> <br />
+                                        <span>
+                                            &emsp;
+                                        </span>
+                                    </td>
                                 </tr>
+                                @*<tr>
+
+                                    </tr>*@
                             </table>
+                        </td>
 
-                        </p>
-                    </td>
+                    </tr>
+                </table>
+
+            </p>
+        </td>
 
 
-                </tr>
+    </tr>
     <tr>
         <td colspan="2">&nbsp;</td>
     </tr>
@@ -309,7 +305,7 @@
         TransAll = service.GetTrans(Id);
         customers = serviceAR.GetSupplierKode(TransAll.Supplier);
         kurs = serviceAR.GetSupplierKode(TransAll.Supplier).Kurs;
-       
+
 
         currency = TransAll.Kurs;
 
@@ -324,7 +320,7 @@
         }
         else
         {
-             bank = serviceCB.GetBankKd(TransAll.KdBank).NmBank;
+            bank = serviceCB.GetBankKd(TransAll.KdBank).NmBank;
         }
 
         if (TransAll.Pajak)

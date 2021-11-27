@@ -100,8 +100,8 @@
         </td>
     </tr>
     <tr>
-        <td colspan="2" style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px;">
-            <span>Jumlah yang dibayarkan Rp. @TransAll.Jumlah.ToString("N")</span>
+        <td colspan="2" style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:11px;">
+            <span>Jumlah yang dibayarkan Rp. @TransAll.Jumlah.ToString("N")  / @bank</span>
         </td>
     </tr>
     <tr>
@@ -112,7 +112,7 @@
 
 
     <tr>
-        <td colspan="3">
+        <td colspan="2">
             <table width="100%" border="0" cellspacing="0" cellpadding="4">
                 <tr>
                     <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-left:1px solid #333; border-right:1px solid #333;" width="15%" height="32" align="center">Tanggal</td>
@@ -159,8 +159,15 @@
                     <td style="font-family:Verdana, Geneva, sans-serif; font-weight:300; font-size:13px; border-bottom:1px solid #333;   border-right:1px solid #333;" align="center"></td>
                 </tr>
                
-                <tr>
-                    <td colspan="6" valign="top">
+                
+
+
+
+            </table>
+        </td>
+    </tr>
+    <tr>
+                    <td colspan="2" valign="top">
                         <p>@TransAll.Keterangan</p>
                         <p>
                             <table width="100%">
@@ -210,12 +217,6 @@
 
 
                 </tr>
-
-
-
-            </table>
-        </td>
-    </tr>
     <tr>
         <td colspan="2">&nbsp;</td>
     </tr>
@@ -276,7 +277,7 @@
     public string Alamat { get; set; }
     public string Rekening1 { get; set; }
     public string Rekening2 { get; set; }
-
+    public string bank { get; set; } = " ";
     public string kurs { get; set; } = "";
     private int noUrut { get; set; } = 1;
 
@@ -304,6 +305,15 @@
     {
         TransAll = service.GetTrans(Id);
         customers = serviceAR.GetCustomerCode(TransAll.Customer);
+
+        if (string.IsNullOrEmpty(TransAll.KdBank))
+        {
+            bank = " ";
+        }
+        else
+        {
+             bank = serviceCB.GetBankKd(TransAll.KdBank).NmBank;
+        }
 
         if (TransAll.Pajak)
         {

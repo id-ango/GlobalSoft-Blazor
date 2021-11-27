@@ -21,14 +21,18 @@
 
   <ItemGroup>
     <None Remove="Pages\ModuleBank\Printer\BuktiBayar.razor.css" />
+    <None Remove="Pages\ModuleHutang\Printer\BuktiBayarDPHutang.razor.css" />
     <None Remove="Pages\ModuleHutang\Printer\BuktiBayarHutang.razor.css" />
     <None Remove="Pages\ModuleJual\Printer\BuktiBayar.razor.css" />
+    <None Remove="Pages\ModulePiutang\Printer\BuktiBayarDPPiutang.razor.css" />
     <None Remove="Pages\ModulePiutang\Printer\BuktiBayarPiutang.razor.css" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Pages\ModuleBank\Printer\BuktiBayar.razor.css" />
+    <Content Include="Pages\ModuleHutang\Printer\BuktiBayarDPHutang.razor.css" />
     <Content Include="Pages\ModuleHutang\Printer\BuktiBayarHutang.razor.css" />
+    <Content Include="Pages\ModulePiutang\Printer\BuktiBayarDPPiutang.razor.css" />
     <Content Include="Pages\ModulePiutang\Printer\BuktiBayarPiutang.razor.css" />
   </ItemGroup>
 
