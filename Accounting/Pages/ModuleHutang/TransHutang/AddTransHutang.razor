@@ -217,8 +217,9 @@
         {
             var id = newEdit.ApTransHId.ToString().Trim();
             //  navigationmanager.NavigateTo("/PrintBuktiBayar/{id", false);
-            navigationmanager.NavigateTo("/ModuleHutang/TransHutang", false);
+          //  navigationmanager.NavigateTo("/ModuleHutang/TransHutang", false);
             //  navigationmanager.NavigateTo($"/PrintBuktiBayar/{id}");
+             navigationmanager.NavigateTo($"/ModulePrinting/PrintNotaHutang/{id}");
         }
 
 

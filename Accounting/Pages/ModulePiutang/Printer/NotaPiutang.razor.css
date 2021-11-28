@@ -57,9 +57,9 @@ table td, table th { border: 1px solid black; padding: -1px; }
 #items textarea { width: 100px; height: 20px; }
 #items tr.item-row td { border: 0; vertical-align: top; }
 #items td.no {width: 5%; text-align:center	}
-#items td.source {width: 5%;text-align:center}
+#items td.source {width: 10%;text-align:center}
 #items td.jumlah { width: 15%; text-align:right }
-#items td.description { width: 75%;}
+#items td.description { width: 70%;}
 #items td.item-name { width: 175px; }
 	#items tr.item-footer td {
 		border-bottom:0 ;
