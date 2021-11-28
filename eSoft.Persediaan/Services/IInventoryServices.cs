@@ -30,6 +30,7 @@ namespace eSoft.Persediaan.Services
         bool CekKdLokasi(string item);
         List<IcLokasi> GetIcLokasi();
         IcLokasi GetIcLokasiId(int id);
+        IcLokasi GetIcLokasiKode(string id);
         bool AddIcLokasi(IcLokasiView codeview);
         Task<bool> EditIcLokasi(IcLokasiView codeview);
         Task<bool> DelIcLokasi(int codeview);

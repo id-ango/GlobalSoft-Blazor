@@ -258,6 +258,11 @@ namespace eSoft.Persediaan.Services
             return _context.Iclokasis.Where(x => x.IcLokasiId == id).FirstOrDefault();
         }
 
+        public IcLokasi GetIcLokasiKode(string id)
+        {
+            return _context.Iclokasis.Where(x => x.Lokasi == id).FirstOrDefault();
+        }
+
         public bool AddIcLokasi(IcLokasiView codeview)
         {
             string test = codeview.Lokasi.ToUpper();
