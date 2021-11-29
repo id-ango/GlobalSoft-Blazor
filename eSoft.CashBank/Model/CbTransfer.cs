@@ -31,6 +31,10 @@ namespace eSoft.CashBank.Model
         public decimal Saldo { get; set; }
         [Column(TypeName = "decimal(18,4)")]
         public decimal KSaldo { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal Biaya { get; set; }
+        [Column(TypeName = "decimal(18,4)")]
+        public decimal KBiaya { get; set; }
         public bool NonPPN { get; set; }
         public bool Pajak { get; set; }
         public bool Cek { get; set; }

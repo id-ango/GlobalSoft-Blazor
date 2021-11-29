@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eSoft.CashBank.Data;
 
@@ -11,9 +12,10 @@ using eSoft.CashBank.Data;
 namespace Accounting.Migrations.DbContextBankMigrations
 {
     [DbContext(typeof(DbContextBank))]
-    partial class DbContextBankModelSnapshot : ModelSnapshot
+    [Migration("20211129023704_tambahbiayatransfer")]
+    partial class tambahbiayatransfer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
