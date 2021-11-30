@@ -29,7 +29,7 @@
             </label>
         </div>
         <div class="form-group">
-            <table>
+            <table style="width:100%">
                 <tr>
                     <td style="width:70%">
                         <label>
@@ -92,11 +92,12 @@
             </label>
         </div>
 
-
+        <br/>
+        
         <div class="float-md-right">
             <button class="btn-success" type="submit">Simpan</button>
+            <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModulePiutang/SetupCustomer", false))">Batal</button>
         </div>
-
     </EditForm>
     
 </div>

@@ -26,5 +26,7 @@ namespace eSoft.Pembelian.Services
         List<IrTransH> Laporan1(DateTime tgl1, DateTime tgl2);
         List<IrTransD> Detail1(int xKdHeader);
         List<IrTrans> Detail2(string xKdHeader, DateTime tgl1, DateTime tgl2);
+        bool CekHutang(IrTransH trans);
+
     }
 }

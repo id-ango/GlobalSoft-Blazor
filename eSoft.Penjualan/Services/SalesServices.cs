@@ -591,6 +591,20 @@ namespace eSoft.Penjualan.Services
             return false;
         }
 
+        public bool CekPiutang(OeTransH trans)
+        {
+            
+            var cekFirst = _contextAr.ArPiutngs.Where(x => x.Dokumen == trans.NoLpb && x.Bayar == 0).FirstOrDefault();
+
+            if(cekFirst == null)
+            {
+                return false;
+            } else
+            {
+                return true;
+            }
+        }
+
         public async Task<bool> EditTransH(OeTransHView trans)
         {
             decimal mQty5 = 0;

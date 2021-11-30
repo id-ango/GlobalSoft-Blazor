@@ -40,5 +40,7 @@ namespace eSoft.Piutang.Services
         bool CekAlreadyPayment(string dokumen);
         List<ArPiutng> Detail1(string xKdHeader);
         List<ArPiutngView> GetUangMuka();
+
+        bool CekJual(string noLpb);
     }
 }

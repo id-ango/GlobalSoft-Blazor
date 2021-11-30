@@ -396,6 +396,21 @@ namespace eSoft.Pembelian.Services
             return false;
         }
 
+        public bool CekHutang(IrTransH trans)
+        {
+
+            var cekFirst = _contextAp.ApHutangs.Where(x => x.Dokumen == trans.NoLpb && x.Bayar == 0).FirstOrDefault();
+
+            if (cekFirst == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         public async Task<bool> EditTransH(IrTransHView trans)
         {
             decimal mQty5 = 0;

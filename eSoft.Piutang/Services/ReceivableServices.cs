@@ -580,7 +580,15 @@ namespace eSoft.Piutang.Services
 
 
         }
+        public bool CekJual(string noLpb)
+        {
+            var cekFirst = _context.ArPiutngs.Where(x => x.Dokumen == noLpb && x.Bayar == 0).FirstOrDefault();
 
+            if (cekFirst != null)
+                return true;
+
+            return false;
+        }
         public bool CekAlreadyPayment(string dokumen)
         {
             var cekFirst = _context.ArPiutngs.Where(x => x.Dokumen == dokumen).FirstOrDefault();
