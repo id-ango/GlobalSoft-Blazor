@@ -44,6 +44,9 @@ using eSoft.LaporanStock.Services;
 using Microsoft.EntityFrameworkCore;
 using BlazorFluentUI;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Components.Authorization;
+using Accounting.Areas.Identity;
 
 namespace Accounting
 {
@@ -60,10 +63,16 @@ namespace Accounting
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-          //  services.AddDefaultIdentity<IdentityUser, IdentityRole>();    /* tambahan authorise */
+            //  services.AddDefaultIdentity<IdentityUser, IdentityRole>();    /* tambahan authorise */
+            services.AddDbContext<ApplicationDbContext>(options =>
+                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
+
             services.AddDbContext<DbContextBank>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection"), b=>b.MigrationsAssembly("Accounting")));
+                    Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Accounting")));
             services.AddDbContext<DbContextLedger>(options =>
                   options.UseSqlServer(
                       Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Accounting")));
@@ -93,15 +102,15 @@ namespace Accounting
                  options.UseSqlServer(
                      Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Accounting")));
 
-
+            
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddBlazorFluentUI();
 
             services.AddSingleton<WeatherForecastService>();
             services.AddTransient<ICashBankServices, CashBankServices>();
-         
-            services.AddTransient<ILedgerServices,LedgerServices>();
+
+            services.AddTransient<ILedgerServices, LedgerServices>();
             services.AddTransient<IReceivableServices, ReceivableServices>();
             services.AddTransient<IPaymentArServices, PaymentArServices>();
             services.AddTransient<IPaymentArDpServices, PaymentArDpServices>();
