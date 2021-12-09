@@ -47,6 +47,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Components.Authorization;
 using Accounting.Areas.Identity;
+using Accounting.Services;
 
 namespace Accounting
 {
@@ -125,6 +126,7 @@ namespace Accounting
             services.AddTransient<IOrderPurchaseServices, OrderPurchaseServices>();
             services.AddTransient<ILaporanStockServices, LaporanStockServices>();
             services.AddTransient<ICompanyServices, CompanyServices>();
+            services.AddTransient<IAdministrationServices,AdministrationServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

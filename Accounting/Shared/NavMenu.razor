@@ -317,6 +317,28 @@
 
 
         </li>  <!--   Ledger     -->
+       
+        <li class="nav-item px-3">
+
+            <NavLink class="nav-link" href="#" @onclick="(()=>expandAdministration = !expandAdministration)">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Administration
+            </NavLink>
+            @if (expandAdministration)
+            {
+                <ul class="nav flex-column">
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="ModuleAdministration/SetupRole">
+                            <span aria-hidden="true"></span> Setup Role
+                        </NavLink>
+                    </li>
+                    
+                </ul>
+
+
+            }
+
+
+        </li>  <!--   Ledger     -->
     </ul>
 </div>
 
@@ -332,6 +354,7 @@
     private bool expandPembelian;
     private bool expandPenjualan;
      private bool expandAsset;
+      private bool expandAdministration;
     //
 
 
