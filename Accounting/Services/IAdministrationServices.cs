@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Accounting.Services.View;
 
 namespace Accounting.Services
 {
@@ -16,5 +17,9 @@ namespace Accounting.Services
         bool AddRoles(IdentityRole banks);
         Task<bool> EditRoles(IdentityRole banks);
         bool DelRoles(string banks);
+
+        List<IdentityView> GetUsersRole();
+        bool SaveRole(string idUser, string idRole);
+
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Accounting.Data;
+using Accounting.Services.View;
 
 namespace Accounting.Services
 {
@@ -19,7 +20,7 @@ namespace Accounting.Services
             _context = context;
         }
 
-        #region Bank Class
+        #region Roles Class
 
         public List<IdentityRole> GetRoles()
         {
@@ -122,6 +123,72 @@ namespace Accounting.Services
 
 
         }
-        #endregion Bank Class
+        #endregion Roles Class
+
+        #region User class
+        public List<IdentityView> GetUsersRole()
+        {
+            List<IdentityView> Banks = new List<IdentityView>();
+            var userRoles = _context.UserRoles.ToList();
+
+            var userList =  _context.Users.ToList();
+
+            Banks = (from e in _context.Users                   
+                       select new IdentityView
+                       {
+                           IdUser = e.Id,
+                           Name = e.UserName,
+                          
+                       }).ToList();
+           
+            foreach(var user in Banks)
+            {
+                user.IdRole = GetIdRole(user.IdUser);
+            }
+
+            return Banks;
+        }
+
+       private string GetIdRole(string id)
+        {
+           var userRoles =  _context.UserRoles.Where(x => x.UserId == id).FirstOrDefault();
+            if (userRoles != null)
+            {
+                return userRoles.RoleId;
+            }
+            return " ";
+        }
+
+        public bool SaveRole(string idUser, string idRole)
+        {
+            IdentityUserRole<string> role = new IdentityUserRole<string>();
+
+            if (idRole != null && idRole != string.Empty)
+            {
+              var userrole =   _context.UserRoles.Where(x => x.UserId == idUser).FirstOrDefault();
+                if(userrole != null)
+                {
+                    userrole.RoleId = idRole;
+                    _context.UserRoles.Update(userrole);
+                }
+                    
+                else
+                {
+                    role = new()
+                    {
+                        RoleId = idRole,
+                        UserId = idUser,
+
+
+                    };
+                    _context.UserRoles.Add(role);
+                }
+
+            }
+            return true;
+
+        }
+
+        #endregion
     }
 }
