@@ -53,6 +53,7 @@ namespace eSoft.Persediaan.Services
         IcTransH AddTransH(IcTransHView codeview);
         Task<bool> EditTransH(IcTransHView codeview);
         Task<bool> DelTransH(int codeview);
+        List<IcStockCardView> GetCurrentStock();
     }
 
 }

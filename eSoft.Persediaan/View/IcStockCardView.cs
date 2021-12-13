@@ -15,6 +15,10 @@ namespace eSoft.Persediaan.View
         public DateTime Tanggal { get; set; }
         public string ItemCode { get; set; }
         public string Dokumen { get; set; }
+        public string Divisi { get; set; }
+        public string KodeDivisi { get; set; }
+        public string NamaItem { get; set; }
+        public string Satuan { get; set; }
         public string Keterangan { get; set; }
         public decimal Harga { get; set; }
         [Column(TypeName = "decimal(18,4)")]

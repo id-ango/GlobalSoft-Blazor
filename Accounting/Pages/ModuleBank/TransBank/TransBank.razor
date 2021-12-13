@@ -3,14 +3,14 @@
 @using eSoft.CashBank.Services
 @using BlazorFluentUI
 
-@attribute [Authorize(Roles ="admin, superuser")]
+@attribute [Authorize(Roles ="Admin, Finance")]
 
 @inject ICashBankServices cashBank
 @implements IDisposable
 @inject NavigationManager navigationmanager
 
 <div class="container">
-    <h1>Transfer Antar BANK/KAS</h1>
+    <h1>Transaksi BANK/KAS</h1>
 </div>
 
 

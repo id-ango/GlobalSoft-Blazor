@@ -871,7 +871,39 @@ namespace eSoft.Persediaan.Services
 
         }
 
-       
+
+        #region laporancurrentstock
+
+        public List<IcStockCardView> GetCurrentStock()
+        {
+            List<IcStockCardView> trans = new List<IcStockCardView>();
+            
+            var icStock = _context.IcItems.Where(x =>x.Qty != 0).ToList();
+            var divisi = _context.IcDivs.ToList();
+
+            if (icStock != null)
+            {
+                foreach(var ic in icStock)
+                {
+
+                    trans.Add(new IcStockCardView
+                    {
+                        ItemCode = ic.ItemCode,
+                        NamaItem = ic.NamaItem,
+                        Satuan = ic.Satuan,
+                        Qty = ic.Qty,
+                        KodeDivisi = ic.Divisi,
+                        Divisi = (from e in divisi where e.Divisi == ic.Divisi select e.NamaDiv).FirstOrDefault(),
+                        
+                    });
+
+
+                }
+            };
+
+            return trans.OrderBy(x => x.KodeDivisi).ToList();
+        }
+        #endregion
 
     }
 }
