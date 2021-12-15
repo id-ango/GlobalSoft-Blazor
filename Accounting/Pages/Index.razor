@@ -1,4 +1,6 @@
 ﻿@page "/"
+@using Accounting.Services;
+@inject IAdministrationServices service
 
 <div class="row">
     <div class="col-sm-6">
@@ -20,3 +22,19 @@
         </div>
     </div>
 </div>
+
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        LoadCek();
+
+    }
+
+    private void LoadCek()
+    {
+        service.seedUserRole();
+    }
+}

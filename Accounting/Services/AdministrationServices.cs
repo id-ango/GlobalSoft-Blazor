@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Accounting.Data;
 using Accounting.Services.View;
 
+
 namespace Accounting.Services
 {
     public  class AdministrationServices : IAdministrationServices
@@ -168,12 +169,12 @@ namespace Accounting.Services
               var userrole =   _context.UserRoles.Where(x => x.UserId == idUser).FirstOrDefault();
                 if(userrole != null)
                 {
-                    userrole.RoleId = idRole;
-                    _context.UserRoles.Update(userrole);
+                  //  userrole.RoleId = idRole;
+                    _context.UserRoles.Remove(userrole);
                 }
                     
-                else
-                {
+           //     else
+          //      {
                     role = new()
                     {
                         RoleId = idRole,
@@ -182,10 +183,65 @@ namespace Accounting.Services
 
                     };
                     _context.UserRoles.Add(role);
-                }
-
+          //      }
+                _context.SaveChanges();
             }
             return true;
+
+        }
+
+        #endregion
+
+        #region seedUserRole
+
+        public void seedUserRole()
+        {
+            var users = _context.Users.ToList();
+            var roles = _context.Roles.ToList();
+          //  var userRole = _context.UserRoles.ToList();
+            IdentityUserRole<string> role = new IdentityUserRole<string>();
+            IdentityUser user = new IdentityUser();
+            IdentityRole role2 = new IdentityRole();
+
+            if (!roles.Any() && !users.Any())
+            {
+                role2 = new()
+                {
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                };
+
+                user = new()
+                {
+                    UserName = "admin@admin.com",
+                    Email = "admin@admin.com",
+                    NormalizedUserName = "ADMIN@ADMIN.COM",
+                    NormalizedEmail = "ADMIN@ADMIN.COM",
+                    EmailConfirmed = true,
+                    
+                   
+                };
+                PasswordHasher<IdentityUser> hasher = new PasswordHasher<IdentityUser>();
+                user.PasswordHash = hasher.HashPassword(user, "ADMIN01");
+                
+
+                _context.Users.Add(user);
+                _context.Roles.Add(role2);
+
+                _context.SaveChanges();
+
+                var idRoles = _context.Roles.Where(x => x.NormalizedName == "ADMIN").FirstOrDefault();
+                var idUsers = _context.Users.Where(x => x.NormalizedUserName == "ADMIN@ADMIN.COM").FirstOrDefault();
+
+                role = new()
+                {
+                    RoleId = idRoles.Id,
+                    UserId = idUsers.Id
+                };
+
+                _context.UserRoles.Add(role);
+                _context.SaveChanges();
+            }          
 
         }
 

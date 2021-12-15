@@ -20,6 +20,7 @@ namespace Accounting.Services
 
         List<IdentityView> GetUsersRole();
         bool SaveRole(string idUser, string idRole);
+        void seedUserRole();
 
     }
 }
