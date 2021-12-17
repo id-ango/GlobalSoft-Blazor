@@ -1,5 +1,7 @@
 ﻿@page "/"
 @using Accounting.Services;
+
+
 @inject IAdministrationServices service
 
 <div class="row">
@@ -12,15 +14,17 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-6">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+    <AuthorizeView Roles="Admin, Finance">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Aging Schedule Hutang</h5>
+                    <p class="card-text">Daftar Hutang Aging Schedule</p>
+                    <a href="/ModuleHutang/LaporanAgingHutang" class="btn btn-primary">Laporan Aging Payable</a>
+                </div>
             </div>
         </div>
-    </div>
+    </AuthorizeView>
 </div>
 
 

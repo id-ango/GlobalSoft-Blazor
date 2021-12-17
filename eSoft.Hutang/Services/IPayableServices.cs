@@ -43,6 +43,7 @@ namespace eSoft.Hutang.Services
         bool CekBeli(string noLpb);
         List<ApHutangView> GetBayarDimuka();
         List<ApHutang> Detail1(string xKdHeader);
+        List<ApAgingView> GetAgingSchedule();
 
     }
 }
