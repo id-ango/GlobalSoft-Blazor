@@ -26,7 +26,30 @@
         </div>
     </AuthorizeView>
 </div>
-
+<div class="row">
+     <AuthorizeView Roles="Admin, Finance">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Aging Schedule Piutang</h5>
+                <p class="card-text">Daftar Piutang Aging Schedule</p>
+                <a href="/ModulePiutang/LaporanAgingPiutang" class="btn btn-primary">Laporan Aging Receivable</a>
+            </div>
+        </div>
+    </div>
+    </AuthorizeView>
+    <AuthorizeView Roles="Admin, Finance">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Aging Schedule Hutang</h5>
+                    <p class="card-text">Daftar Hutang Aging Schedule</p>
+                    <a href="/ModuleHutang/LaporanAgingHutang" class="btn btn-primary">Laporan Aging Payable</a>
+                </div>
+            </div>
+        </div>
+    </AuthorizeView>
+</div>
 
 @code {
 

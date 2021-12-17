@@ -738,9 +738,10 @@ namespace eSoft.Hutang.Services
                     Duedate = duedate,
                    NamaSup = (from e in supplier where e.Supplier == ap.Supplier select e.NamaSup).FirstOrDefault(),
                      Keterangan = ap.Keterangan,
-                    Jumlah = ap.Jumlah,
+                   
                     Sisa = ap.Sisa,
-                    Jumlah1 = (currentDate >= duedate && currentDate <= date1 ? ap.Sisa : 0),
+                   Jumlah = (currentDate < duedate  ? ap.Sisa : 0),
+                   Jumlah1 = (currentDate >= duedate && currentDate <= date1 ? ap.Sisa : 0),
                     Jumlah2 = (currentDate > date1 && currentDate <= date2 ? ap.Sisa : 0),
                     Jumlah3 = (currentDate > date2 && currentDate <= date3 ? ap.Sisa : 0),
                     Jumlah4 = (currentDate > date3 ? ap.Sisa : 0),

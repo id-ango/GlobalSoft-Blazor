@@ -1,13 +1,13 @@
 ﻿@layout PrintLayout
 
-@page "/ModuleHutang/LaporanAgingHutang"
+@page "/ModulePiutang/LaporanAgingPiutang"
 
-@using eSoft.Hutang.Model
-@using eSoft.Hutang.View
-@using eSoft.Hutang.Services
+@using eSoft.Piutang.Model
+@using eSoft.Piutang.View
+@using eSoft.Piutang.Services
 
 
-@inject IPayableServices serviceIC
+@inject IReceivableServices serviceIC
 
 @inject NavigationManager navigationmanager
 
@@ -45,7 +45,7 @@
                     <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;" width="5%" align="center">Tanggal</td>
                     <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;" width="15%" align="center">Dokumen</td>
                     <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;" width="5%" align="center">Due Date</td>
-                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;" width="10%" align="center">Hutang</td>
+                    <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;" width="10%" align="center">Piutang</td>
                     <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;" width="10%" align="center"> &#60;Due Date</td>
                     <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;" width="10%" align="center">1-30</td>
                     <td style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px; border-top:1px solid #333; border-bottom:1px solid #333; border-right:1px solid #333;" width="10%" align="center">31-60</td>
@@ -55,7 +55,7 @@
 
                 @foreach (var item in TransDetail)
                 {
-                    @if (cekDivisi != item.Supplier)
+                    @if (cekDivisi != item.Customer)
                     {
                         if (!string.IsNullOrEmpty(cekDivisi))
                         {
@@ -74,11 +74,11 @@
                         }
 
 
-                        cekDivisi = item.Supplier;
+                        cekDivisi = item.Customer;
                         No = 1;
 
                         <tr>
-                            <td colspan="10" style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px;  border-left:1px solid #333;  border-right:1px solid #333;" align="left">@item.NamaSup</td>
+                            <td colspan="10" style="font-family:Verdana, Geneva, sans-serif; font-weight:600; font-size:13px;  border-left:1px solid #333;  border-right:1px solid #333;" align="left">@item.NamaCust</td>
                         </tr>
 
                         nSisa = 0; nJumlah = 0; nJumlah1 = 0; nJumlah2 = 0; nJumlah3 = 0; nJumlah4 = 0;
@@ -207,7 +207,7 @@
 @code {
 
 
-    public List<ApAgingView> TransDetail;
+    public List<ArAgingView> TransDetail;
     private string Title = "Laporan Aging Schedule";
     private string cekDivisi = "";
     private int No = 0;

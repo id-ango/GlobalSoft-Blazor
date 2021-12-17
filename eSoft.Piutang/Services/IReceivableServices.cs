@@ -42,5 +42,7 @@ namespace eSoft.Piutang.Services
         List<ArPiutngView> GetUangMuka();
 
         bool CekJual(string noLpb);
+        List<ArAgingView> GetAgingSchedule();
+
     }
 }

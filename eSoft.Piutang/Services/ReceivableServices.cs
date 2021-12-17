@@ -707,5 +707,50 @@ namespace eSoft.Piutang.Services
             return cAngNo;
 
         }
+
+        public List<ArAgingView> GetAgingSchedule()
+        {
+            List<ArPiutng> trans = new List<ArPiutng>();
+            List<ArAgingView> transaksi = new List<ArAgingView>();
+
+            List<ArCust> supplier = _context.ArCusts.ToList();
+
+            DateTime duedate = DateTime.Today.Date;
+
+            DateTime currentDate = DateTime.Today.Date;
+            DateTime date1 = currentDate.AddMonths(1);
+            DateTime date2 = currentDate.AddMonths(2);
+            DateTime date3 = currentDate.AddMonths(3);
+
+            trans = _context.ArPiutngs.Where(x => x.Kode != "CA" && (x.Sisa != 0)).OrderBy(x => x.Customer).ToList();
+
+            foreach (var ap in trans)
+            {
+                duedate = ap.DueDate ?? ap.Tanggal;
+                date1 = duedate.AddMonths(1);
+                date2 = duedate.AddMonths(2);
+                date3 = duedate.AddMonths(3);
+
+
+                transaksi.Add(new ArAgingView()
+                {
+                    Customer = ap.Customer,
+                    Tanggal = ap.Tanggal,
+                    Dokumen = ap.Dokumen,
+                    Duedate = duedate,
+                    NamaCust = (from e in supplier where e.Customer == ap.Customer select e.NamaCust).FirstOrDefault(),
+                    Keterangan = ap.Keterangan,
+
+                    Sisa = ap.Sisa,
+                    Jumlah = (currentDate < duedate ? ap.Sisa : 0),
+                    Jumlah1 = (currentDate >= duedate && currentDate <= date1 ? ap.Sisa : 0),
+                    Jumlah2 = (currentDate > date1 && currentDate <= date2 ? ap.Sisa : 0),
+                    Jumlah3 = (currentDate > date2 && currentDate <= date3 ? ap.Sisa : 0),
+                    Jumlah4 = (currentDate > date3 ? ap.Sisa : 0),
+                });
+            }
+            return transaksi;
+
+        }
     }
 }
