@@ -39,7 +39,7 @@
 
         <textarea id="address">
             
-            @KepadaYth
+            @lokasi
         </textarea>
 
         @*<div style="clear:both"></div>*@
@@ -69,6 +69,7 @@
         <tr>
             <th >Keterangan</th>
             <th >Quantity</th>
+             <th >Total</th>
          </tr>
 
         @foreach (var item in TransAll.IcTransDs)
@@ -77,7 +78,7 @@
 
                 <td class="description">@item.NamaItem</td>
                 <td class="source">@($"{@item.QtyShp.ToString("F0")} {@item.Satuan}")</td>
-            
+            <td class="jumlah">@($"{@item.Jumlah.ToString("F2")} ")</td>
 
 
 
@@ -91,14 +92,14 @@
                 <tr class="item-row">
                     <td class="description"><textarea></textarea></td>                  
                     <td class="source"></td>
-
+                    <td class="jumlah"></td>
 
                 </tr>
             }
         }
         <tr>
 
-            <td colspan="2" rowspan="2" class="description"><textarea class="keterangan">@TransAll.Keterangan</textarea></td>
+            <td colspan="3" rowspan="2" class="description"><textarea class="keterangan">@TransAll.Keterangan</textarea></td>
 
         </tr>
 
@@ -140,14 +141,14 @@
 
 
 @code {
-    [Parameter] public string Title { get; set; } = "SURAT MUTASI";
+    [Parameter] public string Title { get; set; } = "SURAT ADJUSTMENT";
     [Parameter] public int Id { get; set; }
     [Parameter] public int Cetak { get; set; }
 
     private IcTransHView Transh = new IcTransHView() { IcTransDs = new List<IcTransDView>() };
     private IcTransH TransAll = new IcTransH() { IcTransDs = new List<IcTransD>() };
     private string lokasi;
-    private string lokasi2;
+  //  private string lokasi2;
     // private List<IcItem> srccode;
     private IcTransDView Transd = new IcTransDView();
     private IcTransDView TransK = new IcTransDView();
@@ -173,8 +174,8 @@
     {
         TransAll = service.GetIcTrans(Id);
         lokasi = service.GetIcLokasiKode(TransAll.Lokasi).NamaLokasi;
-        lokasi2 = service.GetIcLokasiKode(TransAll.Lokasi2).NamaLokasi;
-        KepadaYth = "Dari. " + @lokasi + '\n' + "Ke. " + @lokasi2;
+     //   lokasi2 = service.GetIcLokasiKode(TransAll.Lokasi2).NamaLokasi;
+        KepadaYth =  lokasi + '\n' ;
 
         if (TransAll.Pajak)
         {
