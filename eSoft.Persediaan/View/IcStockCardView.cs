@@ -32,6 +32,7 @@ namespace eSoft.Persediaan.View
         [Column(TypeName = "decimal(18,4)")]
         public decimal Cost { get; set; }
         public string Lokasi { get; set; }
+        public string Lokasi2 { get; set; }
         [Column(TypeName = "decimal(18,4)")]
         public decimal QtyShp { get; set; }
         [Column(TypeName = "decimal(18,4)")]
@@ -42,6 +43,7 @@ namespace eSoft.Persediaan.View
         public decimal JumDpp { get; set; }
         [Column(TypeName = "decimal(18,4)")]
         public decimal Jumlah { get; set; }
-        
+
+        public int IcCardId { get; set; }
     }
 }

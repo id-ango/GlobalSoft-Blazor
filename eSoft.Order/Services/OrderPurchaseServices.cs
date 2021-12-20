@@ -202,8 +202,8 @@ namespace eSoft.Order.Services
                     if (cekItem != null)
                     {
                        
-
-                        cekItem.HrgUsd = item.Harga;  // harga beli barang
+                        if(item.Harga > 0 && item.Harga > cekItem.HrgUsd)
+                                cekItem.HrgUsd = item.Harga;  // harga beli barang
 
                      
 

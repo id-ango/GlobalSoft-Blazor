@@ -20,5 +20,7 @@ namespace eSoft.LaporanStock.Services
     public interface ILaporanStockServices
     {
         List<IcStockCardView> CetakMutasi(DateTime Tanggal1, DateTime Tanggal2, string kodeBank);
+        void prosesStock();
+
     }
 }

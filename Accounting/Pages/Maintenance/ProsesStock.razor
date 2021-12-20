@@ -1,0 +1,21 @@
+﻿@page "/ModuleMaintenance/ProsesStock"
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Identity;
+@using Accounting.Services;
+@using Accounting.Services.View;
+@using Accounting.Data;
+@using eSoft.LaporanStock.Services;
+
+@inject ILaporanStockServices service;
+
+
+<h3>Proses Stock</h3>
+
+<button class="btn-success" @onclick="prosesstock" >Proses</button>
+
+@code {
+    private void prosesstock()
+    {
+        service.prosesStock();
+    }
+}
