@@ -279,21 +279,32 @@ namespace eSoft.LaporanStock.Services
                                 MasterStock.Find(x => x.ItemCode == trans.ItemCode).Cost += trans.Jumlah;
                                 MasterStock.Find(x => x.ItemCode == trans.ItemCode).Qty += trans.Qty;
                                 MasterStock.Find(x => x.ItemCode == trans.ItemCode).HrgNetto = (MasterStock.Find(x => x.ItemCode == trans.ItemCode).Qty != 0 ? (MasterStock.Find(x => x.ItemCode == trans.ItemCode).Cost / MasterStock.Find(x => x.ItemCode == trans.ItemCode).Qty) : item.Harga);
-                                break;
+                                AltStock.Find(x =>x.ItemCode == trans.ItemCode && x.Lokasi == trans.Lokasi).Qty += trans.Qty;    
+                            break;
 
                             case "82":
                                 MasterStock.Find(x => x.ItemCode == trans.ItemCode).Cost += trans.Jumlah;
                                 MasterStock.Find(x => x.ItemCode == trans.ItemCode).Qty += trans.Qty;
                                 MasterStock.Find(x => x.ItemCode == trans.ItemCode).HrgNetto = (MasterStock.Find(x => x.ItemCode == trans.ItemCode).Qty != 0 ? (MasterStock.Find(x => x.ItemCode == trans.ItemCode).Cost / MasterStock.Find(x => x.ItemCode == trans.ItemCode).Qty) : MasterStock.Find(x => x.ItemCode == trans.ItemCode).Harga);
-                                break;
+                            AltStock.Find(x => x.ItemCode == trans.ItemCode && x.Lokasi == trans.Lokasi).Qty += trans.Qty;
+                            break;
 
                             case "83":
                                 MasterStock.Find(x => x.ItemCode == trans.ItemCode).Cost -= trans.Jumlah;
                                 MasterStock.Find(x => x.ItemCode == trans.ItemCode).Qty -= trans.Qty;
                                 MasterStock.Find(x => x.ItemCode == trans.ItemCode).HrgNetto = (MasterStock.Find(x => x.ItemCode == trans.ItemCode).Qty != 0 ? (MasterStock.Find(x => x.ItemCode == trans.ItemCode).Cost / MasterStock.Find(x => x.ItemCode == trans.ItemCode).Qty) : MasterStock.Find(x => x.ItemCode == trans.ItemCode).Harga);
-                                break;
+                            AltStock.Find(x => x.ItemCode == trans.ItemCode && x.Lokasi == trans.Lokasi).Qty -= trans.Qty;
+                            break;
 
-                            case "94":
+                        case "90":
+                         //   MasterStock.Find(x => x.ItemCode == trans.ItemCode).Cost += trans.Jumlah;
+                          //  MasterStock.Find(x => x.ItemCode == trans.ItemCode).Qty += trans.Qty;
+                          //  MasterStock.Find(x => x.ItemCode == trans.ItemCode).HrgNetto = (MasterStock.Find(x => x.ItemCode == trans.ItemCode).Qty != 0 ? (MasterStock.Find(x => x.ItemCode == trans.ItemCode).Cost / MasterStock.Find(x => x.ItemCode == trans.ItemCode).Qty) : item.Harga);
+                            AltStock.Find(x => x.ItemCode == trans.ItemCode && x.Lokasi == trans.Lokasi).Qty -= trans.Qty;
+                            AltStock.Find(x => x.ItemCode == trans.ItemCode && x.Lokasi == trans.Lokasi2).Qty += trans.Qty;
+                            break;
+
+                        case "94":
                                 trans.Jumlah = MasterStock.Find(x => x.ItemCode == trans.ItemCode).HrgNetto * trans.Qty;
                                 trans.Harga = MasterStock.Find(x => x.ItemCode == trans.ItemCode).HrgNetto;
                                 MasterStock.Find(x => x.ItemCode == trans.ItemCode).Cost -= MasterStock.Find(x => x.ItemCode == trans.ItemCode).HrgNetto * trans.Qty;
@@ -303,7 +314,9 @@ namespace eSoft.LaporanStock.Services
                             //  item.HrgNetto = (item.Qty != 0 ? (item.Cost / item.Qty) : item.Harga);
                             TransJual.Find(x => x.OeTransDId == trans.IcCardId).Cost = trans.Jumlah ;
                             TransJual.Find(x => x.OeTransDId == trans.IcCardId).HrgCost = trans.Harga;
-                                break;
+
+                            AltStock.Find(x => x.ItemCode == trans.ItemCode && x.Lokasi == trans.Lokasi).Qty -= trans.Qty;
+                            break;
 
                             case "95":
                                 trans.Jumlah = MasterStock.Find(x => x.ItemCode == trans.ItemCode).HrgNetto * trans.Qty;
@@ -315,6 +328,8 @@ namespace eSoft.LaporanStock.Services
                                 MasterStock.Find(x => x.ItemCode == trans.ItemCode).HrgNetto = (MasterStock.Find(x => x.ItemCode == trans.ItemCode).Qty != 0 ? (MasterStock.Find(x => x.ItemCode == trans.ItemCode).Cost / item.Qty) : MasterStock.Find(x => x.ItemCode == trans.ItemCode).Harga);
                             TransJual.Find(x => x.OeTransDId == trans.IcCardId).Cost = trans.Jumlah;
                             TransJual.Find(x => x.OeTransDId == trans.IcCardId).HrgCost = trans.Harga;
+
+                            AltStock.Find(x => x.ItemCode == trans.ItemCode && x.Lokasi == trans.Lokasi).Qty += trans.Qty;
                             break;
                         }
                  //   }
@@ -325,6 +340,8 @@ namespace eSoft.LaporanStock.Services
 
            
             _context.UpdateRange(MasterStock);
+            _context.UpdateRange(AltStock);
+
             _contextOE.UpdateRange(TransJual);
 
             _context.SaveChanges();

@@ -636,8 +636,8 @@ namespace eSoft.Hutang.Services
 
             List<ApHutang> trans = new List<ApHutang>();
 
-            trans = _context.ApHutangs.Where(x => x.Supplier == xKdHeader && (x.Sisa != 0)).ToList();
-
+        //    trans = _context.ApHutangs.Where(x => x.Supplier == xKdHeader && (x.Sisa != 0)).ToList();
+            trans = _context.ApHutangs.Where(x => x.Supplier == xKdHeader ).ToList();
             return trans;
         }
 

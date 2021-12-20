@@ -643,8 +643,8 @@ namespace eSoft.Piutang.Services
             
             List<ArPiutng> trans = new List<ArPiutng>();
 
-            trans = _context.ArPiutngs.Where(x => x.Customer == xKdHeader && (x.Sisa != 0)).ToList();
-  
+           // trans = _context.ArPiutngs.Where(x => x.Customer == xKdHeader && (x.Sisa != 0)).ToList();
+            trans = _context.ArPiutngs.Where(x => x.Customer == xKdHeader ).ToList();
             return trans;
         }
 
