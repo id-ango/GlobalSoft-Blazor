@@ -36,6 +36,9 @@ using eSoft.Penjualan.Services;
 using eSoft.Order.Data;
 using eSoft.Order.Services;
 
+using eSoft.Asset.Data;
+using eSoft.Asset.Services;
+
 using eSoft.Company.Data;
 using eSoft.Company.Services;
 
@@ -111,7 +114,10 @@ namespace Accounting
                  options.UseSqlServer(
                      Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Accounting")));
 
-            
+            services.AddDbContext<DbContextAssets>(options =>
+                 options.UseSqlServer(
+                     Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Accounting")));
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddBlazorFluentUI();

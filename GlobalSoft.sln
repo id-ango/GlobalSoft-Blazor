@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSoft.LaporanStock", "eSoft
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSoft.Company", "eSoft.Company\eSoft.Company.csproj", "{AF6EC7CE-EE80-4881-A2A2-25EC30906B8C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eSoft.Asset", "eSoft.Asset\eSoft.Asset.csproj", "{949EF716-F147-4E3B-83E1-B942DCA9B108}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{AF6EC7CE-EE80-4881-A2A2-25EC30906B8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF6EC7CE-EE80-4881-A2A2-25EC30906B8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF6EC7CE-EE80-4881-A2A2-25EC30906B8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{949EF716-F147-4E3B-83E1-B942DCA9B108}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{949EF716-F147-4E3B-83E1-B942DCA9B108}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{949EF716-F147-4E3B-83E1-B942DCA9B108}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{949EF716-F147-4E3B-83E1-B942DCA9B108}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

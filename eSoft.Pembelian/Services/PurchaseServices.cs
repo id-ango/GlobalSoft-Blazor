@@ -135,6 +135,8 @@ namespace eSoft.Pembelian.Services
 
             foreach (var item in trans.IrTransDs)
             {
+                IcItem cekItem = _contextIc.IcItems.Where(x => x.ItemCode == item.ItemCode).FirstOrDefault();
+
                 if (item.Qty != 0)
                 {
                     if (transH.TotalQty != 0)
@@ -168,18 +170,18 @@ namespace eSoft.Pembelian.Services
                         NamaItem = item.NamaItem,
                         Satuan = item.Satuan,
                         Lokasi = item.Lokasi,
-                        Harga = item.Harga,
+                        Harga = (cekItem.CostMethod == (int)costMethod.Moving_Avg ? item.Harga : cekItem.StdPrice),
                         Qty = item.Qty,
                         Persen = item.Persen,
                         Discount = item.Discount,
                         Jumlah = item.Jumlah,
-                        Kode = "82",
+                        Kode = "82",                        
                         NoLpb = transH.NoLpb,
                         Tanggal = trans.Tanggal,
-                        JumDpp = mQty5
+                        JumDpp = (cekItem.CostMethod == (int)costMethod.Moving_Avg ? mQty5 : cekItem.StdPrice * item.Qty) 
                     });
 
-                    IcItem cekItem = _contextIc.IcItems.Where(x => x.ItemCode == item.ItemCode).FirstOrDefault();
+                    
 
                     if (cekItem != null)
                     {
@@ -536,6 +538,8 @@ namespace eSoft.Pembelian.Services
 
                         foreach (var item in trans.IrTransDs)
                         {
+                            IcItem cekItem = _contextIc.IcItems.Where(x => x.ItemCode == item.ItemCode).FirstOrDefault();
+
                             if (item.Qty != 0)
                             {
                                 if (transH.TotalQty != 0)
@@ -549,7 +553,7 @@ namespace eSoft.Pembelian.Services
                                     NamaItem = item.NamaItem,
                                     Satuan = item.Satuan,
                                     Lokasi = item.Lokasi,
-                                    Harga = item.Harga,
+                                    Harga = (cekItem.CostMethod == (int)costMethod.Moving_Avg ? item.Harga : cekItem.StdPrice),
                                     Qty = item.Qty,
                                     Persen = item.Persen,
                                     Discount = item.Discount,
@@ -557,11 +561,11 @@ namespace eSoft.Pembelian.Services
                                     Kode = cKode,
                                     NoLpb = transH.NoLpb,
                                     Tanggal = trans.Tanggal,
-                                    JumDpp = mQty5
+                                    JumDpp = (cekItem.CostMethod == (int)costMethod.Moving_Avg ? mQty5 : cekItem.StdPrice * item.Qty)
                                 });
 
 
-                                IcItem cekItem = _contextIc.IcItems.Where(x => x.ItemCode == item.ItemCode).FirstOrDefault();
+                              
                                 if (cekItem != null)
                                 {
                                     IcAltItem cekLokasi1 = _contextIc.IcAltItems.Where(x => x.ItemCode == item.ItemCode && x.Lokasi == item.Lokasi).FirstOrDefault();

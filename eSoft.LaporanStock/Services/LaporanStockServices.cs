@@ -267,6 +267,37 @@ namespace eSoft.LaporanStock.Services
             foreach (var trans in Transaksi)
             {
                 IcItem item = MasterStock.Find(x => x.ItemCode == trans.ItemCode);
+                IcAltItem cekLokasi1 = _context.IcAltItems.Where(x => x.ItemCode == item.ItemCode && x.Lokasi == trans.Lokasi).FirstOrDefault();
+                if (cekLokasi1 == null)
+                {
+                    AltStock.Add(new IcAltItem()
+                    {
+                        ItemCode = item.ItemCode.ToUpper(),
+                        NamaItem = item.NamaItem,
+                        Satuan = item.Satuan,
+                        Lokasi = trans.Lokasi,
+                        Qty = 0
+                    });
+                    
+
+                }
+                if(trans.Lokasi2 != null)
+                {
+                    IcAltItem cekLokasi2 = _context.IcAltItems.Where(x => x.ItemCode == item.ItemCode && x.Lokasi == trans.Lokasi2).FirstOrDefault();
+                    if (cekLokasi1 == null)
+                    {
+                        AltStock.Add(new IcAltItem()
+                        {
+                            ItemCode = item.ItemCode.ToUpper(),
+                            NamaItem = item.NamaItem,
+                            Satuan = item.Satuan,
+                            Lokasi = trans.Lokasi2,
+                            Qty = 0
+                        });
+
+
+                    }
+                }
 
                 if (item.JnsBrng == 1)
                 {

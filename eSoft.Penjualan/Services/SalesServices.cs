@@ -423,7 +423,7 @@ namespace eSoft.Penjualan.Services
                         }
                         else
                         {
-                            cekItem.Cost -= (cekItem.StdPrice * cekItem.Qty);
+                            cekItem.Cost -= (cekItem.StdPrice * item.Qty);
                         }
 
                         //if (cekItem.Qty != 0)
