@@ -140,6 +140,8 @@ namespace Accounting
             services.AddTransient<ILaporanStockServices, LaporanStockServices>();
             services.AddTransient<ICompanyServices, CompanyServices>();
             services.AddTransient<IAdministrationServices,AdministrationServices>();
+            services.AddTransient<IAssetServices, AssetServices>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
