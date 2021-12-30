@@ -21,6 +21,203 @@ namespace eSoft.Asset.Services
             _context = context;
         }
 
+        public bool CekKdItem(string item)
+        {
+            if (item != null)
+            {
+                string test = item.ToUpper();
+                var cekFirst = _context.AsItems.Where(x => x.ItemCode == test).ToList();
+                if (cekFirst.Count == 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public List<AsItem> GetAsItem()
+        {
+            return _context.AsItems.OrderBy(x => x.NamaItem).ToList();
+        }
+
+       
+        public AsItem GetAsItemId(int itemKode)
+        {
+            return _context.AsItems.Where(x => x.AsItemId == itemKode).FirstOrDefault();
+        }
+
+        public AsItem GetAsItemProduk(string itemKode)
+        {
+            return _context.AsItems.Where(x => x.ItemCode == itemKode).FirstOrDefault();
+        }
+
+        public async Task<bool> DelAsItem(int codeview)
+        {
+            try
+            {
+                var ExistingDist = _context.AsItems.Where(x => x.AsItemId == codeview).FirstOrDefault();
+                if (ExistingDist != null)
+                {
+                    _context.AsItems.Remove(ExistingDist);
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return false;
+
+        }
+
+        public bool AddAsItem(AsItemView produk)
+        {
+            string test = produk.ItemCode.ToUpper();
+            var cekFirst = _context.AsItems.Where(x => x.ItemCode == test).ToList();
+            if (cekFirst.Count == 0)
+            {
+                AsItem Produk = new AsItem()
+                {
+                    ItemCode = produk.ItemCode.ToUpper(),
+                    NamaItem = produk.NamaItem,
+                    Satuan = produk.Satuan,
+                    Divisi = produk.Divisi,
+                    
+
+                };
+                _context.AsItems.Add(Produk);
+                _context.SaveChanges();
+                return true;
+            }
+            else
+            {
+
+                return false;
+            }
+
+        }
+
+        public async Task<bool> EditAsItem(AsItemView produk)
+        {
+            try
+            {
+                var ExistingItem = _context.AsItems.Where(x => x.AsItemId == produk.AsItemId).FirstOrDefault();
+                if (ExistingItem != null)
+                {
+                    ExistingItem.NamaItem = produk.NamaItem;
+                    ExistingItem.Satuan = produk.Satuan;
+                    ExistingItem.Divisi = produk.Divisi;
+                    
+                    _context.AsItems.Update(ExistingItem);
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return false;
+
+        }
+
+
+        #region IcDiv Class
+
+        public bool CekKdDivisi(string item)
+        {
+            string test = item.ToUpper();
+            var cekFirst = _context.AsDivisis.Where(x => x.Divisi == test).ToList();
+            if (cekFirst.Count == 0)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public List<AsDivisi> GetIcDiv()
+        {
+            return _context.AsDivisis.OrderBy(x => x.Divisi).ToList();
+        }
+
+        public AsDivisi GetAsDivId(int id)
+        {
+            return _context.AsDivisis.Where(x => x.AsDivId == id).FirstOrDefault();
+        }
+
+        public bool AddAsDiv(AsDivisiView codeview)
+        {
+            string test = codeview.Divisi.ToUpper();
+            var cekFirst = _context.AsDivisis.Where(x => x.Divisi == test).ToList();
+            if (cekFirst.Count == 0)
+            {
+                AsDivisi Division = new AsDivisi()
+                {
+                    Divisi = codeview.Divisi.ToUpper(),
+                    NamaDiv = codeview.NamaDiv
+
+                };
+                _context.AsDivisis.Add(Division);
+                _context.SaveChanges();
+                return true;
+            }
+            else
+            {
+
+                return false;
+            }
+
+        }
+
+        public async Task<bool> EditIcDiv(AsDivisiView codeview)
+        {
+            try
+            {
+                var ExistingDiv = _context.AsDivisis.Where(x => x.AsDivId == codeview.AsDivId).FirstOrDefault();
+                if (ExistingDiv != null)
+                {
+                    ExistingDiv.NamaDiv = codeview.NamaDiv;
+
+
+                    _context.AsDivisis.Update(ExistingDiv);
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return false;
+
+        }
+
+        public async Task<bool> DelAsDiv(int codeview)
+        {
+            try
+            {
+                var ExistingDiv = _context.AsDivisis.Where(x => x.AsDivId == codeview).FirstOrDefault();
+                if (ExistingDiv != null)
+                {
+                    _context.AsDivisis.Remove(ExistingDiv);
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return false;
+
+        }
+        #endregion icdiv
+
         #region AsAcct Class
 
         public bool CekAcctSet(string supplier)
@@ -124,7 +321,7 @@ namespace eSoft.Asset.Services
             return false;
 
         }
-        #endregion ApAcct Class
+        #endregion AsAcct Class
 
         #region ApDist Class
 

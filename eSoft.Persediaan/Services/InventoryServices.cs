@@ -94,6 +94,8 @@ namespace eSoft.Persediaan.Services
                     AcctSet = produk.AcctSet,
                     Category = produk.Category,
                     StdPrice = produk.StdPrice,
+                    CostAwal = produk.CostAwal,
+                    SaldoAwal = produk.SaldoAwal,
                     NamaLengkap = produk.NamaLengkap
 
                 };
@@ -125,7 +127,8 @@ namespace eSoft.Persediaan.Services
                     ExistingItem.Category = produk.Category;
                     ExistingItem.NamaLengkap = produk.NamaLengkap;
                     ExistingItem.StdPrice = produk.StdPrice;
-
+                    ExistingItem.CostAwal = produk.CostAwal;
+                    ExistingItem.SaldoAwal = produk.SaldoAwal;
                     _context.IcItems.Update(ExistingItem);
                     await _context.SaveChangesAsync();
                     return true;

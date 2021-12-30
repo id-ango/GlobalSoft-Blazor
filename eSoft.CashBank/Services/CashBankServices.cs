@@ -885,12 +885,12 @@ namespace eSoft.CashBank.Services
             SaldoAwal = 0;
 
             //  Transaksi = Transaksi.Select(i => { SaldoAwal += i.Saldo; i.Balance = SaldoAwal; return i; }).ToList();
-            //foreach (var item in Transaksi)
-            //{
+            foreach (var item in Transaksi)
+            {
 
-            //    SaldoAwal = SaldoAwal + item.Saldo;
-            //    item.Balance = SaldoAwal;
-            //}
+                SaldoAwal = SaldoAwal + item.Saldo;
+                item.Balance = SaldoAwal;
+            }
 
             return Transaksi;
         }

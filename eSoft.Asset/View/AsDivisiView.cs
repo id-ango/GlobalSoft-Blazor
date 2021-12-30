@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace eSoft.Asset.View
 {
-    public class AsDivisView
+    public class AsDivisiView
     {
      
         public int AsDivId { get; set; }

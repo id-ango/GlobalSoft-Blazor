@@ -25,7 +25,10 @@ namespace eSoft.Asset.Services
         bool AddDist(AsDistSetView codeview);
         Task<bool> EditDist(AsDistSetView codeview);
         Task<bool> DelDist(int codeview);
-       
+        AsItem GetAsItemId(int itemKode);
+        Task<bool> DelAsItem(int codeview);
+        List<AsItem> GetAsItem();
+
 
     }
 }

@@ -131,6 +131,22 @@
         </label>
     </div>
     <br />
+      <div class="form-group">
+            <label>
+                Qty Awal :
+                <InputNumber class="form-control" @bind-Value="bank.SaldoAwal" />
+            </label>
+
+        </div>
+        <br/>
+        <div class="form-group">
+            <label>
+                Cost Awal :
+                <InputNumber class="form-control" @bind-Value="bank.CostAwal" />
+            </label>
+
+        </div>
+        <br/>
     <div class="container">
         <button class="btn-success" type="submit">Simpan</button>
         <button class="btn-danger" type="button" @onclick="@(() => navigationmanager.NavigateTo("/ModulePersediaan/SetupItem", false))">Batal</button>
@@ -188,6 +204,8 @@
         bank.AcctSet = Bank.AcctSet;
         bank.Category = Bank.Category;
         bank.StdPrice = Bank.StdPrice;
+        bank.CostAwal = Bank.CostAwal;
+        bank.SaldoAwal = Bank.SaldoAwal;
 
     }
 
