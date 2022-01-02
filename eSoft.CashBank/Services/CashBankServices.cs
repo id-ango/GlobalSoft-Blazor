@@ -90,6 +90,10 @@ namespace eSoft.CashBank.Services
                     ExistingBank.Kurs = banks.Kurs;
                     ExistingBank.Acctset = banks.Acctset;
                     ExistingBank.ClrDate = banks.ClrDate;
+
+                    ExistingBank.Saldo -= ExistingBank.SldAwal;
+                    ExistingBank.KSaldo -= ExistingBank.KSldAwal;
+
                     ExistingBank.SldAwal = banks.SldAwal;
                     ExistingBank.KSldAwal = banks.KSldAwal;
                     ExistingBank.Saldo += banks.SldAwal;
