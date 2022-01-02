@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Accounting.Migrations.DbContextJualMigrations
 {
-    public partial class initialcreate : Migration
+    public partial class initialjual : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

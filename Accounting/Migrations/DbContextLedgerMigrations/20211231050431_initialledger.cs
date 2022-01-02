@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Accounting.Migrations.DbContextLedgerMigrations
 {
-    public partial class initialcreate : Migration
+    public partial class initialledger : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

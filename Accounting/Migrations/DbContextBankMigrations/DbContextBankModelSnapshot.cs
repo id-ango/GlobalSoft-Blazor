@@ -8,7 +8,7 @@ using eSoft.CashBank.Data;
 
 #nullable disable
 
-namespace Accounting.Migrations
+namespace Accounting.Migrations.DbContextBankMigrations
 {
     [DbContext(typeof(DbContextBank))]
     partial class DbContextBankModelSnapshot : ModelSnapshot
@@ -17,7 +17,7 @@ namespace Accounting.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "6.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);

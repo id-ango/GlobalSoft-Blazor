@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Accounting.Migrations
+namespace Accounting.Migrations.DbContextBankMigrations
 {
-    public partial class initialcreate : Migration
+    public partial class initialcashbank : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

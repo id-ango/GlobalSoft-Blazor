@@ -74,6 +74,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Migrations\" />
     <Folder Include="Pages\Administration\AdminUser\" />
     <Folder Include="Pages\ModuleBank\CashBank\" />
     <Folder Include="Pages\ModuleBank\SrcCode\" />

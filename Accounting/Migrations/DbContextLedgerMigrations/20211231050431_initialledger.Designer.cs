@@ -12,14 +12,14 @@ using eSoft.Ledger.Data;
 namespace Accounting.Migrations.DbContextLedgerMigrations
 {
     [DbContext(typeof(DbContextLedger))]
-    [Migration("20211130074111_initialcreate")]
-    partial class initialcreate
+    [Migration("20211231050431_initialledger")]
+    partial class initialledger
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "6.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);

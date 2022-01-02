@@ -8,7 +8,7 @@ using eSoft.Asset.Data;
 
 #nullable disable
 
-namespace Accounting.Migrations.DbContextAssetsMigrations
+namespace Accounting.Migrations
 {
     [DbContext(typeof(DbContextAssets))]
     partial class DbContextAssetsModelSnapshot : ModelSnapshot

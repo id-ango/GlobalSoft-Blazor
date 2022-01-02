@@ -5,34 +5,40 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using eSoft.Pembelian.Data;
+using eSoft.Penjualan.Data;
 
 #nullable disable
 
-namespace Accounting.Migrations.DbContextBeliMigrations
+namespace Accounting.Migrations.DbContextJualMigrations
 {
-    [DbContext(typeof(DbContextBeli))]
-    [Migration("20211130074220_initialcreate")]
-    partial class initialcreate
+    [DbContext(typeof(DbContextJual))]
+    [Migration("20211231050657_initialjual")]
+    partial class initialjual
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "6.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("eSoft.Pembelian.Model.IrTransD", b =>
+            modelBuilder.Entity("eSoft.Penjualan.Model.OeTransD", b =>
                 {
-                    b.Property<int>("IrTransDId")
+                    b.Property<int>("OeTransDId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IrTransDId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OeTransDId"), 1L, 1);
 
                     b.Property<string>("AcctSet")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Cost")
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<string>("Customer")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Discount")
@@ -41,8 +47,8 @@ namespace Accounting.Migrations.DbContextBeliMigrations
                     b.Property<decimal>("Harga")
                         .HasColumnType("decimal(18,4)");
 
-                    b.Property<int>("IrTransHId")
-                        .HasColumnType("int");
+                    b.Property<decimal>("HrgCost")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("ItemCode")
                         .HasColumnType("nvarchar(max)");
@@ -66,6 +72,9 @@ namespace Accounting.Migrations.DbContextBeliMigrations
                     b.Property<string>("NoLpb")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("OeTransHId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Persen")
                         .HasColumnType("decimal(18,4)");
 
@@ -78,31 +87,31 @@ namespace Accounting.Migrations.DbContextBeliMigrations
                     b.Property<string>("Satuan")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Supplier")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("Tanggal")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("IrTransDId");
+                    b.HasKey("OeTransDId");
 
-                    b.HasIndex("IrTransHId");
+                    b.HasIndex("OeTransHId");
 
-                    b.ToTable("IrTransDs");
+                    b.ToTable("OeTransDs");
                 });
 
-            modelBuilder.Entity("eSoft.Pembelian.Model.IrTransH", b =>
+            modelBuilder.Entity("eSoft.Penjualan.Model.OeTransH", b =>
                 {
-                    b.Property<int>("IrTransHId")
+                    b.Property<int>("OeTransHId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IrTransHId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OeTransHId"), 1L, 1);
+
+                    b.Property<string>("AlamatKirim")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Cek")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Currency")
+                    b.Property<string>("Customer")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("DPayment")
@@ -121,17 +130,11 @@ namespace Accounting.Migrations.DbContextBeliMigrations
                         .HasMaxLength(2)
                         .HasColumnType("nvarchar(2)");
 
-                    b.Property<decimal>("Kurs")
-                        .HasColumnType("decimal(18,4)");
-
                     b.Property<string>("Lokasi")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NamaSup")
+                    b.Property<string>("NamaCust")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Nilai")
-                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("NoLpb")
                         .HasColumnType("nvarchar(max)");
@@ -160,9 +163,6 @@ namespace Accounting.Migrations.DbContextBeliMigrations
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Supplier")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<decimal>("Tagihan")
                         .HasColumnType("decimal(18,4)");
 
@@ -175,25 +175,25 @@ namespace Accounting.Migrations.DbContextBeliMigrations
                     b.Property<decimal>("TtlJumlah")
                         .HasColumnType("decimal(18,4)");
 
-                    b.HasKey("IrTransHId");
+                    b.HasKey("OeTransHId");
 
-                    b.ToTable("IrTransHs");
+                    b.ToTable("OeTransHs");
                 });
 
-            modelBuilder.Entity("eSoft.Pembelian.Model.IrTransD", b =>
+            modelBuilder.Entity("eSoft.Penjualan.Model.OeTransD", b =>
                 {
-                    b.HasOne("eSoft.Pembelian.Model.IrTransH", "IrTransH")
-                        .WithMany("IrTransDs")
-                        .HasForeignKey("IrTransHId")
+                    b.HasOne("eSoft.Penjualan.Model.OeTransH", "OeTransH")
+                        .WithMany("OeTransDs")
+                        .HasForeignKey("OeTransHId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("IrTransH");
+                    b.Navigation("OeTransH");
                 });
 
-            modelBuilder.Entity("eSoft.Pembelian.Model.IrTransH", b =>
+            modelBuilder.Entity("eSoft.Penjualan.Model.OeTransH", b =>
                 {
-                    b.Navigation("IrTransDs");
+                    b.Navigation("OeTransDs");
                 });
 #pragma warning restore 612, 618
         }

@@ -9,10 +9,10 @@ using eSoft.Asset.Data;
 
 #nullable disable
 
-namespace Accounting.Migrations.DbContextAssetsMigrations
+namespace Accounting.Migrations
 {
     [DbContext(typeof(DbContextAssets))]
-    [Migration("20211222070919_initialasset")]
+    [Migration("20211231045830_initialasset")]
     partial class initialasset
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

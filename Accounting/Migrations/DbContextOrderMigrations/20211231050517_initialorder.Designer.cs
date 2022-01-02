@@ -5,49 +5,43 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using eSoft.Penjualan.Data;
+using eSoft.Order.Data;
 
 #nullable disable
 
-namespace Accounting.Migrations.DbContextJualMigrations
+namespace Accounting.Migrations.DbContextOrderMigrations
 {
-    [DbContext(typeof(DbContextJual))]
-    [Migration("20211130074311_initialcreate")]
-    partial class initialcreate
+    [DbContext(typeof(DbContextOrder))]
+    [Migration("20211231050517_initialorder")]
+    partial class initialorder
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "6.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("eSoft.Penjualan.Model.OeTransD", b =>
+            modelBuilder.Entity("eSoft.Order.Model.PoTransD", b =>
                 {
-                    b.Property<int>("OeTransDId")
+                    b.Property<int>("PoTransDId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OeTransDId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PoTransDId"), 1L, 1);
 
                     b.Property<string>("AcctSet")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Cost")
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<string>("Customer")
+                    b.Property<string>("Currency")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Discount")
                         .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal>("Harga")
-                        .HasColumnType("decimal(18,4)");
-
-                    b.Property<decimal>("HrgCost")
                         .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("ItemCode")
@@ -63,6 +57,9 @@ namespace Accounting.Migrations.DbContextJualMigrations
                         .HasMaxLength(2)
                         .HasColumnType("nvarchar(2)");
 
+                    b.Property<decimal>("Kurs")
+                        .HasColumnType("decimal(18,4)");
+
                     b.Property<string>("Lokasi")
                         .HasColumnType("nvarchar(max)");
 
@@ -72,11 +69,11 @@ namespace Accounting.Migrations.DbContextJualMigrations
                     b.Property<string>("NoLpb")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OeTransHId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Persen")
                         .HasColumnType("decimal(18,4)");
+
+                    b.Property<int>("PoTransHId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Qty")
                         .HasColumnType("decimal(18,4)");
@@ -90,28 +87,28 @@ namespace Accounting.Migrations.DbContextJualMigrations
                     b.Property<DateTime>("Tanggal")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("OeTransDId");
+                    b.Property<string>("Vendor")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("OeTransHId");
+                    b.HasKey("PoTransDId");
 
-                    b.ToTable("OeTransDs");
+                    b.HasIndex("PoTransHId");
+
+                    b.ToTable("PoTransDs");
                 });
 
-            modelBuilder.Entity("eSoft.Penjualan.Model.OeTransH", b =>
+            modelBuilder.Entity("eSoft.Order.Model.PoTransH", b =>
                 {
-                    b.Property<int>("OeTransHId")
+                    b.Property<int>("PoTransHId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OeTransHId"), 1L, 1);
-
-                    b.Property<string>("AlamatKirim")
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PoTransHId"), 1L, 1);
 
                     b.Property<string>("Cek")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Customer")
+                    b.Property<string>("Currency")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("DPayment")
@@ -130,11 +127,17 @@ namespace Accounting.Migrations.DbContextJualMigrations
                         .HasMaxLength(2)
                         .HasColumnType("nvarchar(2)");
 
+                    b.Property<decimal>("Kurs")
+                        .HasColumnType("decimal(18,4)");
+
                     b.Property<string>("Lokasi")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NamaCust")
+                    b.Property<string>("NamaVendor")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Nilai")
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("NoLpb")
                         .HasColumnType("nvarchar(max)");
@@ -175,25 +178,28 @@ namespace Accounting.Migrations.DbContextJualMigrations
                     b.Property<decimal>("TtlJumlah")
                         .HasColumnType("decimal(18,4)");
 
-                    b.HasKey("OeTransHId");
+                    b.Property<string>("Vendor")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("OeTransHs");
+                    b.HasKey("PoTransHId");
+
+                    b.ToTable("PoTransHs");
                 });
 
-            modelBuilder.Entity("eSoft.Penjualan.Model.OeTransD", b =>
+            modelBuilder.Entity("eSoft.Order.Model.PoTransD", b =>
                 {
-                    b.HasOne("eSoft.Penjualan.Model.OeTransH", "OeTransH")
-                        .WithMany("OeTransDs")
-                        .HasForeignKey("OeTransHId")
+                    b.HasOne("eSoft.Order.Model.PoTransH", "PoTransH")
+                        .WithMany("PoTransDs")
+                        .HasForeignKey("PoTransHId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("OeTransH");
+                    b.Navigation("PoTransH");
                 });
 
-            modelBuilder.Entity("eSoft.Penjualan.Model.OeTransH", b =>
+            modelBuilder.Entity("eSoft.Order.Model.PoTransH", b =>
                 {
-                    b.Navigation("OeTransDs");
+                    b.Navigation("PoTransDs");
                 });
 #pragma warning restore 612, 618
         }

@@ -4,7 +4,7 @@
 
 namespace Accounting.Migrations.DbContextCompanyMigrations
 {
-    public partial class initialcreate : Migration
+    public partial class initialcompany : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

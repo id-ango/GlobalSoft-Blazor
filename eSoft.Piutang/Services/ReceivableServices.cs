@@ -66,6 +66,7 @@ namespace eSoft.Piutang.Services
                     AlmtKrm = customers.AlmtKrm,
                     KotaKrm = customers.KotaKrm,
                     //ProvKirim = customers.ProvKirim,
+                    NPWP_Cust = customers.NPWP_Cust,
                     Kontak = customers.Kontak
 
 
@@ -102,6 +103,7 @@ namespace eSoft.Piutang.Services
                     ExistingCustomer.KotaKrm = customers.KotaKrm;
                     ExistingCustomer.ProvKirim = customers.ProvKirim;
                     ExistingCustomer.Kontak = customers.Kontak;
+                    ExistingCustomer.NPWP_Cust = customers.NPWP_Cust;
 
                     _context.ArCusts.Update(ExistingCustomer);
                     await _context.SaveChangesAsync();

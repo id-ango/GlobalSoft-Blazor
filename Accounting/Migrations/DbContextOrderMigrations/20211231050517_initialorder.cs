@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Accounting.Migrations.DbContextOrderMigrations
 {
-    public partial class initialcreate : Migration
+    public partial class initialorder : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Accounting.Migrations.DbContextPersediaanMigrations
 {
-    public partial class initialcreate : Migration
+    public partial class initialpersediaan : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

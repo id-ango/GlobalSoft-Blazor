@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Accounting.Migrations.DbContextAssetsMigrations
+namespace Accounting.Migrations
 {
     public partial class initialasset : Migration
     {

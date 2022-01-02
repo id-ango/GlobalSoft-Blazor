@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Accounting.Migrations.DbContextPiutangMigrations
 {
-    public partial class initialcreate : Migration
+    public partial class initialpiutang : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

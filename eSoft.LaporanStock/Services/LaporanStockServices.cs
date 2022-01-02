@@ -43,6 +43,7 @@ namespace eSoft.LaporanStock.Services
             List<OeTransD> TransAwalJual = new List<OeTransD>();
             List<IrTransD> TransAwalBeli = new List<IrTransD>();
             List<IcTransD> TransAwalIC = new List<IcTransD>();
+            IcItem IcSldAwal = new IcItem();
             List<OeTransH> transHOE = new List<OeTransH>();
             List<OeTransD> transDOE = new List<OeTransD>();
             List<IrTransH> transHIR = new List<IrTransH>();
@@ -58,7 +59,8 @@ namespace eSoft.LaporanStock.Services
                .ToList();
             TransAwalIC = _context.IcTransDs.Where(x => x.ItemCode == kodeBank && x.Tanggal.Date < Tanggal1.Date)
                .ToList();
-
+            IcSldAwal = _context.IcItems.Where(x =>x.ItemCode == kodeBank).FirstOrDefault();
+            
 
             if (TransAwalJual != null)
             {
@@ -87,7 +89,7 @@ namespace eSoft.LaporanStock.Services
                 SldAwalIC = 0;
             }
 
-            SaldoAwal = SldAwalBeli + SldAwalIC + SldAwalJual;
+            SaldoAwal = IcSldAwal.SaldoAwal + SldAwalBeli + SldAwalIC + SldAwalJual;
 
 
 

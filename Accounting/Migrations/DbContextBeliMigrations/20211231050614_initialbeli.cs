@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Accounting.Migrations.DbContextBeliMigrations
 {
-    public partial class initialcreate : Migration
+    public partial class initialbeli : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

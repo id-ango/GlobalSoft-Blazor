@@ -12,14 +12,14 @@ using eSoft.Piutang.Data;
 namespace Accounting.Migrations.DbContextPiutangMigrations
 {
     [DbContext(typeof(DbContextPiutang))]
-    [Migration("20211130074416_initialcreate")]
-    partial class initialcreate
+    [Migration("20211231050811_initialpiutang")]
+    partial class initialpiutang
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "6.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
