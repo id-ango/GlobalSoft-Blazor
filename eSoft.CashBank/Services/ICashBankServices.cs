@@ -35,5 +35,7 @@ namespace eSoft.CashBank.Services
         CbTransfer EditTransfer(TransferView transH);
         Task<bool> DelTransfer(int id);
         List<RekeningView> CetakMutasi(DateTime Tanggal1, DateTime Tanggal2, string KodeBank);
+        void prosesCashBank();
+
     }
 }

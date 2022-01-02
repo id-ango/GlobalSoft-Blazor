@@ -900,6 +900,60 @@ namespace eSoft.CashBank.Services
         }
 
         #endregion
+
+        #region prosesCashBank
+
+        public void prosesCashBank()
+        {
+
+            List<CbBank> MasterStock = _context.CbBanks.ToList();
+          
+            List<CbTransH> TransJual = new List<CbTransH>();
+           
+
+            MasterStock.ForEach(i => { i.Saldo = 0; i.KSaldo = 0; });
+         
+
+            MasterStock.ForEach(i => { i.Saldo = i.SldAwal; i.KSaldo = i.KSldAwal; });
+
+
+            TransJual = _context.CbTransHs.OrderBy(x => x.Tanggal).Include(x => x.CbTransDs).ToList();
+               
+
+            foreach (var trans in TransJual)
+            {
+                //foreach(var item in trans.CbTransDs)
+                //{
+                //    MasterStock.Find(x => x.KodeBank == trans.KodeBank).Saldo += item.Jumlah;
+                //    MasterStock.Find(x => x.KodeBank == trans.KodeBank).KSaldo += item.KJumlah;
+                //}
+
+                MasterStock.Find(x => x.KodeBank == trans.KodeBank).Saldo += trans.Saldo;
+                MasterStock.Find(x => x.KodeBank == trans.KodeBank).KSaldo += trans.KSaldo;
+                
+               
+            }
+
+            foreach (var trans in MasterStock)
+            {
+                if(string.IsNullOrEmpty(trans.Kurs))
+                {
+                    trans.KSaldo = 0;
+                    trans.KSldAwal = 0;
+                }
+            }
+            
+
+            _context.UpdateRange(MasterStock);
+            
+           
+            _context.SaveChanges();
+          
+
+            // return Transaksi;
+
+        }
+        #endregion
     }
 
 }
