@@ -7,8 +7,11 @@
 @using eSoft.Persediaan.Model
 @using eSoft.Fungsi.Function
 @using eSoft.Penjualan.Services
+@using eSoft.Piutang.Services
+
 
 @inject ISalesServices service
+@inject IReceivableServices serviceAR
 @inject NavigationManager navigationmanager
 
 
@@ -55,10 +58,10 @@
                 <td>Surabaya, @TransAll.Tanggal.ToShortDateString()</td>
             </tr>
             <tr>
-                <td class="meta-head">Customer</td>
-                <td>@TransAll.Customer</td>
+                <td class="meta-head">Telpon</td>
+                <td>@Telpon</td>
             </tr>
-
+            
         </table>
 
     </div>
@@ -145,7 +148,7 @@
 
     private OeTransHView Transh = new OeTransHView() { OeTransDs = new List<OeTransDView>() };
     private OeTransH TransAll = new OeTransH() { OeTransDs = new List<OeTransD>() };
-    // private List<ArCust> banks;
+   // private ArCust banks;
     // private List<IcItem> srccode;
     private OeTransDView Transd = new OeTransDView();
     private OeTransDView TransK = new OeTransDView();
@@ -157,13 +160,14 @@
     public string Perusahaan { get; set; }
     public string Alamat { get; set; }
     public string KepadaYth { get; set; }
+    public string Telpon { get; set; }
 
     protected override void OnInitialized()
     {
 
         LoadTrans();
         KepadaYth = TransAll.NamaCust + '\n' + TransAll.AlamatKirim;
-
+        Telpon = serviceAR.GetCustomerCode(TransAll.Customer).Telpon;
     }
 
 

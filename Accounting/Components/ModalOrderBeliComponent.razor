@@ -51,7 +51,7 @@
                                 <div class="form-group">
                                     <label>
                                         Qty
-                                        <InputNumber class="form-control" @bind-Value="@Detail.Qty"></InputNumber>
+                                        <InputNumber class="form-control" @bind-Value="@Detail.Qty" @onfocusout="UbahJumlah"></InputNumber>
                                     </label>
                                 </div>
                             </td>
@@ -87,7 +87,7 @@
                                 <div class="form-group">
                                     <label>
                                         Jumlah :
-                                        <InputNumber class="form-control" @bind-Value="@Detail.Jumlah" disabled="disabled" />
+                                        <InputNumber class="form-control" @bind-Value="@Detail.Jumlah"  />
                                     </label>
                                 </div>
                             </td>

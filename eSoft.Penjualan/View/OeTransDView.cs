@@ -62,26 +62,27 @@ namespace eSoft.Penjualan.View
         [Column(TypeName = "decimal(18,2)")]
         public decimal JumDpp { get; set; }
         [Column(TypeName = "decimal(18,2)")]
-        public decimal Jumlah
-        {
-            get
-            {
-                if (jumlah != UpdateJumlah && jumlah != 0)
-                {
-                    return jumlah;
-                }
-                else
-                {
-                    return UpdateJumlah;
-                }
+            public decimal Jumlah { get; set; }
+        //public decimal Jumlah
+        //{
+        //    get
+        //    {
+        //        if (jumlah != UpdateJumlah && jumlah != 0)
+        //        {
+        //            return jumlah;
+        //        }
+        //        else
+        //        {
+        //            return UpdateJumlah;
+        //        }
 
-            }
+        //    }
 
-            set
-            {
-                jumlah = value;
-            }
-        }
+        //    set
+        //    {
+        //        jumlah = value;
+        //    }
+        //}
 
         public decimal UpdateJumlah
         {
