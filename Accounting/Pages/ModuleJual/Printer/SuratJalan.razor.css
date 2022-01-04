@@ -215,6 +215,11 @@ table {
         font: 13px "Times New Roman", Sans-Serif;
     }
 
+    #items td.keterangan textarea {
+        width: 100%;
+        font: bold 16px "Times New Roman", Sans-Serif;
+    }
+
     #items textarea.keterangan {
         height: 40px;
         color: black;
