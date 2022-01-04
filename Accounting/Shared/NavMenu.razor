@@ -14,7 +14,7 @@
             </NavLink>
         </li>
 
-        <AuthorizeView Roles="Admin, Finance">
+      @*  <AuthorizeView Roles="Admin, Finance">*@
             <li class="nav-item px-3">
                 <NavLink class="nav-link" href="#" @onclick="(()=>expandPenjualan = !expandPenjualan)">
                     <span class="oi oi-list-rich" aria-hidden="true"></span> Penjualan
@@ -46,9 +46,9 @@
 
                 }
             </li>  <!--   Penjualan  -->
-        </AuthorizeView>
+       @* </AuthorizeView>*@
 
-        <AuthorizeView Roles="Admin, Finance">
+     @*   <AuthorizeView Roles="Admin, Finance">*@
             <li class="nav-item px-3">
                 <NavLink class="nav-link" href="#" @onclick="(()=>expandPembelian = !expandPembelian)">
                     <span class="oi oi-list-rich" aria-hidden="true"></span> Pembelian
@@ -78,9 +78,9 @@
 
                 }
             </li>  <!--   Pembelian  -->
-        </AuthorizeView>
+      @*  </AuthorizeView>*@
 
-        <AuthorizeView Roles="Admin, Finance, Warehouse">
+       @* <AuthorizeView Roles="Admin, Finance, Warehouse">*@
             <li class="nav-item px-3">
                 <NavLink class="nav-link" href="#" @onclick="(()=>expandPersediaan = !expandPersediaan)">
                     <span class="oi oi-list-rich" aria-hidden="true"></span> Persediaan
@@ -137,9 +137,9 @@
                 }
             </li>  <!--   Persediaan -->
 
-        </AuthorizeView>
+     @*   </AuthorizeView>*@
 
-        <AuthorizeView Roles="Admin, Finance">
+        @*<AuthorizeView Roles="Admin, Finance">*@
             <li class="nav-item px-3">
                 <NavLink class="nav-link" href="#" @onclick="(()=>expandHutang = !expandHutang)">
                     <span class="oi oi-list-rich" aria-hidden="true"></span> Hutang
@@ -188,9 +188,9 @@
 
                 }
             </li>  <!--   Hutang     -->
-        </AuthorizeView>
+        @*</AuthorizeView>*@
 
-        <AuthorizeView Roles="Admin, Finance">
+       @* <AuthorizeView Roles="Admin, Finance">*@
             <li class="nav-item px-3">
                 <NavLink class="nav-link" href="#" @onclick="(()=>expandPiutang = !expandPiutang)">
                     <span class="oi oi-list-rich" aria-hidden="true"></span> Piutang
@@ -240,8 +240,9 @@
 
                 }
             </li>  <!--   Piutang    -->
-        </AuthorizeView>
-        <AuthorizeView Roles="Admin, Finance">
+      @*  </AuthorizeView>*@
+
+       @* <AuthorizeView Roles="Admin, Finance">*@
             <li class="nav-item px-3">
 
                 <NavLink class="nav-link" href="#" @onclick="(()=>expandCashBank = !expandCashBank)">
@@ -285,9 +286,9 @@
 
 
             </li>  <!--   KasBank    -->
-        </AuthorizeView>
+       @* </AuthorizeView>*@
 
-        <AuthorizeView Roles="Admin, Finance">
+      @*  <AuthorizeView Roles="Admin, Finance">*@
             <li class="nav-item px-3">
 
                 <NavLink class="nav-link" href="#" @onclick="(()=>expandAsset = !expandAsset)">
@@ -321,9 +322,9 @@
 
             </li>  <!--   Asset Management     -->
 
-        </AuthorizeView>
+      @*  </AuthorizeView>*@
 
-        <AuthorizeView Roles="Admin, Finance">
+     @*   <AuthorizeView Roles="Admin, Finance">*@
             <li class="nav-item px-3">
 
                 <NavLink class="nav-link" href="#" @onclick="(()=>expandLedger = !expandLedger)">
@@ -346,9 +347,9 @@
 
             </li>  <!--   Ledger     -->
 
-        </AuthorizeView>
+       @* </AuthorizeView>*@
 
-        <AuthorizeView Roles="Admin">
+       @* <AuthorizeView Roles="Admin">*@
             <li class="nav-item px-3">
 
                 <NavLink class="nav-link" href="#" @onclick="(()=>expandAdministration = !expandAdministration)">
@@ -375,9 +376,9 @@
 
 
             </li>  <!--   Administration     -->
-        </AuthorizeView>
+       @* </AuthorizeView>*@
 
-        <AuthorizeView Roles="Admin">
+     @*   <AuthorizeView Roles="Admin">*@
             <li class="nav-item px-3">
 
                 <NavLink class="nav-link" href="#" @onclick="(()=>expandMaintenance = !expandMaintenance)">
@@ -404,7 +405,7 @@
 
 
             </li>  <!--   Administration     -->
-        </AuthorizeView>
+        @*</AuthorizeView>*@
     </ul>
 </div>
 

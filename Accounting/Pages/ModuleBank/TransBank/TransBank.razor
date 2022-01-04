@@ -19,7 +19,7 @@
 </div>
 <br />
 
-<EditForm Model="bank">
+@*<EditForm Model="bank">
     <PrimaryButton @onclick="() => OpenRincian()" Text=@(RincianTransaksi ? "Hide Transaksi" : "Display Transaksi") />
 
     <InputRadioGroup @bind-Value="StatusOption">
@@ -31,7 +31,7 @@
         }
 
     </InputRadioGroup>
-</EditForm>
+</EditForm>*@
 
 @if (RincianTransaksi)
 {
@@ -109,7 +109,8 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        //  LoadGet();
+        LoadGet();
+        RincianTransaksi = true;
 
     }
 
