@@ -217,6 +217,8 @@ table {
 
     #items textarea.keterangan {
         height: 40px;
+        color: black;
+        font: bold 16px "Times New Roman", Sans-Serif;
     }
 
     #items td.total-line {
