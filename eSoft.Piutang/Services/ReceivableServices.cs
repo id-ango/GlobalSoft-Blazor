@@ -659,17 +659,30 @@ namespace eSoft.Piutang.Services
 
             if(trans != null && customer != null)
             {
-                transView = (from header in trans
-                         join detail in customer on header.Customer equals detail.Customer
-                         select new ArPiutngView()
-                         {
-                             Sisa = header.Sisa,
-                             Dokumen = header.Dokumen,
-                             Tanggal = header.Tanggal,
-                             Customer = header.Customer,
-                             NamaCust = detail.NamaCust,     
-                             KdBank = GetTransDoc(header.Dokumen).KdBank
-                         }).ToList();
+                foreach (var header in trans)
+                {
+                    transView.Add(new ArPiutngView()
+                    {
+                        Sisa = header.Sisa,
+                        Dokumen = header.Dokumen,
+                        Tanggal = header.Tanggal,
+                        DueDate = header.DueDate,
+                        Customer = header.Customer,
+                        Keterangan = header.Keterangan,
+                        NamaCust = customer.Find(x => x.Customer == header.Customer).NamaCust
+                    });
+                }
+                //transView = (from header in trans
+                //         join detail in customer on header.Customer equals detail.Customer
+                //         select new ArPiutngView()
+                //         {
+                //             Sisa = header.Sisa,
+                //             Dokumen = header.Dokumen,
+                //             Tanggal = header.Tanggal,
+                //             Customer = header.Customer,
+                //             NamaCust = detail.NamaCust,     
+                //             KdBank = GetTransDoc(header.Dokumen).KdBank
+                //         }).ToList();
             }
 
             return transView;
