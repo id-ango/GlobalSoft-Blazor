@@ -6,7 +6,9 @@
 @using Accounting.Data;
 @using eSoft.CashBank.Services;
 
-@inject ICashBankServices service;
+
+@attribute [Authorize(Roles ="Admin")]
+@inject ICashBankServices service
 
 
 <h3>Proses KasBank</h3>

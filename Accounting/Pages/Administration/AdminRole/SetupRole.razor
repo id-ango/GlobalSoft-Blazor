@@ -4,6 +4,8 @@
 @using Accounting.Services;
 @using Accounting.Data;
 
+@attribute [Authorize(Roles ="Admin")]
+
 @inject IAdministrationServices serviceRole
 @inject AuthenticationStateProvider AuthenticationStateProvider
 

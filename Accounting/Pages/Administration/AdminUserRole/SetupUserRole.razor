@@ -5,6 +5,8 @@
 @using Accounting.Services.View;
 @using Accounting.Data;
 
+@attribute [Authorize(Roles ="Admin")]
+
 @inject IAdministrationServices service
 
 @inject AuthenticationStateProvider AuthenticationStateProvider

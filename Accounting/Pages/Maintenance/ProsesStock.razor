@@ -6,7 +6,9 @@
 @using Accounting.Data;
 @using eSoft.LaporanStock.Services;
 
-@inject ILaporanStockServices service;
+@attribute [Authorize(Roles ="Admin")]
+
+@inject ILaporanStockServices service
 
 
 <h3>Proses Stock</h3>
